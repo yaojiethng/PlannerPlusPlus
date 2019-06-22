@@ -43,15 +43,4 @@ dependencies {
     //in order to use DateTime in api 19, we need to use a DateTime backport
     implementation 'com.jakewharton.threetenabp:threetenabp:1.2.1'
 
-    def lifecycle_version = "2.0.0"
-
-    // ViewModel and LiveData
-    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
-    kapt "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
-
-    def room_version = "2.1.0"
-
-    implementation "androidx.room:room-runtime:$room_version"
-    kapt "androidx.room:room-compiler:$room_version" // For Kotlin use kapt instead of annotationProcessor
-
 }

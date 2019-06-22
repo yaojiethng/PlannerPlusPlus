@@ -21,10 +21,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     // lateinit means variable is initialized later
     private val drawerLayout: DrawerLayout by lazy {
-        findViewById(R.id.drawer_layout)
+        findViewById<DrawerLayout>(R.id.drawer_layout)
     }
     private val fab: FloatingActionButton by lazy {
-        findViewById(R.id.fab)
+        findViewById<FloatingActionButton>(R.id.fab)
     }
     private lateinit var fragmentInMain: Fragment
 
