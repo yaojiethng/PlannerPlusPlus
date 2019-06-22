@@ -2,7 +2,7 @@
 <!-- the contents of app_bar_ file contains the "outside" elements like the app bar and the FAB
      below it is content_main which contains the fragmentContainer for the different fragments called
      from MainActivity. -->
-<android.support.design.widget.CoordinatorLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -10,12 +10,12 @@
         android:layout_height="match_parent"
         tools:context=".MainActivity">
 
-    <android.support.design.widget.AppBarLayout
+    <com.google.android.material.appbar.AppBarLayout
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:theme="@style/AppTheme.AppBarOverlay">
 
-        <android.support.v7.widget.Toolbar
+        <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
@@ -24,7 +24,7 @@
                 app:popupTheme="@style/AppTheme.PopupOverlay"/>
         <!-- Dark.ActionBar theme makes the text of the toolbar white, like DarkActionBar-->
 
-    </android.support.design.widget.AppBarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
 
     <include
             layout="@layout/content_main"
@@ -32,7 +32,7 @@
             android:layout_height="match_parent"/>
 
     <!-- floating action button will be drawn and hidden as needed-->
-    <android.support.design.widget.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -42,4 +42,4 @@
             app:behavior_autoHide="false"/>
     <!-- autoHide is false because button should always be visible-->
 
-</android.support.design.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
