@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/nav_events"
+              android:icon="@drawable/ic_calendar_placeholder"
+              android:title="@string/menu_direct_to_eventlist"/>
+        <item android:id="@+id/nav_tasks"
+              android:icon="@drawable/ic_tasklist_placeholder"
+              android:title="@string/menu_direct_to_tasklist"/>
+        <item android:id="@+id/nav_log"
+              android:icon="@drawable/ic_log_placeholder"
+              android:title="@string/menu_direct_to_log"/>
+    </group>
+
+    <item android:title="Communicate">
+        <menu>
+            <item
+                    android:id="@+id/nav_share"
+                    android:icon="@drawable/ic_menu_share"
+                    android:title="@string/menu_share"/>
+        </menu>
+    </item>
+
+</menu>
