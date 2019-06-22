@@ -1,6 +1,6 @@
 package com.orbital2019.plannerplusplus
 
-import androidx.lifecycle.LiveData
+import android.arch.lifecycle.LiveData
 import androidx.room.*
 
 @Dao
