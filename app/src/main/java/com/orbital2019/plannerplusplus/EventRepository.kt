@@ -1,20 +1,17 @@
 package com.orbital2019.plannerplusplus
 
 import android.app.Application
-import android.arch.lifecycle.LiveData
 import android.os.AsyncTask
+import androidx.lifecycle.LiveData
 
 //TODO: check if this can be done using java's ExecutorService
 
-class EventRepository {
-    private lateinit var eventDao: EventDao
-    private lateinit var allEvents: LiveData<List<Event>>
-
-    fun noteRepository(application: Application) {
-        val database: AppDatabase = AppDatabase.getInstance(application)!!
-        eventDao = database.eventDao()
-        allEvents = eventDao.getAllEvents()
+class EventRepository(application: Application) {
+    private val database: AppDatabase by lazy {
+        AppDatabase.getInstance(application)
     }
+    private var eventDao: EventDao = database.eventDao()
+    internal var allEvents: LiveData<List<Event>> = eventDao.getAllEvents()
 
     // has to be manually executed on background thread to prevent app from crashing
     fun insert(event: Event) {
@@ -43,21 +40,21 @@ class EventRepository {
 
     class UpdateEventAsyncTask constructor(private var eventDao: EventDao) : AsyncTask<Event, Void, Void>() {
 
-        override fun doInBackground(vararg events: Event?) : Void? {
+        override fun doInBackground(vararg events: Event?): Void? {
             events[0]?.let { eventDao.update(it) }
             return null
         }
     }
 
-    class DeleteEventAsyncTask constructor(var eventDao: EventDao) : AsyncTask<Event, Void, Void>() {
+    class DeleteEventAsyncTask constructor(private var eventDao: EventDao) : AsyncTask<Event, Void, Void>() {
 
-        override fun doInBackground(vararg events: Event?) : Void? {
+        override fun doInBackground(vararg events: Event?): Void? {
             events[0]?.let { eventDao.delete(it) }
             return null
         }
     }
 
-    class DeleteAllEventsAsyncTask constructor(var eventDao: EventDao) : AsyncTask<Event, Void, Void>() {
+    class DeleteAllEventsAsyncTask constructor(private var eventDao: EventDao) : AsyncTask<Event, Void, Void>() {
 
         override fun doInBackground(vararg params: Event?): Void? {
             eventDao.deleteAllEvents()
