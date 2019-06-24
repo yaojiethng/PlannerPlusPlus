@@ -54,6 +54,7 @@ class AddNewEvent : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
 
+        true //junk line 
         /*return when (item!!.itemId) {
             R.id.save_event -> {
                 saveEvent()
