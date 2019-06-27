@@ -1,19 +1,19 @@
 package com.orbital2019.plannerplusplus
 
-import android.arch.lifecycle.AndroidViewModel
 import android.os.Bundle
+import android.support.design.widget.FloatingActionButton
+import android.support.v4.view.GravityCompat
+import android.support.v7.app.ActionBarDrawerToggle
 import android.view.MenuItem
+import android.support.v4.widget.DrawerLayout
+import android.support.design.widget.NavigationView
+import android.support.v4.app.Fragment
+import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.PopupMenu
+import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.widget.Toast
-import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.PopupMenu
-import androidx.appcompat.widget.Toolbar
-import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
-import androidx.fragment.app.Fragment
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.navigation.NavigationView
+import com.jakewharton.threetenabp.AndroidThreeTen
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
     PopupMenu.OnMenuItemClickListener {
@@ -21,14 +21,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     // lateinit means variable is initialized later
     private val drawerLayout: DrawerLayout by lazy {
-        findViewById(R.id.drawer_layout)
+        findViewById<DrawerLayout>(R.id.drawer_layout)
     }
     private val fab: FloatingActionButton by lazy {
-        findViewById(R.id.fab)
+        findViewById<FloatingActionButton>(R.id.fab)
     }
     private lateinit var fragmentInMain: Fragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidThreeTen.init(this)
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.nav_menu_main)
@@ -161,7 +162,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             else -> return false
         }
-        return true
+            return true
     }
 
 }
