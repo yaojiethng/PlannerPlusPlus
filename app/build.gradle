@@ -42,5 +42,7 @@ dependencies {
 
     //in order to use DateTime in api 19, we need to use a DateTime backport
     implementation 'com.jakewharton.threetenabp:threetenabp:1.2.1'
+    implementation 'android.arch.persistence.room:runtime:1.1.1'
+    annotationProcessor 'android.arch.persistence.room:compiler:1.1.1'
 
 }

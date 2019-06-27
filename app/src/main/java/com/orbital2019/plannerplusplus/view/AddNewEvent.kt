@@ -1,11 +1,14 @@
-package com.orbital2019.plannerplusplus
+package com.orbital2019.plannerplusplus.view
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.EditText
 import android.widget.Toast
+import com.orbital2019.plannerplusplus.R
 
 class AddNewEvent : AppCompatActivity() {
 
@@ -14,6 +17,14 @@ class AddNewEvent : AppCompatActivity() {
     }
     private val editTextDetails: EditText by lazy {
         findViewById<EditText>(R.id.edit_text_details)
+    }
+
+    companion object {
+        // EventDataState class?
+
+        fun newIntent(context: Context): Intent {
+            return Intent(context, AddNewEvent::class.java)
+        }
     }
 
     @Override
@@ -54,7 +65,7 @@ class AddNewEvent : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
 
-        true //junk line 
+        true //junk line
         /*return when (item!!.itemId) {
             R.id.save_event -> {
                 saveEvent()

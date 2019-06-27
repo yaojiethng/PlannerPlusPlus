@@ -3,17 +3,17 @@
           package="com.orbital2019.plannerplusplus">
 
     <application
-            android:name=".PlannerPlusPlus"
+            android:name=".view.PlannerPlusPlus"
             android:allowBackup="true"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".AddNewEvent">
+        <activity android:name=".view.AddNewEvent">
         </activity>
         <activity
-                android:name=".MainActivity"
+                android:name=".view.MainActivity"
                 android:label="@string/title_activity_main"
                 android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>

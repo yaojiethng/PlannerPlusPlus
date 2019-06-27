@@ -7,7 +7,7 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:showIn="@layout/app_bar_events"
-        tools:context=".MainActivity">
+        tools:context=".view.MainActivity">
 
 
     <!-- all fragments will be placed into FrameLayout, and fragments will fill the space below the toolbar-->

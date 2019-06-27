@@ -1,4 +1,4 @@
-package com.orbital2019.plannerplusplus
+package com.orbital2019.plannerplusplus.view
 
 import android.app.Application
 import com.jakewharton.threetenabp.AndroidThreeTen

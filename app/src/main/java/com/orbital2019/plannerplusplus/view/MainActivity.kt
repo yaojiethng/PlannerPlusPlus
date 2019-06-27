@@ -1,4 +1,4 @@
-package com.orbital2019.plannerplusplus
+package com.orbital2019.plannerplusplus.view
 
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.widget.Toast
 import com.jakewharton.threetenabp.AndroidThreeTen
+import com.orbital2019.plannerplusplus.R
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
     PopupMenu.OnMenuItemClickListener {
@@ -39,7 +40,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val navView: NavigationView = findViewById(R.id.nav_view)
         // ActionBarDrawerToggle class allows rotating animation and onClick for toolbar
         val toggle = ActionBarDrawerToggle(
-            this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
+            this, drawerLayout, toolbar,
+            R.string.navigation_drawer_open,
+            R.string.navigation_drawer_close
         )
         // settles hamburger icon and animation by itself
         drawerLayout.addDrawerListener(toggle)
@@ -137,7 +140,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // TODO: set onclick to new event menu with intent
         when (p0?.itemId) {
             R.id.new_event -> {
-                Toast.makeText(this, "new event", Toast.LENGTH_SHORT).show()
+                val newEventIntent = AddNewEvent.newIntent(this)
+                startActivity(newEventIntent)
             }
             R.id.copy_existing_event -> {
                 Toast.makeText(this, "existing event", Toast.LENGTH_SHORT).show()
