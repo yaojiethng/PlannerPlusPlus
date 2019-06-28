@@ -9,13 +9,20 @@ import android.view.MenuItem
 import android.widget.DatePicker
 import android.widget.EditText
 import android.widget.TimePicker
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
+import androidx.lifecycle.ViewModelProviders
 import com.orbital2019.plannerplusplus.R
 import com.orbital2019.plannerplusplus.model.PlannerEvent
+import com.orbital2019.plannerplusplus.viewmodel.EventUpdater
 import org.threeten.bp.LocalDateTime
 
 class AddNewEventActivity : AppCompatActivity() {
+
+    private val eventUpdater: EventUpdater by lazy {
+        ViewModelProviders.of(this).get(EventUpdater::class.java)
+    }
 
     private val editTextTitle: EditText by lazy {
         findViewById<EditText>(R.id.edit_text_new_event_title)
@@ -55,32 +62,31 @@ class AddNewEventActivity : AppCompatActivity() {
     }
 
     // todo: when go to next event save all entered data, when back put details back
-    fun saveEvent() {
+    private fun saveEvent() {
 
         val title: String = editTextTitle.text.toString()
         val details: String = editTextDetails.text.toString()
 
-        if (title.trim().isEmpty() || details.trim().isEmpty()) {
-            var eventSave = PlannerEvent(
-                title,
-                LocalDateTime.now(),
-                details,
-                switchRepeat.isChecked,
-                switchFollowUp.isChecked,
-                mutableListOf()
-            )
-            // todo: make a viewmodel for save and one for read using ViewModel.insert
-            // current implementation uses an intent to pass back the eventSave
-            setResult(Activity.RESULT_OK, Intent().putExtra("status", "SUCCESSFULLY SAVED"))
-            finish()
+        // todo: decide on essential fields
+        if (title.trim().isEmpty()) {
+            Toast.makeText(this, "Please insert a title", Toast.LENGTH_SHORT).show()
+            return
         }
 
-        /* Intent data = new Intent()
-        data.putExtra(EXTRA_TITLE, title)
-        data.putExtra(EXTRA_DESCRIPTION, description)
-        data.putExtra(EXTRA_PRIORITY, priority)*/
+        val eventSave = PlannerEvent(
+            title,
+            LocalDateTime.now(),
+            details,
+            switchRepeat.isChecked,
+            switchFollowUp.isChecked,
+            mutableListOf()
+        )
 
-        // setResult(RESULT_OK, data)
+        eventUpdater.insertEvent(eventSave)
+        // current implementation uses an intent to pass back the result of saveEvent
+        setResult(
+            Activity.RESULT_OK, Intent().putExtra("status", "SUCCESSFULLY SAVED")
+        )
         finish()
     }
 
