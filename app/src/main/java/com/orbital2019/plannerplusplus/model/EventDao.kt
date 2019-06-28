@@ -1,4 +1,4 @@
-package com.orbital2019.plannerplusplus
+package com.orbital2019.plannerplusplus.model
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
@@ -8,13 +8,13 @@ interface EventDao {
 
     // highlight any of the tags and press ctrl-b for advanced tagging options
     @Insert
-    fun insert(event: Event)
+    fun insert(event: EventEntity)
 
     @Update
-    fun update(event: Event)
+    fun update(event: EventEntity)
 
     @Delete
-    fun delete(event: Event)
+    fun delete(event: EventEntity)
 
     // @Query allows custom queries to be defined
     @Query("DELETE FROM event_table")
@@ -22,5 +22,5 @@ interface EventDao {
 
     // can use object type LiveData<List<Note>> to get an observable object
     @Query("SELECT * FROM event_table ORDER BY id DESC")
-    fun getAllEvents(): LiveData<List<Event>>
+    fun getAllEvents(): LiveData<List<EventEntity>>
 }

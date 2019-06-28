@@ -9,7 +9,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.orbital2019.plannerplusplus.R
 
-class AddNewEvent : AppCompatActivity() {
+class AddNewEventActivity : AppCompatActivity() {
 
     private val editTextTitle: EditText by lazy {
         findViewById<EditText>(R.id.edit_text_title)
@@ -22,7 +22,7 @@ class AddNewEvent : AppCompatActivity() {
         // EventDataState class?
 
         fun newIntent(context: Context): Intent {
-            return Intent(context, AddNewEvent::class.java)
+            return Intent(context, AddNewEventActivity::class.java)
         }
     }
 

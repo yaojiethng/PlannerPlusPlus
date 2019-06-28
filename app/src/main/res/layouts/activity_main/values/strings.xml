@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="overwrite_placeholder">toBeOverWritten</string>
+    <string name="title_overwrite_placeholder">Title</string>
+    <string name="description_overwrite_placeholder">Description</string>
+</resources>

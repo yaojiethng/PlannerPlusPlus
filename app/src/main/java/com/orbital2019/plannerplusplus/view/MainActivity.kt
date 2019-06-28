@@ -142,7 +142,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // TODO: set onclick to new event menu with intent
         when (p0?.itemId) {
             R.id.new_event -> {
-                val newEventIntent = AddNewEvent.newIntent(this)
+                val newEventIntent = AddNewEventActivity.newIntent(this)
                 startActivity(newEventIntent)
             }
             R.id.copy_existing_event -> {

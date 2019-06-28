@@ -1,4 +1,4 @@
-package com.orbital2019.plannerplusplus
+package com.orbital2019.plannerplusplus.model
 
 import android.content.Context
 import android.os.AsyncTask
@@ -9,10 +9,12 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import org.threeten.bp.LocalDateTime
 
 @Database(
-    entities = [Event::class],
+    entities = [EventEntity::class],
     version = 1,
     exportSchema = false // todo: properly save schema
 )
+
+// class is called AppDatabase as this app should only have one instance of database for both events and tasks.
 abstract class AppDatabase : RoomDatabase() {
 
     // access database operation methods through automatically generated method
@@ -48,7 +50,8 @@ abstract class AppDatabase : RoomDatabase() {
         private val CALLBACK = object : RoomDatabase.Callback() {
             override fun onCreate(db: SupportSQLiteDatabase) {
                 super.onCreate(db)
-                PopulateDbAsyncTask(INSTANCE!!).execute()
+                PopulateDbAsyncTask(INSTANCE!!)
+                    .execute()
                 //db.execSQL("CREATE TRIGGER ...")
             }
         }
@@ -62,21 +65,21 @@ abstract class AppDatabase : RoomDatabase() {
 
             override fun doInBackground(vararg params: Void?): Void? {
                 eventDao.insert(
-                    Event(
+                    EventEntity(
                         "Test", LocalDateTime.now(), null, true,
                         followUp = true,
                         tags = mutableListOf("Hi", "Test")
                     )
                 )
                 eventDao.insert(
-                    Event(
+                    EventEntity(
                         "Test2", LocalDateTime.now(), null, true,
                         followUp = false,
                         tags = mutableListOf("Hi")
                     )
                 )
                 eventDao.insert(
-                    Event(
+                    EventEntity(
                         "Test3", LocalDateTime.now(), null, false,
                         followUp = true,
                         tags = mutableListOf("Test")

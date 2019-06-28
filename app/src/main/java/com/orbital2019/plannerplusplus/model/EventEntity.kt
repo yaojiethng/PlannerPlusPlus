@@ -1,4 +1,4 @@
-package com.orbital2019.plannerplusplus
+package com.orbital2019.plannerplusplus.model
 
 import androidx.room.Entity
 import androidx.room.Ignore
@@ -10,7 +10,7 @@ import org.threeten.bp.LocalDateTime
 // @ColumnInfo(name = "") to set custom column names
 
 @Entity(tableName = "event_table")
-data class Event public constructor(
+data class EventEntity(
     var title: String = "",
     @Ignore var dateTimeRaw: LocalDateTime = LocalDateTime.now(),
     @Ignore var description: String? = null,
