@@ -3,11 +3,10 @@ package com.orbital2019.plannerplusplus.view
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.view.Menu
-import android.view.MenuItem
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.orbital2019.plannerplusplus.R
 
 class AddNewEvent : AppCompatActivity() {
@@ -63,16 +62,16 @@ class AddNewEvent : AppCompatActivity() {
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+    /*override fun onOptionsItemSelected(item: MenuItem?): Boolean {
 
         true //junk line
-        /*return when (item!!.itemId) {
+        *//*return when (item!!.itemId) {
             R.id.save_event -> {
                 saveEvent()
                 true
             }
             else -> super.onOptionsItemSelected(item)
-        }*/
+        }*//*
         return super.onOptionsItemSelected(item)
-    }
+    }*/
 }

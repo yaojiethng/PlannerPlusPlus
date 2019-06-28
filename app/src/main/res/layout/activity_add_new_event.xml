@@ -1,50 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:orientation="vertical"
-              android:padding="16dp"
-              tools:context=".view.AddNewEvent">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="16dp"
+            tools:context=".view.AddNewEvent">
 
-    <EditText
-            android:id="@+id/edit_text_title"
+    <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Title"
-            android:inputType="text"/>
+            android:orientation="vertical"
+            android:padding="16dp"
+            tools:context=".view.AddNewEvent">
 
-    <!-- todo: move timepicker and datepicker to separate individual dialogfragments -->
-    <DatePicker
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:datePickerMode="calendar"/>
+        <EditText
+                android:id="@+id/edit_text_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Title"
+                android:inputType="text"/>
 
-    <TimePicker
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:timePickerMode="spinner"/>
+        <!-- todo: move timepicker and datepicker to separate individual dialogfragments -->
+        <DatePicker
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:datePickerMode="calendar"/>
 
-    <!-- todo: add in repeat additional menu as a fragment with numberpicker and menu-->
-    <android.support.v7.widget.SwitchCompat
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:showText="true"
-            android:text="Repeat"
-    />
+        <TimePicker
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:timePickerMode="spinner"/>
 
-    <android.support.v7.widget.SwitchCompat
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Require Follow-up"
-    />
+        <!-- todo: add in repeat additional menu as a fragment with numberpicker and menu-->
+        <androidx.appcompat.widget.SwitchCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Repeat"
+        />
 
-    <!-- todo: change to text box?-->
-    <EditText
-            android:id="@+id/edit_text_details"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Details"
-            android:inputType="textMultiLine"/>
+        <androidx.appcompat.widget.SwitchCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Require Follow-up"
+        />
 
-</LinearLayout>
+        <!-- todo: change to text box?-->
+        <EditText
+                android:id="@+id/edit_text_details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Details"
+                android:inputType="textMultiLine"/>
+
+    </LinearLayout>
+
+
+</ScrollView>
