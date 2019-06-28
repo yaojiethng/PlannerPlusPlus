@@ -74,6 +74,7 @@ class EventsFragment : Fragment() {
             }
 
             // When item is swiped, delete item from list.
+            // todo: add features such as different directions, snackbar to undo
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 // position in adapter where the item is swiped
                 eventsViewModel.deleteEvent(adapter.eventAt(viewHolder.adapterPosition))
