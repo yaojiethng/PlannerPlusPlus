@@ -1,5 +1,7 @@
 package com.orbital2019.plannerplusplus.view
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -19,6 +21,9 @@ import com.orbital2019.plannerplusplus.R
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
     PopupMenu.OnMenuItemClickListener {
 
+    companion object {
+        const val ADD_EVENT_REQUEST = 1
+    }
 
     // lateinit means variable is initialized later
     private val drawerLayout: DrawerLayout by lazy {
@@ -143,7 +148,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         when (p0?.itemId) {
             R.id.new_event -> {
                 val newEventIntent = AddNewEventActivity.newIntent(this)
-                startActivity(newEventIntent)
+                startActivityForResult(newEventIntent, ADD_EVENT_REQUEST)
             }
             R.id.copy_existing_event -> {
                 Toast.makeText(this, "existing event", Toast.LENGTH_SHORT).show()
@@ -169,6 +174,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             else -> return false
         }
             return true
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == ADD_EVENT_REQUEST && resultCode == Activity.RESULT_OK) {
+            Toast.makeText(this, data?.getStringExtra("status"), Toast.LENGTH_SHORT).show()
+            //todo: properly save the data
+        } else {
+            Toast.makeText(this, "not saved", Toast.LENGTH_SHORT).show()
+        }
     }
 
 }

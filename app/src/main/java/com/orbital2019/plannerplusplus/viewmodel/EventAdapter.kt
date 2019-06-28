@@ -10,7 +10,7 @@ import com.orbital2019.plannerplusplus.model.PlannerEvent
 
 class EventAdapter(var recycler: RecyclerView) : RecyclerView.Adapter<EventAdapter.EventHolder>() {
 
-    // todo: make a buffer Event class between PlannerEvent, which is stored in the database, and Event.
+    //  todo: make a buffer Event class between PlannerEvent, which is stored in the database, and Event.
 
     // to prevent any null checks, init the list first
     internal var events = ArrayList<PlannerEvent>()
