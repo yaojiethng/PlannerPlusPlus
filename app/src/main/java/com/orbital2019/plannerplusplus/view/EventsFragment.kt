@@ -3,11 +3,14 @@ package com.orbital2019.plannerplusplus.view
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.orbital2019.plannerplusplus.R
@@ -15,12 +18,24 @@ import com.orbital2019.plannerplusplus.model.EventEntity
 import com.orbital2019.plannerplusplus.viewmodel.EventAdapter
 import com.orbital2019.plannerplusplus.viewmodel.EventViewModel
 
+// todo: link fab and options menu to fragment?
 class EventsFragment : Fragment() {
 
     private val eventsViewModel: EventViewModel by lazy {
         ViewModelProviders.of(this).get(EventViewModel::class.java)
     }
     private lateinit var recyclerView: RecyclerView
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.delete_all -> {
+                eventsViewModel.deleteAllEvents()
+                Toast.makeText(activity, "All Notes Deleted", Toast.LENGTH_SHORT).show()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -46,7 +61,28 @@ class EventsFragment : Fragment() {
                 adapter.events = it as ArrayList<EventEntity>
             })
 
+        // ItemTouchHelper makes RecyclerView swipe-able
+        ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
+            0,
+            ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+        ) {
+            override fun onMove(
+                recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            // When item is swiped, delete item from list.
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                // position in adapter where the item is swiped
+                eventsViewModel.deleteEvent(adapter.eventAt(viewHolder.adapterPosition))
+                // call activity to get the activity attribute
+                Toast.makeText(activity, "Event Deleted", Toast.LENGTH_SHORT).show()
+            }
+        }).attachToRecyclerView(recyclerView)
 
         return layout
     }
+
 }

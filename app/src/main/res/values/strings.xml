@@ -24,4 +24,5 @@
     <string name="overwrite_placeholder">toBeOverWritten</string>
     <string name="title_overwrite_placeholder">Title</string>
     <string name="details_overwrite_placeholder">Description</string>
+    <string name="placeholder_delete_all">Delete all items</string>
 </resources>

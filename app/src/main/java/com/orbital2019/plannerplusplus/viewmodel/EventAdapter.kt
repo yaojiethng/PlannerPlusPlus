@@ -18,6 +18,10 @@ class EventAdapter(var recycler: RecyclerView) : RecyclerView.Adapter<EventAdapt
             // todo: change to RecyclerView specific granular methods like notifyItemInserted and notifyItemRemoved which has animations
         }
 
+    fun eventAt(position: Int): EventEntity {
+        return events[position]
+    }
+
     // @param parent: the ViewGroup that is passed, which is the RecyclerView
     // @return EventHolder: decides the layout for the different items in the RecyclerView
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventHolder {
