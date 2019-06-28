@@ -31,7 +31,7 @@ class EventsFragment : Fragment() {
         // increases efficiency as our recyclerView will never change in size
         recyclerView.setHasFixedSize(true)
 
-        val adapter = EventAdapter()
+        val adapter = EventAdapter(recyclerView)
         recyclerView.adapter = adapter
 
         Log.d("FUN_CALL", "onCreateView called for class EventsFragment")

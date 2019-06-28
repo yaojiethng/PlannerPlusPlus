@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.orbital2019.plannerplusplus.R
 import com.orbital2019.plannerplusplus.model.EventEntity
 
-class EventAdapter : RecyclerView.Adapter<EventAdapter.EventHolder>() {
+class EventAdapter(var recycler: RecyclerView) : RecyclerView.Adapter<EventAdapter.EventHolder>() {
 
     // todo: make a buffer Event class between EventEntity, which is stored in the database, and Event.
 
@@ -24,7 +24,8 @@ class EventAdapter : RecyclerView.Adapter<EventAdapter.EventHolder>() {
     // @param parent: the ViewGroup that is passed, which is the RecyclerView
     // @return EventHolder: decides the layout for the different items in the RecyclerView
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.event_item, parent, false)
+        val inflater = LayoutInflater.from(parent.context)
+        val itemView = inflater!!.inflate(R.layout.event_item, parent, false)
         return EventHolder(itemView)
     }
 
