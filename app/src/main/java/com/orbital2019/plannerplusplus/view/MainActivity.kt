@@ -1,18 +1,18 @@
 package com.orbital2019.plannerplusplus.view
 
 import android.os.Bundle
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import androidx.core.view.GravityCompat
-import androidx.appcompat.app.ActionBarDrawerToggle
+import android.view.Menu
 import android.view.MenuItem
-import androidx.drawerlayout.widget.DrawerLayout
-import com.google.android.material.navigation.NavigationView
-import androidx.fragment.app.Fragment
+import android.widget.Toast
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.appcompat.widget.Toolbar
-import android.view.Menu
-import android.widget.Toast
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.navigation.NavigationView
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.orbital2019.plannerplusplus.R
 
@@ -54,8 +54,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // to circumvent this, we need to add an additional check:
         if (savedInstanceState == null) {
             // start activity will open one fragment immediately so that it does not start on an empty screen
+            // by default, this fragment will be the Events fragment list.
             changeActiveFragment(EventsFragment())
             navView.setCheckedItem(R.id.nav_events)
+            setEventsFabMenu()
         }
     }
 

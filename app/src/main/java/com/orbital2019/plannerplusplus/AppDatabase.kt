@@ -21,7 +21,6 @@ abstract class AppDatabase : RoomDatabase() {
 
     companion object {
         private var INSTANCE: AppDatabase? = null
-            private set
 
         // If you try running the above code with the created database above,
         // your app will crash as the operation performed is on the main thread.
@@ -33,7 +32,7 @@ abstract class AppDatabase : RoomDatabase() {
                 synchronized(AppDatabase::class) {
                     // databaseBuilder used for abstract class
                     INSTANCE = Room.databaseBuilder(
-                        context.getApplicationContext(),
+                        context.applicationContext,
                         AppDatabase::class.java, "app_database.db"
                     )
                         // when version number is incremented start with an empty database
@@ -62,9 +61,27 @@ abstract class AppDatabase : RoomDatabase() {
             }
 
             override fun doInBackground(vararg params: Void?): Void? {
-                eventDao.insert(Event("Test", LocalDateTime.now(), null, true, true, mutableListOf("Hi", "Test")))
-                eventDao.insert(Event("Test2", LocalDateTime.now(), null, true, false, mutableListOf("Hi")))
-                eventDao.insert(Event("Test3", LocalDateTime.now(), null, false, true, mutableListOf("Test")))
+                eventDao.insert(
+                    Event(
+                        "Test", LocalDateTime.now(), null, true,
+                        followUp = true,
+                        tags = mutableListOf("Hi", "Test")
+                    )
+                )
+                eventDao.insert(
+                    Event(
+                        "Test2", LocalDateTime.now(), null, true,
+                        followUp = false,
+                        tags = mutableListOf("Hi")
+                    )
+                )
+                eventDao.insert(
+                    Event(
+                        "Test3", LocalDateTime.now(), null, false,
+                        followUp = true,
+                        tags = mutableListOf("Test")
+                    )
+                )
                 return null
             }
         }

@@ -5,7 +5,8 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 
-class AppViewModel(application: Application) : AndroidViewModel(application) {
+// avoids static Activity instance, allows passing of context without retaining a reference to an activity
+class EventViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository: EventRepository = EventRepository(application)
     private val allEvents: LiveData<List<Event>> = repository.allEvents
