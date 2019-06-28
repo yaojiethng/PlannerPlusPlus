@@ -11,52 +11,52 @@ class EventRepository(application: Application) {
         AppDatabase.getInstance(application)
     }
     private var eventDao: EventDao = database.eventDao()
-    internal var allEvents: LiveData<List<EventEntity>> = eventDao.getAllEvents()
+    internal var allEvents: LiveData<List<PlannerEvent>> = eventDao.getAllEvents()
 
     // has to be manually executed on background thread to prevent app from crashing
-    fun insert(event: EventEntity) {
-        InsertEventAsyncTask(eventDao).execute(event)
+    fun insert(plannerEvent: PlannerEvent) {
+        InsertEventAsyncTask(eventDao).execute(plannerEvent)
     }
 
-    fun update(event: EventEntity) {
-        UpdateEventAsyncTask(eventDao).execute(event)
+    fun update(plannerEvent: PlannerEvent) {
+        UpdateEventAsyncTask(eventDao).execute(plannerEvent)
     }
 
-    fun delete(event: EventEntity) {
-        DeleteEventAsyncTask(eventDao).execute(event)
+    fun delete(plannerEvent: PlannerEvent) {
+        DeleteEventAsyncTask(eventDao).execute(plannerEvent)
     }
 
     fun deleteAllEvents() {
         DeleteAllEventsAsyncTask(eventDao).execute()
     }
 
-    class InsertEventAsyncTask constructor(private var eventDao: EventDao) : AsyncTask<EventEntity, Void, Void>() {
+    class InsertEventAsyncTask constructor(private var eventDao: EventDao) : AsyncTask<PlannerEvent, Void, Void>() {
 
-        override fun doInBackground(vararg events: EventEntity?): Void? {
-            events[0]?.let { eventDao.insert(it) }
+        override fun doInBackground(vararg plannerEvents: PlannerEvent?): Void? {
+            plannerEvents[0]?.let { eventDao.insert(it) }
             return null
         }
     }
 
-    class UpdateEventAsyncTask constructor(private var eventDao: EventDao) : AsyncTask<EventEntity, Void, Void>() {
+    class UpdateEventAsyncTask constructor(private var eventDao: EventDao) : AsyncTask<PlannerEvent, Void, Void>() {
 
-        override fun doInBackground(vararg events: EventEntity?): Void? {
-            events[0]?.let { eventDao.update(it) }
+        override fun doInBackground(vararg plannerEvents: PlannerEvent?): Void? {
+            plannerEvents[0]?.let { eventDao.update(it) }
             return null
         }
     }
 
-    class DeleteEventAsyncTask constructor(private var eventDao: EventDao) : AsyncTask<EventEntity, Void, Void>() {
+    class DeleteEventAsyncTask constructor(private var eventDao: EventDao) : AsyncTask<PlannerEvent, Void, Void>() {
 
-        override fun doInBackground(vararg events: EventEntity?): Void? {
-            events[0]?.let { eventDao.delete(it) }
+        override fun doInBackground(vararg plannerEvents: PlannerEvent?): Void? {
+            plannerEvents[0]?.let { eventDao.delete(it) }
             return null
         }
     }
 
-    class DeleteAllEventsAsyncTask constructor(private var eventDao: EventDao) : AsyncTask<EventEntity, Void, Void>() {
+    class DeleteAllEventsAsyncTask constructor(private var eventDao: EventDao) : AsyncTask<PlannerEvent, Void, Void>() {
 
-        override fun doInBackground(vararg params: EventEntity?): Void? {
+        override fun doInBackground(vararg params: PlannerEvent?): Void? {
             eventDao.deleteAllEvents()
             return null
         }

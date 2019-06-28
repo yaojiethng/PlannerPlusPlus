@@ -10,7 +10,7 @@ import org.threeten.bp.LocalDateTime
 // @ColumnInfo(name = "") to set custom column names
 
 @Entity(tableName = "event_table")
-data class EventEntity(
+data class PlannerEvent(
     var title: String = "",
     @Ignore var dateTimeRaw: LocalDateTime = LocalDateTime.now(),
     @Ignore var description: String? = null,

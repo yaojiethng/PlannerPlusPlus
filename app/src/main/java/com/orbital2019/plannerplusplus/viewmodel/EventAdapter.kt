@@ -6,14 +6,14 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.orbital2019.plannerplusplus.R
-import com.orbital2019.plannerplusplus.model.EventEntity
+import com.orbital2019.plannerplusplus.model.PlannerEvent
 
 class EventAdapter(var recycler: RecyclerView) : RecyclerView.Adapter<EventAdapter.EventHolder>() {
 
-    // todo: make a buffer Event class between EventEntity, which is stored in the database, and Event.
+    // todo: make a buffer Event class between PlannerEvent, which is stored in the database, and Event.
 
     // to prevent any null checks, init the list first
-    internal var events = ArrayList<EventEntity>()
+    internal var events = ArrayList<PlannerEvent>()
         internal set(events) {
             field = events
             notifyDataSetChanged()
@@ -38,9 +38,9 @@ class EventAdapter(var recycler: RecyclerView) : RecyclerView.Adapter<EventAdapt
     // @Param holder: the holder object containing the different component views of the item
     // @Param position: the index of the current item being bound
     override fun onBindViewHolder(holder: EventHolder, position: Int) {
-        val currentEvent: EventEntity = events[position]
-        holder.textViewTitle.text = currentEvent.title
-        holder.textViewDescription.text = currentEvent.description
+        val currentPlannerEvent: PlannerEvent = events[position]
+        holder.textViewTitle.text = currentPlannerEvent.title
+        holder.textViewDescription.text = currentPlannerEvent.description
     }
 
     // this class holds the different views in our single view items

@@ -8,13 +8,13 @@ interface EventDao {
 
     // highlight any of the tags and press ctrl-b for advanced tagging options
     @Insert
-    fun insert(event: EventEntity)
+    fun insert(plannerEvent: PlannerEvent)
 
     @Update
-    fun update(event: EventEntity)
+    fun update(plannerEvent: PlannerEvent)
 
     @Delete
-    fun delete(event: EventEntity)
+    fun delete(plannerEvent: PlannerEvent)
 
     // @Query allows custom queries to be defined
     @Query("DELETE FROM event_table")
@@ -22,5 +22,5 @@ interface EventDao {
 
     // can use object type LiveData<List<Note>> to get an observable object
     @Query("SELECT * FROM event_table ORDER BY id DESC")
-    fun getAllEvents(): LiveData<List<EventEntity>>
+    fun getAllEvents(): LiveData<List<PlannerEvent>>
 }
