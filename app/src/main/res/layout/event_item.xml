@@ -6,8 +6,8 @@
                                    android:layout_marginStart="8dp"
                                    android:layout_marginTop="8dp">
     <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:padding="8dp">
 
         <TextView
@@ -25,11 +25,12 @@
             -->
 
         <TextView
-                android:id="@+id/text_view_event_description"
-                android:layout_width="wrap_content"
+                android:id="@+id/text_view_event_details"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/text_view_event_title"
-                android:text="@string/description_overwrite_placeholder"
+                android:textAppearance="@style/TextAppearance.AppCompat"
+                android:text="@string/details_overwrite_placeholder"
         />
 
     </RelativeLayout>

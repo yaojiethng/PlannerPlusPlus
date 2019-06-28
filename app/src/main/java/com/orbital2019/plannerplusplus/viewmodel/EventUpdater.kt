@@ -3,6 +3,7 @@ package com.orbital2019.plannerplusplus.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import com.orbital2019.plannerplusplus.model.EventEntity
 import com.orbital2019.plannerplusplus.model.EventRepository
 import com.orbital2019.plannerplusplus.model.PlannerEvent
 
@@ -12,15 +13,15 @@ class EventUpdater(application: Application) : AndroidViewModel(application) {
     private val repository: EventRepository =
         EventRepository(application)
 
-    fun insertEvent(plannerEvent: PlannerEvent) {
-        repository.insert(plannerEvent)
+    fun insertEvent(event: PlannerEvent) {
+        repository.insert(event.generateEntity())
     }
 
-    fun updateEvent(plannerEvent: PlannerEvent) {
-        repository.update(plannerEvent)
+    fun updateEvent(eventEntity: EventEntity) {
+        repository.update(eventEntity)
     }
 
-    fun deleteEvent(plannerEvent: PlannerEvent) {
-        repository.delete(plannerEvent)
+    fun deleteEvent(eventEntity: EventEntity) {
+        repository.delete(eventEntity)
     }
 }

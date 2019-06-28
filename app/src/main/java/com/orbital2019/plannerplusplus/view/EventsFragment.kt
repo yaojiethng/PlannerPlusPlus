@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.orbital2019.plannerplusplus.R
-import com.orbital2019.plannerplusplus.model.PlannerEvent
+import com.orbital2019.plannerplusplus.model.EventEntity
 import com.orbital2019.plannerplusplus.viewmodel.EventAdapter
 import com.orbital2019.plannerplusplus.viewmodel.EventViewModel
 
@@ -41,9 +41,9 @@ class EventsFragment : Fragment() {
         //  when this Fragment is closed, so will the ViewModel.
         eventsViewModel.getAllEvents().observe(
             this,
-            Observer<List<PlannerEvent>> {
+            Observer<List<EventEntity>> {
                 Log.d("ONCHANGED", "EventViewModel onChanged")
-                adapter.events = it as ArrayList<PlannerEvent>
+                adapter.events = it as ArrayList<EventEntity>
             })
 
 

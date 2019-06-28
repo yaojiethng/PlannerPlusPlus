@@ -18,7 +18,11 @@ import com.orbital2019.plannerplusplus.model.PlannerEvent
 import com.orbital2019.plannerplusplus.viewmodel.EventUpdater
 import org.threeten.bp.LocalDateTime
 
+const val EXTRA_SAVE_STATUS = "com.orbital2019.plannerplusplus.SAVE_STATUS"
+
+// todo: de-clutter and modularize some of the methods in AddNewEventActivity, particularly the global constants
 class AddNewEventActivity : AppCompatActivity() {
+
 
     private val eventUpdater: EventUpdater by lazy {
         ViewModelProviders.of(this).get(EventUpdater::class.java)
@@ -39,7 +43,7 @@ class AddNewEventActivity : AppCompatActivity() {
     private val switchFollowUp: SwitchCompat by lazy {
         findViewById<SwitchCompat>(R.id.switch_followup_new_event)
     }
-    // todo: add in tags
+    // todo: add in tags as a fragment
     private val editTextDetails: EditText by lazy {
         findViewById<EditText>(R.id.edit_text_details)
     }
@@ -85,7 +89,7 @@ class AddNewEventActivity : AppCompatActivity() {
         eventUpdater.insertEvent(eventSave)
         // current implementation uses an intent to pass back the result of saveEvent
         setResult(
-            Activity.RESULT_OK, Intent().putExtra("status", "SUCCESSFULLY SAVED")
+            Activity.RESULT_OK, Intent().putExtra(EXTRA_SAVE_STATUS, "SUCCESSFULLY SAVED")
         )
         finish()
     }

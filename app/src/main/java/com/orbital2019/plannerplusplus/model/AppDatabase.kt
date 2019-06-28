@@ -9,8 +9,8 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import org.threeten.bp.LocalDateTime
 
 @Database(
-    entities = [PlannerEvent::class],
-    version = 1,
+    entities = [EventEntity::class],
+    version = 3,
     exportSchema = false // todo: properly save schema
 )
 
@@ -65,24 +65,24 @@ abstract class AppDatabase : RoomDatabase() {
 
             override fun doInBackground(vararg params: Void?): Void? {
                 eventDao.insert(
-                    PlannerEvent(
-                        "Test", LocalDateTime.now(), null, true,
+                    EventEntity(
+                        "Test", LocalDateTime.now().toString(), null, true,
                         followUp = true,
-                        tags = mutableListOf("Hi", "Test")
+                        tags = "Hi, Test"
                     )
                 )
                 eventDao.insert(
-                    PlannerEvent(
-                        "Test2", LocalDateTime.now(), null, true,
+                    EventEntity(
+                        "Test2", LocalDateTime.now().toString(), null, true,
                         followUp = false,
-                        tags = mutableListOf("Hi")
+                        tags = "Hi"
                     )
                 )
                 eventDao.insert(
-                    PlannerEvent(
-                        "Test3", LocalDateTime.now(), null, false,
+                    EventEntity(
+                        "Test3", LocalDateTime.now().toString(), null, false,
                         followUp = true,
-                        tags = mutableListOf("Test")
+                        tags = "Test"
                     )
                 )
                 return null

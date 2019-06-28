@@ -18,13 +18,13 @@ import com.google.android.material.navigation.NavigationView
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.orbital2019.plannerplusplus.R
 
+const val ADD_EVENT_REQUEST = 1
+
 // todo: de-clutter and modularize some of the methods in MainActivity
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
     PopupMenu.OnMenuItemClickListener {
 
-    companion object {
-        const val ADD_EVENT_REQUEST = 1
-    }
+
 
     // lateinit means variable is initialized later
     private val drawerLayout: DrawerLayout by lazy {
@@ -145,7 +145,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onMenuItemClick(p0: MenuItem?): Boolean {
         //todo make proper item options
-        // TODO: set onclick to new event menu with intent
         when (p0?.itemId) {
             R.id.new_event -> {
                 val newEventIntent = AddNewEventActivity.newIntent(this)
@@ -181,8 +180,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == ADD_EVENT_REQUEST && resultCode == Activity.RESULT_OK) {
-            Toast.makeText(this, data?.getStringExtra("status"), Toast.LENGTH_SHORT).show()
-            //todo: properly save the data
+            Toast.makeText(this, data?.getStringExtra(EXTRA_SAVE_STATUS), Toast.LENGTH_SHORT).show()
         } else {
             Toast.makeText(this, "not saved", Toast.LENGTH_SHORT).show()
         }
