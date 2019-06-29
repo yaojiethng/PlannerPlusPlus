@@ -3,6 +3,7 @@ package com.orbital2019.plannerplusplus.view
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -183,8 +184,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == ADD_EVENT_REQUEST && resultCode == Activity.RESULT_OK) {
+            Log.d("req code", requestCode.toString())
             Toast.makeText(this, data?.getStringExtra(EXTRA_SAVE_STATUS), Toast.LENGTH_SHORT).show()
-        } else if (requestCode == EDIT_EVENT_REQUEST && resultCode == Activity.RESULT_OK) {
+        } else if (/*requestCode == EDIT_EVENT_REQUEST && */resultCode == Activity.RESULT_OK) {
+            // todo debug requestCode not passed properly
+            Log.d("req code", requestCode.toString())
             Toast.makeText(this, data?.getStringExtra(EXTRA_SAVE_STATUS), Toast.LENGTH_SHORT).show()
         } else {
             Toast.makeText(this, "not saved", Toast.LENGTH_SHORT).show()

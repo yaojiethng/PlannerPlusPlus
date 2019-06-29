@@ -16,8 +16,8 @@ interface EventDao {
     @Delete
     fun delete(eventEntity: EventEntity)
 
-//    @Query("SELECT 1 FROM event_table WHERE id = :id")
-//    fun findOne(id: Int): EventEntity
+    @Query("SELECT * FROM event_table WHERE id = :id")
+    fun findById(id: Int): List<EventEntity>
 
     // @Query allows custom queries to be defined
     @Query("DELETE FROM event_table")

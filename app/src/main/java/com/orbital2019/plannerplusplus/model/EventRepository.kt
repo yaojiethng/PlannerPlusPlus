@@ -31,7 +31,7 @@ class EventRepository(application: Application) {
     }
 
 //    fun presentInTable(id: Int?): Boolean {
-//        return if (id != null) FindOneEventAsyncTask(eventDao).execute(id).get()!= null else false
+//        return FindEventAsyncTask(eventDao).execute(id).get().isEmpty()
 //    }
 
     class InsertEventAsyncTask constructor(private var eventDao: EventDao) : AsyncTask<EventEntity, Void, Void>() {
@@ -50,10 +50,10 @@ class EventRepository(application: Application) {
         }
     }
 
-//    class FindOneEventAsyncTask constructor(private var eventDao: EventDao) : AsyncTask<Int, Void, EventEntity>() {
+//    class FindEventAsyncTask constructor(private var eventDao: EventDao) : AsyncTask<Int, Void, List<EventEntity>>() {
 //
-//        override fun doInBackground(vararg p0: Int?): EventEntity {
-//            return p0[0]!!.let { eventDao.findOne(it) }
+//        override fun doInBackground(vararg p0: Int?): List<EventEntity> {
+//            return p0[0]!!.let { eventDao.findById(it) }
 //        }
 //    }
 

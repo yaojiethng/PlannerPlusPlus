@@ -7,7 +7,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.orbital2019.plannerplusplus.R
 import com.orbital2019.plannerplusplus.model.EventEntity
-import com.orbital2019.plannerplusplus.model.PlannerEvent
 
 class EventAdapter(var recycler: RecyclerView) : RecyclerView.Adapter<EventAdapter.EventHolder>() {
 
@@ -58,7 +57,7 @@ class EventAdapter(var recycler: RecyclerView) : RecyclerView.Adapter<EventAdapt
                 // lambda expression called to override onClick method
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
-                    listener.onItemClick(PlannerEvent.createFromEntity(events[position]))
+                    listener.onItemClick(events[position])
                 }
             }
         }
@@ -66,6 +65,6 @@ class EventAdapter(var recycler: RecyclerView) : RecyclerView.Adapter<EventAdapt
     }
 
     interface OnItemClickListener {
-        fun onItemClick(event: PlannerEvent)
+        fun onItemClick(event: EventEntity)
     }
 }

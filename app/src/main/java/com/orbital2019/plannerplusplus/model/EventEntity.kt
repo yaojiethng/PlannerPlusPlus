@@ -20,4 +20,15 @@ data class EventEntity(
     @PrimaryKey(autoGenerate = true)
     var id: Int? = null
 
+    constructor(
+        id: Int,
+        title: String = "",
+        dateTime: String = LocalDateTime.now().toString(),
+        details: String? = "",
+        repeated: Boolean = false,
+        followUp: Boolean = false,
+        tags: String = ""
+    ) : this(title, dateTime, details, repeated, followUp, tags) {
+        this.id = id
+    }
 }

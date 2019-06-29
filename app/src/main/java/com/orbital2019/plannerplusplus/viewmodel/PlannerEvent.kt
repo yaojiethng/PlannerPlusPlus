@@ -1,8 +1,9 @@
-package com.orbital2019.plannerplusplus.model
+package com.orbital2019.plannerplusplus.viewmodel
 
 import android.os.Parcel
 import android.os.Parcelable
 import com.orbital2019.plannerplusplus.helper.DateTimeData
+import com.orbital2019.plannerplusplus.model.EventEntity
 import org.threeten.bp.LocalDateTime
 
 // TODO decide on essential parameters and mark as nonNull in constructor
@@ -60,6 +61,18 @@ class PlannerEvent(
 
     fun generateEntity(): EventEntity {
         return EventEntity(
+            title = title,
+            dateTime = dateTimeRaw.toString(),
+            details = if (details != null) details else "",
+            repeated = repeated,
+            followUp = followUp,
+            tags = concatTag()
+        )
+    }
+
+    fun updateEntity(): EventEntity {
+        return EventEntity(
+            id = id!!,
             title = title,
             dateTime = dateTimeRaw.toString(),
             details = if (details != null) details else "",

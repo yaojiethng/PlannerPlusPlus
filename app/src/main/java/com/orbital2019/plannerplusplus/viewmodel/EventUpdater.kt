@@ -5,7 +5,6 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import com.orbital2019.plannerplusplus.model.EventEntity
 import com.orbital2019.plannerplusplus.model.EventRepository
-import com.orbital2019.plannerplusplus.model.PlannerEvent
 
 // avoids static Activity instance, allows passing of context without retaining a reference to an activity
 class EventUpdater(application: Application) : AndroidViewModel(application) {
@@ -20,11 +19,11 @@ class EventUpdater(application: Application) : AndroidViewModel(application) {
     fun updateEvent(event: PlannerEvent) {
         // repo has existing event of this Id
 //        if (repository.presentInTable(event.id)) {
-        repository.update(event.generateEntity())
-        /*} else {
-            event.id = null
-            insertEvent(event)
-        }*/
+        repository.update(event.updateEntity())
+//        } else {
+//            event.id = null
+//            insertEvent(event)
+//        }
     }
 
     fun deleteEvent(eventEntity: EventEntity) {

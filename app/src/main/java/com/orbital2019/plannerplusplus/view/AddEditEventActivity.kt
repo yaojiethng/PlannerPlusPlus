@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.DatePicker
@@ -16,8 +17,8 @@ import androidx.appcompat.widget.SwitchCompat
 import androidx.lifecycle.ViewModelProviders
 import com.orbital2019.plannerplusplus.R
 import com.orbital2019.plannerplusplus.helper.DateTimeData
-import com.orbital2019.plannerplusplus.model.PlannerEvent
 import com.orbital2019.plannerplusplus.viewmodel.EventUpdater
+import com.orbital2019.plannerplusplus.viewmodel.PlannerEvent
 import org.threeten.bp.LocalDateTime
 
 const val EXTRA_SAVE_STATUS = "com.orbital2019.plannerplusplus.SAVE_STATUS"
@@ -126,18 +127,21 @@ class AddEditEventActivity : AppCompatActivity() {
 
         // if event currently has no Id, it is a new event.
         if (eventId == null) {
+            Log.d("Save clicked", "SAVE_I")
             eventUpdater.insertEvent(eventSave)
             // current implementation uses an intent to pass back the result of saveEvent
             setResult(
                 Activity.RESULT_OK, Intent().putExtra(EXTRA_SAVE_STATUS, "SUCCESSFULLY SAVED")
             )
+            finish()
         } else {
             eventUpdater.updateEvent(eventSave)
+            Log.d("Save clicked", "SAVE_D")
             setResult(
                 Activity.RESULT_OK, Intent().putExtra(EXTRA_SAVE_STATUS, "SUCCESSFULLY UPDATED")
             )
+            finish()
         }
-        finish()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -151,6 +155,7 @@ class AddEditEventActivity : AppCompatActivity() {
 
         return when (item!!.itemId) {
             R.id.save_event -> {
+                Log.i("Save clicked", "SAVE CLICKED IN ADD_EDIT_EVENT")
                 saveEvent()
                 true
             }
