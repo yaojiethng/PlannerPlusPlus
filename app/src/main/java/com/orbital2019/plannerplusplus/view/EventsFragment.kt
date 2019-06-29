@@ -1,5 +1,6 @@
 package com.orbital2019.plannerplusplus.view
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.orbital2019.plannerplusplus.R
 import com.orbital2019.plannerplusplus.model.EventEntity
+import com.orbital2019.plannerplusplus.model.PlannerEvent
 import com.orbital2019.plannerplusplus.viewmodel.EventAdapter
 import com.orbital2019.plannerplusplus.viewmodel.EventViewModel
 
@@ -74,7 +76,7 @@ class EventsFragment : Fragment() {
             }
 
             // When item is swiped, delete item from list.
-            // todo: add features such as different directions, snackbar to undo
+            // todo: add features such as different directions, SnackBar to undo
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 // position in adapter where the item is swiped
                 eventsViewModel.deleteEvent(adapter.eventAt(viewHolder.adapterPosition))
@@ -82,6 +84,15 @@ class EventsFragment : Fragment() {
                 Toast.makeText(activity, "Event Deleted", Toast.LENGTH_SHORT).show()
             }
         }).attachToRecyclerView(recyclerView)
+
+        adapter.listener = object : EventAdapter.OnItemClickListener {
+            override fun onItemClick(event: PlannerEvent) {
+                // AddEditEventActivity::class.java is not used, but it is passed back when ActivityForResult terminates
+                val intent = Intent(activity, AddEditEventActivity::class.java)
+                intent.putExtra(EXTRA_PARCEL_PLANNEREVENT, event)
+                startActivityForResult(intent, EDIT_EVENT_REQUEST)
+            }
+        }
 
         return layout
     }

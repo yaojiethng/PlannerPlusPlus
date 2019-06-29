@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.orbital2019.plannerplusplus.R
 import com.orbital2019.plannerplusplus.model.EventEntity
+import com.orbital2019.plannerplusplus.model.PlannerEvent
 
 class EventAdapter(var recycler: RecyclerView) : RecyclerView.Adapter<EventAdapter.EventHolder>() {
 
@@ -17,6 +18,7 @@ class EventAdapter(var recycler: RecyclerView) : RecyclerView.Adapter<EventAdapt
             notifyDataSetChanged()
             // todo: change to RecyclerView specific granular methods like notifyItemInserted and notifyItemRemoved which has animations
         }
+    internal lateinit var listener: OnItemClickListener
 
     fun eventAt(position: Int): EventEntity {
         return events[position]
@@ -25,8 +27,8 @@ class EventAdapter(var recycler: RecyclerView) : RecyclerView.Adapter<EventAdapt
     // @param parent: the ViewGroup that is passed, which is the RecyclerView
     // @return EventHolder: decides the layout for the different items in the RecyclerView
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        val itemView = inflater!!.inflate(R.layout.event_item, parent, false)
+        val itemView = LayoutInflater.from(parent.context)
+            .inflate(R.layout.event_item, parent, false)
         return EventHolder(itemView)
     }
 
@@ -45,10 +47,25 @@ class EventAdapter(var recycler: RecyclerView) : RecyclerView.Adapter<EventAdapt
     }
 
     // this class holds the different views in our single view items
+    // todo: update with new variables once critical parameters are decided
     inner class EventHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        internal var textViewTitle: TextView = itemView.findViewById(R.id.text_view_event_title)
-        internal var textViewDescription: TextView = itemView.findViewById(R.id.text_view_event_details)
+        var textViewTitle: TextView = itemView.findViewById(R.id.text_view_event_title)
+        var textViewDescription: TextView = itemView.findViewById(R.id.text_view_event_details)
+
+        init {
+            // When card is called, pass the eventEntity in its position in the adapter to the listener
+            itemView.setOnClickListener {
+                // lambda expression called to override onClick method
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    listener.onItemClick(PlannerEvent.createFromEntity(events[position]))
+                }
+            }
+        }
 
     }
 
+    interface OnItemClickListener {
+        fun onItemClick(event: PlannerEvent)
+    }
 }

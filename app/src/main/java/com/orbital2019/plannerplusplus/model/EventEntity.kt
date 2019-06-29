@@ -19,4 +19,5 @@ data class EventEntity(
 ) {
     @PrimaryKey(autoGenerate = true)
     var id: Int? = null
+
 }

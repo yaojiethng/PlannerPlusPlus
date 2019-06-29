@@ -18,7 +18,10 @@ import com.google.android.material.navigation.NavigationView
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.orbital2019.plannerplusplus.R
 
+// add new event from a clean page
 const val ADD_EVENT_REQUEST = 1
+// edit event with existing data on the page
+const val EDIT_EVENT_REQUEST = 2
 
 // todo: de-clutter and modularize some of the methods in MainActivity
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
@@ -147,7 +150,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         //todo make proper item options
         when (p0?.itemId) {
             R.id.new_event -> {
-                val newEventIntent = AddNewEventActivity.newIntent(this)
+                val newEventIntent = AddEditEventActivity.newIntent(this)
                 startActivityForResult(newEventIntent, ADD_EVENT_REQUEST)
             }
             R.id.copy_existing_event -> {
@@ -180,6 +183,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == ADD_EVENT_REQUEST && resultCode == Activity.RESULT_OK) {
+            Toast.makeText(this, data?.getStringExtra(EXTRA_SAVE_STATUS), Toast.LENGTH_SHORT).show()
+        } else if (requestCode == EDIT_EVENT_REQUEST && resultCode == Activity.RESULT_OK) {
             Toast.makeText(this, data?.getStringExtra(EXTRA_SAVE_STATUS), Toast.LENGTH_SHORT).show()
         } else {
             Toast.makeText(this, "not saved", Toast.LENGTH_SHORT).show()

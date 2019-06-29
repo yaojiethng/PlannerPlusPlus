@@ -23,7 +23,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".view.AddNewEventActivity"
+        <activity android:name=".view.AddEditEventActivity"
                   android:parentActivityName=".view.MainActivity"/>
     </application>
 

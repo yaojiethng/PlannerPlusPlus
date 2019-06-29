@@ -17,8 +17,14 @@ class EventUpdater(application: Application) : AndroidViewModel(application) {
         repository.insert(event.generateEntity())
     }
 
-    fun updateEvent(eventEntity: EventEntity) {
-        repository.update(eventEntity)
+    fun updateEvent(event: PlannerEvent) {
+        // repo has existing event of this Id
+//        if (repository.presentInTable(event.id)) {
+        repository.update(event.generateEntity())
+        /*} else {
+            event.id = null
+            insertEvent(event)
+        }*/
     }
 
     fun deleteEvent(eventEntity: EventEntity) {

@@ -3,6 +3,7 @@ package com.orbital2019.plannerplusplus.view
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -14,26 +15,31 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import androidx.lifecycle.ViewModelProviders
 import com.orbital2019.plannerplusplus.R
+import com.orbital2019.plannerplusplus.helper.DateTimeData
 import com.orbital2019.plannerplusplus.model.PlannerEvent
 import com.orbital2019.plannerplusplus.viewmodel.EventUpdater
 import org.threeten.bp.LocalDateTime
 
 const val EXTRA_SAVE_STATUS = "com.orbital2019.plannerplusplus.SAVE_STATUS"
+const val EXTRA_PARCEL_PLANNEREVENT = "com.orbital2019.plannerplusplus.PARCEL_PLANNEREVENT"
 
-// todo: de-clutter and modularize some of the methods in AddNewEventActivity, particularly the global constants
-class AddNewEventActivity : AppCompatActivity() {
+// todo: de-clutter and modularize some of the methods in AddEditEventActivity, particularly the global constants
+class AddEditEventActivity : AppCompatActivity() {
 
 
     private val eventUpdater: EventUpdater by lazy {
         ViewModelProviders.of(this).get(EventUpdater::class.java)
     }
 
+    // Id is null by default
+    private var eventId: Int? = null
     private val editTextTitle: EditText by lazy {
         findViewById<EditText>(R.id.edit_text_new_event_title)
     }
     private val editDate: DatePicker by lazy {
         findViewById<DatePicker>(R.id.date_picker_new_event)
     }
+    // todo: editDate and editTime as Dialogs
     private val editTime: TimePicker by lazy {
         findViewById<TimePicker>(R.id.time_picker_new_event)
     }
@@ -52,7 +58,7 @@ class AddNewEventActivity : AppCompatActivity() {
         // EventDataState class?
 
         fun newIntent(context: Context): Intent {
-            return Intent(context, AddNewEventActivity::class.java)
+            return Intent(context, AddEditEventActivity::class.java)
         }
     }
 
@@ -62,7 +68,30 @@ class AddNewEventActivity : AppCompatActivity() {
         setContentView(R.layout.activity_add_new_event)
 
         supportActionBar!!.setHomeAsUpIndicator(R.drawable.ic_close_black_24dp)
-        title = "Add new Note"
+
+        // intent has a PlannerEvent Parcel, which means it is an edit event
+        if (intent.hasExtra(EXTRA_PARCEL_PLANNEREVENT)) {
+            title = "Edit Note"
+            val event: PlannerEvent = intent.getParcelableExtra(EXTRA_PARCEL_PLANNEREVENT)
+            eventId = event.id
+            editTextTitle.setText(event.title)
+            val dateTime = DateTimeData(event.dateTimeRaw)
+            editDate.updateDate(dateTime.dayOfMonth, dateTime.month, dateTime.year)
+            // API support for deprecated methods in TimePicker
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                editTime.hour = dateTime.hour
+                editTime.minute = dateTime.minute
+            } else {
+                editTime.setCurrentHour(dateTime.hour)
+                editTime.setCurrentMinute(dateTime.minute)
+            }
+            switchRepeat.isChecked = event.repeated
+            switchFollowUp.isChecked = event.followUp
+            // todo: add in support for tags
+
+        } else {
+            title = "Add new Note"
+        }
     }
 
     // todo: when go to next event save all entered data, when back put details back
@@ -78,19 +107,36 @@ class AddNewEventActivity : AppCompatActivity() {
         }
 
         val eventSave = PlannerEvent(
+            eventId,
             title,
+            //todo get this to save properly
+//            LocalDateTime.of(
+//                editDate.year,
+//                editDate.month,
+//                editDate.dayOfMonth,
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) editTime.hour else editTime.currentHour,
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) editTime.minute else editTime.currentMinute
+//            ),
             LocalDateTime.now(),
             details,
             switchRepeat.isChecked,
             switchFollowUp.isChecked,
-            mutableListOf()
+            listOf()
         )
 
-        eventUpdater.insertEvent(eventSave)
-        // current implementation uses an intent to pass back the result of saveEvent
-        setResult(
-            Activity.RESULT_OK, Intent().putExtra(EXTRA_SAVE_STATUS, "SUCCESSFULLY SAVED")
-        )
+        // if event currently has no Id, it is a new event.
+        if (eventId == null) {
+            eventUpdater.insertEvent(eventSave)
+            // current implementation uses an intent to pass back the result of saveEvent
+            setResult(
+                Activity.RESULT_OK, Intent().putExtra(EXTRA_SAVE_STATUS, "SUCCESSFULLY SAVED")
+            )
+        } else {
+            eventUpdater.updateEvent(eventSave)
+            setResult(
+                Activity.RESULT_OK, Intent().putExtra(EXTRA_SAVE_STATUS, "SUCCESSFULLY UPDATED")
+            )
+        }
         finish()
     }
 

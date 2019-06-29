@@ -30,6 +30,10 @@ class EventRepository(application: Application) {
         DeleteAllEventsAsyncTask(eventDao).execute()
     }
 
+//    fun presentInTable(id: Int?): Boolean {
+//        return if (id != null) FindOneEventAsyncTask(eventDao).execute(id).get()!= null else false
+//    }
+
     class InsertEventAsyncTask constructor(private var eventDao: EventDao) : AsyncTask<EventEntity, Void, Void>() {
 
         override fun doInBackground(vararg eventEntities: EventEntity?): Void? {
@@ -45,6 +49,13 @@ class EventRepository(application: Application) {
             return null
         }
     }
+
+//    class FindOneEventAsyncTask constructor(private var eventDao: EventDao) : AsyncTask<Int, Void, EventEntity>() {
+//
+//        override fun doInBackground(vararg p0: Int?): EventEntity {
+//            return p0[0]!!.let { eventDao.findOne(it) }
+//        }
+//    }
 
     class DeleteEventAsyncTask constructor(private var eventDao: EventDao) : AsyncTask<EventEntity, Void, Void>() {
 
