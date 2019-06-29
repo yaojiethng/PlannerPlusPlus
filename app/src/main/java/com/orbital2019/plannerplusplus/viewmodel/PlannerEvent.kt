@@ -2,7 +2,6 @@ package com.orbital2019.plannerplusplus.viewmodel
 
 import android.os.Parcel
 import android.os.Parcelable
-import com.orbital2019.plannerplusplus.helper.DateTimeData
 import com.orbital2019.plannerplusplus.model.EventEntity
 import org.threeten.bp.LocalDateTime
 
@@ -17,9 +16,6 @@ class PlannerEvent(
     var followUp: Boolean,
     private var tags: List<String> = mutableListOf()
 ) : Parcelable {
-
-    // convert LocalDateTime into a String for easy storage
-    private var dateTime: DateTimeData = DateTimeData(dateTimeRaw)
 
     constructor(parcel: Parcel) : this(
         parcel.readSerializable() as Int,
