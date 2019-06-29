@@ -66,14 +66,14 @@ class AddEditEventActivity : AppCompatActivity() {
     @Override
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add_new_event)
+        setContentView(R.layout.activity_add_edit_event)
 
         supportActionBar!!.setHomeAsUpIndicator(R.drawable.ic_close_black_24dp)
 
         // intent has a PlannerEvent Parcel, which means it is an edit event
         if (intent.hasExtra(EXTRA_PARCEL_PLANNEREVENT)) {
             title = "Edit Note"
-            val event: PlannerEvent = intent.getParcelableExtra(EXTRA_PARCEL_PLANNEREVENT)
+            val event: PlannerEvent = intent.getParcelableExtra(EXTRA_PARCEL_PLANNEREVENT)!!
             eventId = event.id
             editTextTitle.setText(event.title)
             val dateTime = DateTimeData(event.dateTimeRaw)
@@ -103,7 +103,7 @@ class AddEditEventActivity : AppCompatActivity() {
 
         // todo: decide on essential fields
         if (title.trim().isEmpty()) {
-            Toast.makeText(this, "Please insert a title", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Please insertEvent a title", Toast.LENGTH_SHORT).show()
             return
         }
 

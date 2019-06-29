@@ -54,7 +54,7 @@ class EventsFragment : Fragment() {
         Log.d("FUN_CALL", "onCreateView called for class EventsFragment")
 
         // links this viewModel to this fragment, which means:
-        //  this ViewModel will only update when this Fragment is in the foreground, and
+        //  this ViewModel will only updateEvent when this Fragment is in the foreground, and
         //  when this Fragment is closed, so will the ViewModel.
         eventsViewModel.getAllEvents().observe(
             this,
@@ -75,7 +75,7 @@ class EventsFragment : Fragment() {
                 return false
             }
 
-            // When item is swiped, delete item from list.
+            // When item is swiped, deleteEvent item from list.
             // todo: add features such as different directions, SnackBar to undo
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 // position in adapter where the item is swiped

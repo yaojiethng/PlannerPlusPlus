@@ -6,7 +6,7 @@
           android:orderInCategory="100"
           app:showAsAction="never"/>
 
-    <!-- todo: remove delete all and replace with something useful -->
+    <!-- todo: remove deleteEvent all and replace with something useful -->
     <item android:id="@+id/delete_all"
           android:title="@string/placeholder_delete_all"
           app:showAsAction="never"/>

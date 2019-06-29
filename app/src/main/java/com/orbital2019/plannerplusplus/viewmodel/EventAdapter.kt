@@ -46,7 +46,7 @@ class EventAdapter(var recycler: RecyclerView) : RecyclerView.Adapter<EventAdapt
     }
 
     // this class holds the different views in our single view items
-    // todo: update with new variables once critical parameters are decided
+    // todo: updateEvent with new variables once critical parameters are decided
     inner class EventHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var textViewTitle: TextView = itemView.findViewById(R.id.text_view_event_title)
         var textViewDescription: TextView = itemView.findViewById(R.id.text_view_event_details)
