@@ -24,7 +24,7 @@ class TaskAdapter(var recycler: RecyclerView) : RecyclerView.Adapter<TaskAdapter
             // todo: change to RecyclerView specific granular methods like notifyItemInserted and notifyItemRemoved which has animations
         }
     internal lateinit var itemClickListener: OnItemClickListener
-    internal lateinit var checkBoxClickListener: OnItemClickListener
+    internal lateinit var checkBoxListener: CheckBoxListener
 
     fun taskAt(position: Int): TaskEntity {
         return tasks[position]
@@ -78,12 +78,13 @@ class TaskAdapter(var recycler: RecyclerView) : RecyclerView.Adapter<TaskAdapter
                 }
             }
 
-            checkBox.setOnClickListener {
-                //                val position = adapterPosition
-//                if (position != RecyclerView.NO_POSITION) {
-//                    checkBoxClickListener.onItemClick(tasks[position])
-//                    notifyItemChanged(position)
-//                }
+            checkBox.setOnCheckedChangeListener { compoundButton, b ->
+                if (compoundButton.id == checkBox.id) {
+                    val position = adapterPosition
+                    if (position != RecyclerView.NO_POSITION) {
+                        checkBoxListener.onCheckedChanged(tasks[position], b)
+                    }
+                }
             }
         }
 
@@ -96,4 +97,9 @@ class TaskAdapter(var recycler: RecyclerView) : RecyclerView.Adapter<TaskAdapter
     interface OnItemClickListener {
         fun onItemClick(task: TaskEntity)
     }
+
+    interface CheckBoxListener {
+        fun onCheckedChanged(task: TaskEntity, isChecked: Boolean)
+    }
+
 }

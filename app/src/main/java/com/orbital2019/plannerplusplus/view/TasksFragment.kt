@@ -94,9 +94,14 @@ class TasksFragment : Fragment() {
                 startActivityForResult(intent, EDIT_EVENT_REQUEST)
             }
         }
-        adapter.checkBoxClickListener = object : TaskAdapter.OnItemClickListener {
-            override fun onItemClick(task: TaskEntity) {
-                tasksViewModel.toggleTask(task)
+        adapter.checkBoxListener = object : TaskAdapter.CheckBoxListener {
+            override fun onCheckedChanged(task: TaskEntity, isChecked: Boolean) {
+                if (isChecked) {
+//                    //todo debug here
+//                    tasksViewModel.checkTask(task)
+                } else {
+                    tasksViewModel.uncheckTask(task)
+                }
             }
         }
 
