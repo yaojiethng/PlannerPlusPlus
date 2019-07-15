@@ -23,6 +23,10 @@ import com.orbital2019.plannerplusplus.R
 const val ADD_EVENT_REQUEST = 1
 // edit event with existing data on the page
 const val EDIT_EVENT_REQUEST = 2
+// add new task from a clean page
+const val ADD_TASK_REQUEST = 3
+// edit task with existing data on the page
+const val EDIT_TASK_REQUEST = 4
 
 // todo: de-clutter and modularize some of the methods in MainActivity
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
@@ -155,7 +159,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 startActivityForResult(newEventIntent, ADD_EVENT_REQUEST)
             }
             R.id.copy_existing_event -> {
-                Toast.makeText(this, "existing event", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "copy existing event", Toast.LENGTH_SHORT).show()
             }
             R.id.new_linked_event -> {
                 Toast.makeText(this, "new linked event", Toast.LENGTH_SHORT).show()
@@ -164,7 +168,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 Toast.makeText(this, "link existing event", Toast.LENGTH_SHORT).show()
             }
             R.id.new_task -> {
-                Toast.makeText(this, "new task", Toast.LENGTH_SHORT).show()
+                val newTaskIntent = AddEditTaskActivity.newIntent(this)
+                startActivityForResult(newTaskIntent, ADD_TASK_REQUEST)
             }
             R.id.copy_existing_task -> {
                 Toast.makeText(this, "existing task", Toast.LENGTH_SHORT).show()

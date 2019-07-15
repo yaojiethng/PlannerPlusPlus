@@ -9,8 +9,8 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import org.threeten.bp.LocalDateTime
 
 @Database(
-    entities = [EventEntity::class],
-    version = 3,
+    entities = [EventEntity::class, TaskEntity::class],
+    version = 4,
     exportSchema = false // todo: properly save schema
 )
 
@@ -19,7 +19,8 @@ abstract class AppDatabase : RoomDatabase() {
 
     // access database operation methods through automatically generated method
     abstract fun eventDao(): EventDao
-    // abstract fun taskDao() : TaskDao
+
+    abstract fun taskDao(): TaskDao
 
     companion object {
         private var INSTANCE: AppDatabase? = null
@@ -47,6 +48,7 @@ abstract class AppDatabase : RoomDatabase() {
             return INSTANCE!!
         }
 
+        // Generic name for CALLBACK
         private val CALLBACK = object : RoomDatabase.Callback() {
             override fun onCreate(db: SupportSQLiteDatabase) {
                 super.onCreate(db)
@@ -56,6 +58,7 @@ abstract class AppDatabase : RoomDatabase() {
             }
         }
 
+        // Populates Db with Sample Tasks
         private class PopulateDbAsyncTask constructor(private var database: AppDatabase) :
             AsyncTask<Void, Void, Void>() {
 

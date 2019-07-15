@@ -15,7 +15,7 @@ class PlannerEvent(
     var repeated: Boolean,
     var followUp: Boolean,
     private var tags: List<String> = mutableListOf()
-) : Parcelable {
+) : Parcelable, Taggable {
 
     constructor(parcel: Parcel) : this(
         parcel.readSerializable() as Int,
@@ -24,7 +24,7 @@ class PlannerEvent(
         parcel.readString(),
         parcel.readByte() != 0.toByte(),
         parcel.readByte() != 0.toByte(),
-        splitTag(parcel.readString())
+        Taggable.splitTag(parcel.readString())
     )
 
     constructor(entity: EventEntity) : this(
@@ -34,7 +34,7 @@ class PlannerEvent(
         entity.details,
         entity.repeated,
         entity.followUp,
-        splitTag(entity.tags)
+        Taggable.splitTag(entity.tags)
     )
 
     companion object CREATOR : Parcelable.Creator<PlannerEvent> {
@@ -49,10 +49,6 @@ class PlannerEvent(
         fun createFromEntity(entity: EventEntity): PlannerEvent {
             return PlannerEvent(entity)
         }
-
-        private fun splitTag(string: String?): List<String> {
-            return string?.split(", ") ?: listOf()
-        }
     }
 
     fun generateEntity(): EventEntity {
@@ -62,7 +58,7 @@ class PlannerEvent(
             details = if (details != null) details else "",
             repeated = repeated,
             followUp = followUp,
-            tags = concatTag()
+            tags = Taggable.concatTag(tags)
         )
     }
 
@@ -74,12 +70,8 @@ class PlannerEvent(
             details = if (details != null) details else "",
             repeated = repeated,
             followUp = followUp,
-            tags = concatTag()
+            tags = Taggable.concatTag(tags)
         )
-    }
-
-    private fun concatTag(): String {
-        return tags.joinToString { it }
     }
 
     // PARCELABLE INTERFACE METHODS
@@ -91,7 +83,7 @@ class PlannerEvent(
         parcel.writeString(details)
         parcel.writeByte(if (repeated) 1 else 0)
         parcel.writeByte(if (followUp) 1 else 0)
-        parcel.writeString(concatTag())
+        parcel.writeString(Taggable.concatTag(tags))
     }
 
     override fun describeContents(): Int {
