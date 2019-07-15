@@ -95,12 +95,11 @@ class TasksFragment : Fragment() {
             }
         }
         adapter.checkBoxListener = object : TaskAdapter.CheckBoxListener {
-            override fun onCheckedChanged(task: TaskEntity, isChecked: Boolean) {
+            override fun onItemClick(task: TaskEntity, isChecked: Boolean) {
                 if (isChecked) {
-//                    //todo debug here
-//                    tasksViewModel.checkTask(task)
+                    tasksViewModel.setTaskComplete(task)
                 } else {
-                    tasksViewModel.uncheckTask(task)
+                    tasksViewModel.setTaskIncomplete(task)
                 }
             }
         }

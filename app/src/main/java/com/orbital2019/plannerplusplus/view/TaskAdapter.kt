@@ -78,16 +78,13 @@ class TaskAdapter(var recycler: RecyclerView) : RecyclerView.Adapter<TaskAdapter
                 }
             }
 
-            checkBox.setOnCheckedChangeListener { compoundButton, b ->
-                if (compoundButton.id == checkBox.id) {
-                    val position = adapterPosition
-                    if (position != RecyclerView.NO_POSITION) {
-                        checkBoxListener.onCheckedChanged(tasks[position], b)
-                    }
+            checkBox.setOnClickListener {
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    checkBoxListener.onItemClick(tasks[position], checkBox.isChecked)
                 }
             }
         }
-
     }
 
     /**
@@ -99,7 +96,7 @@ class TaskAdapter(var recycler: RecyclerView) : RecyclerView.Adapter<TaskAdapter
     }
 
     interface CheckBoxListener {
-        fun onCheckedChanged(task: TaskEntity, isChecked: Boolean)
+        fun onItemClick(task: TaskEntity, isChecked: Boolean)
     }
 
 }

@@ -23,12 +23,12 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
         repository.updateTask(taskEntity)
     }
 
-    fun checkTask(taskEntity: TaskEntity) {
+    fun setTaskComplete(taskEntity: TaskEntity) {
         repository.setTaskComplete(taskEntity)
         Log.d("SETCOMPLETE", "TASK SET AS COMPLETE")
     }
 
-    fun uncheckTask(taskEntity: TaskEntity) {
+    fun setTaskIncomplete(taskEntity: TaskEntity) {
         repository.setTaskIncomplete(taskEntity)
         Log.d("SETCOMPLETE", "TASK SET AS INCOMPLETE")
     }
