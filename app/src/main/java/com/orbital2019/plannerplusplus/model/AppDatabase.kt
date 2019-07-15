@@ -10,7 +10,7 @@ import org.threeten.bp.LocalDateTime
 
 @Database(
     entities = [EventEntity::class, TaskEntity::class],
-    version = 4,
+    version = 5,
     exportSchema = false // todo: properly save schema
 )
 

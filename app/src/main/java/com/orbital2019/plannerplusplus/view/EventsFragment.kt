@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.orbital2019.plannerplusplus.R
 import com.orbital2019.plannerplusplus.model.EventEntity
-import com.orbital2019.plannerplusplus.viewmodel.EventAdapter
 import com.orbital2019.plannerplusplus.viewmodel.EventViewModel
 import com.orbital2019.plannerplusplus.viewmodel.PlannerEvent
 

@@ -1,3 +1,8 @@
+/** PlannerRepository is the repository for the planner app
+ * A repository has the task of managing the retrieval of data from multiple sources (offline and online databases)
+ * In this case, the only database is the offline database (which is the AppDatabase class)
+ */
+
 package com.orbital2019.plannerplusplus.model
 
 import android.app.Application
@@ -40,6 +45,14 @@ class PlannerRepository(application: Application) {
 
     fun updateTask(taskEntity: TaskEntity) {
         UpdateTaskAsyncTask(taskDao).execute(taskEntity)
+    }
+
+    fun setTaskComplete(taskEntity: TaskEntity) {
+        SetTaskCompleteAsyncTask(taskDao).execute(taskEntity)
+    }
+
+    fun setTaskIncomplete(taskEntity: TaskEntity) {
+        SetTaskIncompleteAsyncTask(taskDao).execute(taskEntity)
     }
 
     fun deleteTask(taskEntity: TaskEntity) {
@@ -94,6 +107,23 @@ class PlannerRepository(application: Application) {
 
         override fun doInBackground(vararg taskEntities: TaskEntity?): Void? {
             taskEntities[0]?.let { taskDao.update(it) }
+            return null
+        }
+    }
+
+    class SetTaskCompleteAsyncTask constructor(private var taskDao: TaskDao) : AsyncTask<TaskEntity, Void, Void>() {
+        override fun doInBackground(vararg p0: TaskEntity?): Void? {
+            val id: Int = p0[0]!!.id!!
+            taskDao.setComplete(id)
+            return null
+        }
+
+    }
+
+    class SetTaskIncompleteAsyncTask constructor(private var taskDao: TaskDao) : AsyncTask<TaskEntity, Void, Void>() {
+        override fun doInBackground(vararg p0: TaskEntity?): Void? {
+            val id: Int = p0[0]!!.id!!
+            taskDao.setIncomplete(id)
             return null
         }
     }

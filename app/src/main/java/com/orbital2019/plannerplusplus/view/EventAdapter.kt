@@ -1,4 +1,4 @@
-package com.orbital2019.plannerplusplus.viewmodel
+package com.orbital2019.plannerplusplus.view
 
 import android.view.LayoutInflater
 import android.view.View
@@ -61,7 +61,6 @@ class EventAdapter(var recycler: RecyclerView) : RecyclerView.Adapter<EventAdapt
                 }
             }
         }
-
     }
 
     interface OnItemClickListener {

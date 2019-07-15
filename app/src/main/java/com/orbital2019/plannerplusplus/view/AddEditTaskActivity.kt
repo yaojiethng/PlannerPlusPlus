@@ -13,8 +13,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import androidx.lifecycle.ViewModelProviders
 import com.orbital2019.plannerplusplus.R
-import com.orbital2019.plannerplusplus.viewmodel.TaskUpdater
 import com.orbital2019.plannerplusplus.viewmodel.PlannerTask
+import com.orbital2019.plannerplusplus.viewmodel.TaskUpdater
 
 const val EXTRA_PARCEL_PLANNERTASK = "com.orbital2019.plannerplusplus.PARCEL_PLANNERTASK"
 
@@ -85,7 +85,8 @@ class AddEditTaskActivity : AppCompatActivity() {
             title,
             details,
             switchNumberTasks.isChecked,
-            listOf()
+            listOf(),
+            complete = false
         )
 
         // if task currently has no Id, it is a new task.

@@ -13,7 +13,8 @@ class PlannerTask (
     var title: String,
     var details: String?,
     var autoNumber: Boolean,
-    private var tags: List<String> = mutableListOf()
+    private var tags: List<String> = mutableListOf(),
+    private var complete: Boolean
 ) : Parcelable, Taggable {
 
     constructor(parcel: Parcel) : this(
@@ -21,7 +22,8 @@ class PlannerTask (
         parcel.readString()!!,
         parcel.readString(),
         parcel.readByte() != 0.toByte(),
-        splitTag(parcel.readString())
+        splitTag(parcel.readString()),
+        parcel.readByte() != 0.toByte()
     )
 
     constructor(entity: TaskEntity) : this(
@@ -29,7 +31,8 @@ class PlannerTask (
         entity.title,
         entity.details,
         entity.autoNumber,
-        splitTag(entity.tags)
+        splitTag(entity.tags),
+        entity.complete
     )
 
     companion object CREATOR : Parcelable.Creator<PlannerTask> {
@@ -51,7 +54,8 @@ class PlannerTask (
             title = title,
             details = if (details != null) details else "",
             autoNumber = autoNumber,
-            tags = concatTag(tags)
+            tags = concatTag(tags),
+            complete = complete
         )
     }
 
@@ -61,7 +65,8 @@ class PlannerTask (
             title = title,
             details = if (details != null) details else "",
             autoNumber = autoNumber,
-            tags = concatTag(tags)
+            tags = concatTag(tags),
+            complete = complete
         )
     }
 
@@ -73,6 +78,7 @@ class PlannerTask (
         parcel.writeString(details)
         parcel.writeByte(if (autoNumber) 1 else 0)
         parcel.writeString(concatTag(tags))
+        parcel.writeByte(if (autoNumber) 1 else 0)
     }
 
     override fun describeContents(): Int {

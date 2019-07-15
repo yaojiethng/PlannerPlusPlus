@@ -2,7 +2,6 @@ package com.orbital2019.plannerplusplus.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import org.threeten.bp.LocalDateTime
 
 // todo: decide on database parameters
 // additional modifiers:
@@ -14,7 +13,8 @@ data class TaskEntity(
     var title: String = "",
     var details: String? = "",
     var autoNumber: Boolean = false,
-    var tags: String = ""
+    var tags: String = "",
+    var complete: Boolean = false
 ) {
 
     @PrimaryKey(autoGenerate = true)
@@ -25,8 +25,9 @@ data class TaskEntity(
         title: String = "",
         details: String? = "",
         autoNumber: Boolean = false,
-        tags: String = ""
-    ) : this(title, details, autoNumber, tags) {
+        tags: String = "",
+        complete: Boolean = false
+    ) : this(title, details, autoNumber, tags, complete) {
         this.id = id
     }
 }

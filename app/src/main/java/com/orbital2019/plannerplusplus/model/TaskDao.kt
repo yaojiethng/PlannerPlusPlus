@@ -1,3 +1,7 @@
+/**
+ * Data Access Object defining database interactions for Tasks, intended for use with the TasksFragment fragment in
+ * MainActivity.
+ */
 package com.orbital2019.plannerplusplus.model
 
 import androidx.lifecycle.LiveData
@@ -12,6 +16,12 @@ interface TaskDao {
 
     @Update
     fun update(taskEntity: TaskEntity)
+
+    @Query("UPDATE task_table SET complete = 'true' WHERE id = :id")
+    fun setComplete(id: Int)
+
+    @Query("UPDATE task_table SET complete = 'false' WHERE id = :id")
+    fun setIncomplete(id: Int)
 
     @Delete
     fun delete(taskEntity: TaskEntity)

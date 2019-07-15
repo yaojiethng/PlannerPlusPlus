@@ -3,12 +3,12 @@ package com.orbital2019.plannerplusplus.view
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.orbital2019.plannerplusplus.R
 import com.orbital2019.plannerplusplus.model.TaskEntity
 import com.orbital2019.plannerplusplus.viewmodel.PlannerTask
-import com.orbital2019.plannerplusplus.viewmodel.TaskAdapter
 import com.orbital2019.plannerplusplus.viewmodel.TaskViewModel
 
 
@@ -86,12 +85,18 @@ class TasksFragment : Fragment() {
             }
         }).attachToRecyclerView(recyclerView)
 
-        adapter.listener = object : TaskAdapter.OnItemClickListener {
+        // Adapters' listeners are instantiated here:
+        adapter.itemClickListener = object : TaskAdapter.OnItemClickListener {
             override fun onItemClick(task: TaskEntity) {
                 // AddEditTaskActivity::class.java is not used, but it is passed back when ActivityForResult terminates
                 val intent = Intent(activity, AddEditTaskActivity::class.java)
-                intent.putExtra(EXTRA_PARCEL_PLANNEREVENT, PlannerTask.createFromEntity(task))
+                intent.putExtra(EXTRA_PARCEL_PLANNERTASK, PlannerTask.createFromEntity(task))
                 startActivityForResult(intent, EDIT_EVENT_REQUEST)
+            }
+        }
+        adapter.checkBoxClickListener = object : TaskAdapter.OnItemClickListener {
+            override fun onItemClick(task: TaskEntity) {
+                tasksViewModel.toggleTask(task)
             }
         }
 

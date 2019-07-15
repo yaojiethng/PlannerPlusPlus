@@ -4,8 +4,8 @@ package com.orbital2019.plannerplusplus.viewmodel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import com.orbital2019.plannerplusplus.model.TaskEntity
 import com.orbital2019.plannerplusplus.model.PlannerRepository
+import com.orbital2019.plannerplusplus.model.TaskEntity
 
 // avoids static Activity instance, allows passing of context without retaining a reference to an activity
 class TaskViewModel(application: Application) : AndroidViewModel(application) {
@@ -20,6 +20,15 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
 
     fun updateTask(taskEntity: TaskEntity) {
         repository.updateTask(taskEntity)
+    }
+
+    fun toggleTask(taskEntity: TaskEntity) {
+//        if (taskEntity.complete) {
+        repository.setTaskIncomplete(taskEntity)
+//        } else {
+//            repository.setTaskComplete(taskEntity)
+//        }
+
     }
 
     fun deleteTask(taskEntity: TaskEntity) {
