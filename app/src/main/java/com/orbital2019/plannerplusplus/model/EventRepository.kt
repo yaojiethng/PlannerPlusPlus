@@ -9,15 +9,16 @@ interface EventRepository {
                 eventDao.insert(eventEntity)
             }
         }.start()
-
-        fun updateEvent(eventEntity: EventEntity) {
-            object : DaoAsyncProcessor<Unit>(null) {
-                override fun doAsync() {
-                    eventDao.update(eventEntity)
-                }
-            }.start()
-        }
     }
+
+    fun updateEvent(eventEntity: EventEntity) {
+        object : DaoAsyncProcessor<Unit>(null) {
+            override fun doAsync() {
+                eventDao.update(eventEntity)
+            }
+        }.start()
+    }
+
 
     fun deleteEvent(eventEntity: EventEntity) {
         object : DaoAsyncProcessor<Unit>(null) {

@@ -9,15 +9,16 @@ interface TaskRepository {
                 taskDao.insert(taskEntity)
             }
         }.start()
-
-        fun updateTask(taskEntity: TaskEntity) {
-            object : DaoAsyncProcessor<Unit>(null) {
-                override fun doAsync() {
-                    taskDao.update(taskEntity)
-                }
-            }.start()
-        }
     }
+
+    fun updateTask(taskEntity: TaskEntity) {
+        object : DaoAsyncProcessor<Unit>(null) {
+            override fun doAsync() {
+                taskDao.update(taskEntity)
+            }
+        }.start()
+    }
+
 
     fun deleteTask(taskEntity: TaskEntity) {
         object : DaoAsyncProcessor<Unit>(null) {
