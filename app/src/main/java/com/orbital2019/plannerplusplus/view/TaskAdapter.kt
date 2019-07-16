@@ -20,8 +20,6 @@ class TaskAdapter(var recycler: RecyclerView) : RecyclerView.Adapter<TaskAdapter
     internal var tasks = ArrayList<TaskEntity>()
         internal set(tasks) {
             field = tasks
-            notifyDataSetChanged()
-            // todo: change to RecyclerView specific granular methods like notifyItemInserted and notifyItemRemoved which has animations
         }
     internal lateinit var itemClickListener: OnItemClickListener
     internal lateinit var checkBoxListener: CheckBoxListener
@@ -30,15 +28,18 @@ class TaskAdapter(var recycler: RecyclerView) : RecyclerView.Adapter<TaskAdapter
         return tasks[position]
     }
 
-    // @param parent: the ViewGroup that is passed, which is the RecyclerView
-    // @return TaskHolder: decides the layout for the different items in the RecyclerView
+    /** @param parent: the ViewGroup that is passed, which is the RecyclerView
+     * @return TaskHolder: decides the layout for the different items in the RecyclerView
+     */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskHolder {
         val itemView = LayoutInflater.from(parent.context)
             .inflate(R.layout.task_item, parent, false)
         return TaskHolder(itemView)
     }
 
-    // @return: the number of items that will be displayed in the RecyclerView
+    /**
+     * @ return: the number of items that will be displayed in the RecyclerView
+     */
     override fun getItemCount(): Int {
         return tasks.size
     }
@@ -78,6 +79,7 @@ class TaskAdapter(var recycler: RecyclerView) : RecyclerView.Adapter<TaskAdapter
                 }
             }
 
+            // when checkbox is clicked, call the listener on the task in that position
             checkBox.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {

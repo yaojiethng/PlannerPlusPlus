@@ -13,7 +13,8 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository: PlannerRepository =
         PlannerRepository(application)
-    private val allTasks: LiveData<List<TaskEntity>> = repository.allTasks
+    private val incompleteTasks: LiveData<List<TaskEntity>> = repository.incompleteTasks
+    private val completedTasks: LiveData<List<TaskEntity>> = repository.completedTasks
 
     fun insertTask(taskEntity: TaskEntity) {
         repository.insertTask(taskEntity)
@@ -42,7 +43,11 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
         repository.deleteAllTasks()
     }
 
-    fun getAllTasks(): LiveData<List<TaskEntity>> {
-        return allTasks
+    fun getCompletedTasks(): LiveData<List<TaskEntity>> {
+        return completedTasks
+    }
+
+    fun getIncompleteTasks(): LiveData<List<TaskEntity>> {
+        return incompleteTasks
     }
 }

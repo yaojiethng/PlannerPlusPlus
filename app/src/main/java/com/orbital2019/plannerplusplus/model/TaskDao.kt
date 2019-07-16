@@ -35,4 +35,10 @@ interface TaskDao {
 
     @Query("SELECT * FROM task_table ORDER BY id DESC")
     fun getAllTasks(): LiveData<List<TaskEntity>>
+
+    @Query("SELECT * FROM task_table WHERE complete = 0 ORDER BY id DESC")
+    fun getIncompleteTasks(): LiveData<List<TaskEntity>>
+
+    @Query("SELECT * FROM task_table WHERE complete = 1 ORDER BY id DESC")
+    fun getCompletedTasks(): LiveData<List<TaskEntity>>
 }

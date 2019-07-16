@@ -26,7 +26,8 @@ class TasksFragment : Fragment() {
     private val tasksViewModel: TaskViewModel by lazy {
         ViewModelProviders.of(this).get(TaskViewModel::class.java)
     }
-    private lateinit var recyclerView: RecyclerView
+    private lateinit var incompleteTasksRecyclerView: RecyclerView
+    private lateinit var completedTasksRecyclerView: RecyclerView
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
@@ -41,27 +42,42 @@ class TasksFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
+        // set layout associated with this class
         val layout: View = inflater.inflate(R.layout.fragment_tasks, container, false)
-        recyclerView = layout.findViewById(R.id.tasks_recycler_view)
+
+        // bind RecyclerViews to variables
+        incompleteTasksRecyclerView = layout.findViewById(R.id.incomplete_tasks_recycler_view)
+        completedTasksRecyclerView = layout.findViewById(R.id.completed_tasks_recycler_view)
+
         // LinearLayoutManager ensures that items are displayed linearly
-        recyclerView.layoutManager = LinearLayoutManager(activity)
-        // increases efficiency as our recyclerView will never change in size
-        recyclerView.setHasFixedSize(true)
+        incompleteTasksRecyclerView.layoutManager = LinearLayoutManager(activity)
+        completedTasksRecyclerView.layoutManager = LinearLayoutManager(activity)
 
-        val adapter = TaskAdapter(recyclerView)
-        recyclerView.adapter = adapter
+        // If incompleteTasksRecyclerView will never change in size, set this to optimize
+        // incompleteTasksRecyclerView.setHasFixedSize(true)
 
-        Log.d("FUN_CALL", "onCreateView called for class TasksFragment")
+        val incompleteTasksAdapter = TaskAdapter(incompleteTasksRecyclerView)
+        incompleteTasksRecyclerView.adapter = incompleteTasksAdapter
+
+        val completedTasksAdapter = TaskAdapter(completedTasksRecyclerView)
+        completedTasksRecyclerView.adapter = completedTasksAdapter
 
         // links this viewModel to this fragment, which means:
         //  this ViewModel will only updateTask when this Fragment is in the foreground, and
         //  when this Fragment is closed, so will the ViewModel.
-        tasksViewModel.getAllTasks().observe(
+        tasksViewModel.getIncompleteTasks().observe(
             this,
             Observer<List<TaskEntity>> {
-                Log.d("ONCHANGED", "TaskViewModel onChanged")
-                adapter.tasks = it as ArrayList<TaskEntity>
+                Log.d("OBSERVER_incomTASKS", "Change on IncompleteTasks")
+                incompleteTasksAdapter.tasks = it as ArrayList<TaskEntity>
             })
+        tasksViewModel.getCompletedTasks().observe(
+            this,
+            Observer<List<TaskEntity>> {
+                Log.d("OBSERVER_comTASKS", "TaskViewModel onChanged")
+                completedTasksAdapter.tasks = it as ArrayList<TaskEntity>
+            })
+
 
         // ItemTouchHelper makes RecyclerView swipe-able
         ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
@@ -77,16 +93,17 @@ class TasksFragment : Fragment() {
 
             // When item is swiped, deleteTask item from list.
             // todo: add features such as different directions, SnackBar to undo
+            // todo check if this needs to be changed for other adapter
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 // position in adapter where the item is swiped
-                tasksViewModel.deleteTask(adapter.taskAt(viewHolder.adapterPosition))
+                tasksViewModel.deleteTask(incompleteTasksAdapter.taskAt(viewHolder.adapterPosition))
                 // call activity to get the activity attribute
                 Toast.makeText(activity, "Task Deleted", Toast.LENGTH_SHORT).show()
             }
-        }).attachToRecyclerView(recyclerView)
+        }).attachToRecyclerView(incompleteTasksRecyclerView)
 
         // Adapters' listeners are instantiated here:
-        adapter.itemClickListener = object : TaskAdapter.OnItemClickListener {
+        incompleteTasksAdapter.itemClickListener = object : TaskAdapter.OnItemClickListener {
             override fun onItemClick(task: TaskEntity) {
                 // AddEditTaskActivity::class.java is not used, but it is passed back when ActivityForResult terminates
                 val intent = Intent(activity, AddEditTaskActivity::class.java)
@@ -94,7 +111,7 @@ class TasksFragment : Fragment() {
                 startActivityForResult(intent, EDIT_EVENT_REQUEST)
             }
         }
-        adapter.checkBoxListener = object : TaskAdapter.CheckBoxListener {
+        incompleteTasksAdapter.checkBoxListener = object : TaskAdapter.CheckBoxListener {
             override fun onItemClick(task: TaskEntity, isChecked: Boolean) {
                 if (isChecked) {
                     tasksViewModel.setTaskComplete(task)
