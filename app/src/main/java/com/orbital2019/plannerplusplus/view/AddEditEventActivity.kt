@@ -76,7 +76,7 @@ class AddEditEventActivity : AppCompatActivity() {
             val event: EventEntity = intent.getParcelableExtra(EXTRA_PARCEL_PLANNEREVENT)!!
             eventId = event.id
             editTextTitle.setText(event.title)
-            val dateTime = DateTimeData(LocalDateTime.parse(event.dateTime))
+            val dateTime = DateTimeData(LocalDateTime.parse(event.eventTime))
             editDate.updateDate(dateTime.dayOfMonth, dateTime.month, dateTime.year)
             // API support for deprecated methods in TimePicker
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

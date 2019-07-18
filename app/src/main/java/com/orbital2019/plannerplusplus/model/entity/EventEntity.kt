@@ -1,53 +1,68 @@
+/**
+ * Entity representing one Event on the calendar.
+ * todo: https://www.sqlite.org/foreignkeys.html
+ * todo: https://medium.com/androiddevelopers/room-time-2b4cf9672b98
+ * todo: https://medium.com/androiddevelopers/understanding-migrations-with-room-f01e04b07929
+ */
 package com.orbital2019.plannerplusplus.model.entity
 
 import android.os.Parcel
 import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import org.threeten.bp.LocalDateTime
+import org.threeten.bp.OffsetDateTime
 
 // additional modifiers:
 // @Ignore to remove entries from the table
 // @ColumnInfo(name = "") to set custom column names
 
+/**
+ * Entity representing one Event on the calendar
+ * todo: how to represent and show repeated events?
+ * @param eventStartTime The time at which the event starts, stored as a String
+ *  (automatically converted from OffsetDateTime)
+ * @param tags All tags that are associated with the EventEntity, truncated into a single string
+ */
 @Entity(tableName = "event_table")
 data class EventEntity(
-    var title: String = "",
-    var dateTime: String = LocalDateTime.now().toString(),
-    var details: String? = "",
-    var repeated: Boolean = false,
-    var followUp: Boolean = false,
-    var tags: String = ""
-) : Parcelable, Taggable {
     @PrimaryKey(autoGenerate = true)
-    var id: Int? = null
+    val id: Int? = null,
+    val title: String = "",
+    val eventStartTime: OffsetDateTime? = null,
+    val eventDuration: OffsetDateTime? = eventStartTime,
+    //todo: implement duration as an end time, within the same day as start time
+    val details: String? = "",
+    val repeated: Boolean = false,
+    val followUp: Boolean = false,
+    val tags: String = ""
+) : Parcelable, Taggable, Timable {
+
 
     constructor(parcel: Parcel) : this(
+        parcel.readInt(),
         parcel.readString()!!,
-        parcel.readString()!!,
+        Timable.TiviTypeConverters.toOffsetDateTime(parcel.readString()!!),
+        Timable.TiviTypeConverters.toOffsetDateTime(parcel.readString()!!),
         parcel.readString(),
         parcel.readByte() != 0.toByte(),
         parcel.readByte() != 0.toByte(),
         parcel.readString()!!
-    ) {
-        id = parcel.readValue(Int::class.java.classLoader) as? Int
-    }
+    )
 
     constructor(
-        id: Int,
         title: String = "",
-        dateTime: String = LocalDateTime.now().toString(),
+        eventStartTime: OffsetDateTime,
+        eventDuration: OffsetDateTime,
         details: String? = "",
         repeated: Boolean = false,
         followUp: Boolean = false,
         tags: String = ""
-    ) : this(title, dateTime, details, repeated, followUp, tags) {
-        this.id = id
-    }
+    ) : this(null, title, eventStartTime, eventDuration, details, repeated, followUp, tags)
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(title)
-        parcel.writeString(dateTime)
+        parcel.writeString(Timable.TiviTypeConverters.fromOffsetDateTime(eventStartTime))
+        parcel.writeString(Timable.TiviTypeConverters.fromOffsetDateTime(eventDuration))
         parcel.writeString(details)
         parcel.writeByte(if (repeated) 1 else 0)
         parcel.writeByte(if (followUp) 1 else 0)
@@ -68,4 +83,6 @@ data class EventEntity(
             return arrayOfNulls(size)
         }
     }
+
+
 }
