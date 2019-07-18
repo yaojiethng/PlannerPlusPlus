@@ -17,8 +17,8 @@ import androidx.appcompat.widget.SwitchCompat
 import androidx.lifecycle.ViewModelProviders
 import com.orbital2019.plannerplusplus.R
 import com.orbital2019.plannerplusplus.helper.DateTimeData
+import com.orbital2019.plannerplusplus.model.entity.EventEntity
 import com.orbital2019.plannerplusplus.viewmodel.EventUpdater
-import com.orbital2019.plannerplusplus.viewmodel.PlannerEvent
 import org.threeten.bp.LocalDateTime
 
 const val EXTRA_SAVE_STATUS = "com.orbital2019.plannerplusplus.SAVE_STATUS"
@@ -73,10 +73,10 @@ class AddEditEventActivity : AppCompatActivity() {
         // intent has a PlannerEvent Parcel, which means it is an edit event
         if (intent.hasExtra(EXTRA_PARCEL_PLANNEREVENT)) {
             title = "Edit Note"
-            val event: PlannerEvent = intent.getParcelableExtra(EXTRA_PARCEL_PLANNEREVENT)!!
+            val event: EventEntity = intent.getParcelableExtra(EXTRA_PARCEL_PLANNEREVENT)!!
             eventId = event.id
             editTextTitle.setText(event.title)
-            val dateTime = DateTimeData(event.dateTimeRaw)
+            val dateTime = DateTimeData(LocalDateTime.parse(event.dateTime))
             editDate.updateDate(dateTime.dayOfMonth, dateTime.month, dateTime.year)
             // API support for deprecated methods in TimePicker
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -107,8 +107,7 @@ class AddEditEventActivity : AppCompatActivity() {
             return
         }
 
-        val eventSave = PlannerEvent(
-            eventId,
+        val eventSave = EventEntity(
             title,
             //todo get this to save properly
 //            LocalDateTime.of(
@@ -118,11 +117,11 @@ class AddEditEventActivity : AppCompatActivity() {
 //                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) editTime.hour else editTime.currentHour,
 //                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) editTime.minute else editTime.currentMinute
 //            ),
-            LocalDateTime.now(),
+            LocalDateTime.now().toString(),
             details,
             switchRepeat.isChecked,
             switchFollowUp.isChecked,
-            listOf()
+            "" //todo: set up proper tag implementation
         )
 
         // if event currently has no Id, it is a new event.

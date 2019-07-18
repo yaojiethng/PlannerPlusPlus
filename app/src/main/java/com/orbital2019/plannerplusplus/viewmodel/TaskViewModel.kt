@@ -6,7 +6,7 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import com.orbital2019.plannerplusplus.model.PlannerRepository
-import com.orbital2019.plannerplusplus.model.TaskEntity
+import com.orbital2019.plannerplusplus.model.entity.TaskEntity
 
 // Passing application as context avoids static Activity instance, allows passing of context without retaining a
 // reference to an activity. Useful as a ViewModel is supposed to outlast Activities.

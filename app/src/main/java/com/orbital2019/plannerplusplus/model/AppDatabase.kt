@@ -6,6 +6,8 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.orbital2019.plannerplusplus.model.entity.EventEntity
+import com.orbital2019.plannerplusplus.model.entity.TaskEntity
 import org.threeten.bp.LocalDateTime
 
 @Database(

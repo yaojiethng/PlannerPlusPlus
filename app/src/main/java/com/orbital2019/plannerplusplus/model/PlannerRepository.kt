@@ -9,6 +9,8 @@ package com.orbital2019.plannerplusplus.model
 
 import android.app.Application
 import androidx.lifecycle.LiveData
+import com.orbital2019.plannerplusplus.model.entity.EventEntity
+import com.orbital2019.plannerplusplus.model.entity.TaskEntity
 
 // TODO: check if this can be done using java's ExecutorService
 // TODO: single asyncTask constructor instead of this copy pasted mess

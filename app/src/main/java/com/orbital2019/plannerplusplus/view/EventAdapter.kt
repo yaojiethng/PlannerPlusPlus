@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.orbital2019.plannerplusplus.R
-import com.orbital2019.plannerplusplus.model.EventEntity
+import com.orbital2019.plannerplusplus.model.entity.EventEntity
 
 class EventAdapter(var recycler: RecyclerView) : RecyclerView.Adapter<EventAdapter.EventHolder>() {
 

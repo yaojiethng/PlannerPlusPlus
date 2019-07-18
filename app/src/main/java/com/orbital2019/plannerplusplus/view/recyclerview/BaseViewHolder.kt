@@ -2,7 +2,7 @@
  * BaseViewHolder is meant as a base class to be inherited for different ViewHolders nested in Tasks RecyclerView
  *
  */
-package com.orbital2019.plannerplusplus.view
+package com.orbital2019.plannerplusplus.view.recyclerview
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
@@ -17,5 +17,5 @@ abstract class BaseViewHolder<in T>(itemView: View) : RecyclerView.ViewHolder(it
      * Abstract method bind() needs to be overridden by child classes.
      */
     abstract fun bind(item: T)
-    
+
 }

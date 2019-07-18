@@ -15,9 +15,8 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.orbital2019.plannerplusplus.R
-import com.orbital2019.plannerplusplus.model.EventEntity
+import com.orbital2019.plannerplusplus.model.entity.EventEntity
 import com.orbital2019.plannerplusplus.viewmodel.EventViewModel
-import com.orbital2019.plannerplusplus.viewmodel.PlannerEvent
 
 // todo: link fab and options menu to fragment?
 class EventsFragment : Fragment() {
@@ -88,7 +87,7 @@ class EventsFragment : Fragment() {
             override fun onItemClick(event: EventEntity) {
                 // AddEditEventActivity::class.java is not used, but it is passed back when ActivityForResult terminates
                 val intent = Intent(activity, AddEditEventActivity::class.java)
-                intent.putExtra(EXTRA_PARCEL_PLANNEREVENT, PlannerEvent.createFromEntity(event))
+                intent.putExtra(EXTRA_PARCEL_PLANNEREVENT, event)
                 startActivityForResult(intent, EDIT_EVENT_REQUEST)
             }
         }

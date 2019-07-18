@@ -6,6 +6,7 @@ package com.orbital2019.plannerplusplus.model
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.orbital2019.plannerplusplus.model.entity.TaskEntity
 
 @Dao
 interface TaskDao {

@@ -1,4 +1,4 @@
-package com.orbital2019.plannerplusplus.viewmodel
+package com.orbital2019.plannerplusplus.model.entity
 
 // support for PlannerItems which allow tags to be added and removed
 interface Taggable {

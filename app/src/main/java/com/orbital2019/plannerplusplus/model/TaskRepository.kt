@@ -1,5 +1,7 @@
 package com.orbital2019.plannerplusplus.model
 
+import com.orbital2019.plannerplusplus.model.entity.TaskEntity
+
 interface TaskRepository {
     var taskDao: TaskDao
 

@@ -12,7 +12,8 @@ import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.orbital2019.plannerplusplus.R
-import com.orbital2019.plannerplusplus.model.TaskEntity
+import com.orbital2019.plannerplusplus.model.entity.TaskEntity
+import com.orbital2019.plannerplusplus.view.recyclerview.BaseViewHolder
 
 
 class TaskAdapter(var recycler: RecyclerView) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {

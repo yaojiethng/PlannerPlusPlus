@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import androidx.lifecycle.ViewModelProviders
 import com.orbital2019.plannerplusplus.R
-import com.orbital2019.plannerplusplus.model.TaskEntity
+import com.orbital2019.plannerplusplus.model.entity.TaskEntity
 import com.orbital2019.plannerplusplus.viewmodel.TaskUpdater
 
 const val EXTRA_PARCEL_PLANNERTASK = "com.orbital2019.plannerplusplus.PARCEL_PLANNERTASK"
