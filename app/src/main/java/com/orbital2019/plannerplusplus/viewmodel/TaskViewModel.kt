@@ -49,4 +49,8 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
         return allTasks
     }
 
+    fun getNumIncompleteTasks(): LiveData<Int> {
+        return numIncompleteTasks
+    }
+
 }

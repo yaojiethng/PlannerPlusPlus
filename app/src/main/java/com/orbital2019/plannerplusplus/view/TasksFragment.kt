@@ -61,13 +61,14 @@ class TasksFragment : Fragment() {
         tasksViewModel.getAllTasks().observe(
             this,
             Observer<List<TaskEntity>> {
+                // overriding onChanged for LiveData<List<TaskEntity>>> Observer
                 Log.d(
                     "OBSERVER_comTASKS",
                     "Change on CompleteTasks with " + tasksAdapter.tasks.size + "Tasks"
                 )
+                // changes tasksAdapter.tasks and calls set method
                 tasksAdapter.tasks = it as ArrayList<TaskEntity>
             })
-
 
         // ItemTouchHelper makes RecyclerView swipe-able
         ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(

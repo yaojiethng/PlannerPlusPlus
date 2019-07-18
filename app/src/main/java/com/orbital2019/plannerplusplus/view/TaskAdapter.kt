@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.orbital2019.plannerplusplus.R
 import com.orbital2019.plannerplusplus.model.TaskEntity
 
-class TaskAdapter(var recycler: RecyclerView) : RecyclerView.Adapter<TaskAdapter.TaskHolder>() {
+class TaskAdapter(var recycler: RecyclerView) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
     // to prevent any null checks, init the list first
     internal var tasks = ArrayList<TaskEntity>()
@@ -30,12 +30,12 @@ class TaskAdapter(var recycler: RecyclerView) : RecyclerView.Adapter<TaskAdapter
     }
 
     /** @param parent: the ViewGroup that is passed, which is the RecyclerView
-     * @return TaskHolder: decides the layout for the different items in the RecyclerView
+     * @return TaskViewHolder: decides the layout for the different items in the RecyclerView
      */
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
         val itemView = LayoutInflater.from(parent.context)
             .inflate(R.layout.task_item, parent, false)
-        return TaskHolder(itemView)
+        return TaskViewHolder(itemView)
     }
 
     /**
@@ -45,27 +45,25 @@ class TaskAdapter(var recycler: RecyclerView) : RecyclerView.Adapter<TaskAdapter
         return tasks.size
     }
 
-    /** inserts data from Task objects into the view of the TaskHolder
+    /** inserts data from Task objects into the view of the TaskViewHolder
      * @Param holder: the holder object containing the different component views of the item
      * @Param position: the index of the current item being bound
      **/
-    override fun onBindViewHolder(holder: TaskHolder, position: Int) {
+    override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
 
         val currentTaskEntity: TaskEntity = tasks[position]
-        holder.textViewTitle.text = currentTaskEntity.title
-        holder.textViewDescription.text = currentTaskEntity.details
-        holder.checkBox.isChecked = currentTaskEntity.complete
+        holder.bind(currentTaskEntity)
     }
 
     /**
-     * TaskHolder is an extension of ViewHolder, which holds and recycles the element items in RecyclerView.
-     * TaskHolder manages and assigns individual view components contained in task_item.xml
+     * TaskViewHolder is an extension of ViewHolder, which holds and recycles the element items in RecyclerView.
+     * TaskViewHolder manages and assigns individual view components contained in task_item.xml
      * Click logic is handled when instantiating the ViewHolder which allows for more explicit control
      * (Click listeners are explicitly set up in the init phase)
-     * @param itemView: element item of TaskHolder (in this case task_item)
+     * @param itemView: element item of TaskViewHolder (in this case task_item)
      */
     // todo: updateTask with new variables once critical parameters are decided
-    inner class TaskHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class TaskViewHolder(itemView: View) : BaseViewHolder<TaskEntity>(itemView) {
         var textViewTitle: TextView = itemView.findViewById(R.id.text_view_task_title)
         var textViewDescription: TextView = itemView.findViewById(R.id.text_view_task_details)
         var checkBox: CheckBox = itemView.findViewById(R.id.checkbox_task)
@@ -87,6 +85,12 @@ class TaskAdapter(var recycler: RecyclerView) : RecyclerView.Adapter<TaskAdapter
                     checkBoxListener.onItemClick(tasks[position], checkBox.isChecked)
                 }
             }
+        }
+
+        override fun bind(item: TaskEntity) {
+            textViewTitle.text = item.title
+            textViewDescription.text = item.details
+            checkBox.isChecked = item.complete
         }
     }
 

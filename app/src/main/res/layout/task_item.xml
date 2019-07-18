@@ -50,7 +50,8 @@
                 android:id="@+id/favourite_button"
                 android:contentDescription="@string/favourite_button"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentTop="true"/>
+                android:layout_alignParentTop="true"
+                android:background="@null"/>
 
     </RelativeLayout>
 
