@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import androidx.lifecycle.ViewModelProviders
 import com.orbital2019.plannerplusplus.R
-import com.orbital2019.plannerplusplus.viewmodel.PlannerTask
+import com.orbital2019.plannerplusplus.model.TaskEntity
 import com.orbital2019.plannerplusplus.viewmodel.TaskUpdater
 
 const val EXTRA_PARCEL_PLANNERTASK = "com.orbital2019.plannerplusplus.PARCEL_PLANNERTASK"
@@ -57,7 +57,7 @@ class AddEditTaskActivity : AppCompatActivity() {
         // intent has a PlannerTask Parcel, which means it is an edit task
         if (intent.hasExtra(EXTRA_PARCEL_PLANNERTASK)) {
             title = "Edit Task"
-            val task: PlannerTask = intent.getParcelableExtra(EXTRA_PARCEL_PLANNERTASK)!!
+            val task: TaskEntity = intent.getParcelableExtra(EXTRA_PARCEL_PLANNERTASK)!!
             taskId = task.id
             editTextTitle.setText(task.title)
             switchNumberTasks.isChecked = task.autoNumber
@@ -80,12 +80,11 @@ class AddEditTaskActivity : AppCompatActivity() {
             return
         }
 
-        val taskSave = PlannerTask(
-            taskId,
+        val taskSave = TaskEntity(
             title,
             details,
             switchNumberTasks.isChecked,
-            listOf(),
+            tags = "", // todo: set up proper tag interaction
             complete = false
         )
 

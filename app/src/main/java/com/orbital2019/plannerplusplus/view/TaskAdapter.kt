@@ -14,7 +14,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.orbital2019.plannerplusplus.R
 import com.orbital2019.plannerplusplus.model.TaskEntity
 
+
 class TaskAdapter(var recycler: RecyclerView) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
+
+    private val TYPE_HEADER: Int = 0
+    private val TYPE_ITEM: Int = 1
 
     // to prevent any null checks, init the list first
     internal var tasks = ArrayList<TaskEntity>()

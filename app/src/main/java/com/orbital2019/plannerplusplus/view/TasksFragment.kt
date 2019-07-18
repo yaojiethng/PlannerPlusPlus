@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.orbital2019.plannerplusplus.R
 import com.orbital2019.plannerplusplus.model.TaskEntity
-import com.orbital2019.plannerplusplus.viewmodel.PlannerTask
 import com.orbital2019.plannerplusplus.viewmodel.TaskViewModel
 
 
@@ -97,7 +96,7 @@ class TasksFragment : Fragment() {
             override fun onItemClick(task: TaskEntity) {
                 // AddEditTaskActivity::class.java is not used, but it is passed back when ActivityForResult terminates
                 val intent = Intent(activity, AddEditTaskActivity::class.java)
-                intent.putExtra(EXTRA_PARCEL_PLANNERTASK, PlannerTask.createFromEntity(task))
+                intent.putExtra(EXTRA_PARCEL_PLANNERTASK, task)
                 startActivityForResult(intent, EDIT_EVENT_REQUEST)
             }
         }

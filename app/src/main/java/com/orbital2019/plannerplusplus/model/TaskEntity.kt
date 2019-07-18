@@ -1,7 +1,10 @@
 package com.orbital2019.plannerplusplus.model
 
+import android.os.Parcel
+import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.orbital2019.plannerplusplus.viewmodel.Taggable
 
 // todo: decide on database parameters
 // additional modifiers:
@@ -15,11 +18,12 @@ data class TaskEntity(
     var autoNumber: Boolean = false,
     var tags: String = "",
     var complete: Boolean = false
-) {
+) : Parcelable, Taggable {
 
     @PrimaryKey(autoGenerate = true)
     var id: Int? = null
 
+    // Secondary Constructor for use with new Tasks
     constructor(
         id: Int,
         title: String = "",
@@ -29,5 +33,38 @@ data class TaskEntity(
         complete: Boolean = false
     ) : this(title, details, autoNumber, tags, complete) {
         this.id = id
+    }
+
+    // Secondary Constructor for use with Parcel
+    constructor(parcel: Parcel) : this(
+        parcel.readSerializable() as Int,
+        parcel.readString()!!,
+        parcel.readString(),
+        parcel.readByte() != 0.toByte(),
+        parcel.readString()!!,
+        parcel.readByte() != 0.toByte()
+    )
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(title)
+        parcel.writeString(details)
+        parcel.writeByte(if (autoNumber) 1 else 0)
+        parcel.writeString(tags)
+        parcel.writeByte(if (complete) 1 else 0)
+        parcel.writeValue(id)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<TaskEntity> {
+        override fun createFromParcel(parcel: Parcel): TaskEntity {
+            return TaskEntity(parcel)
+        }
+
+        override fun newArray(size: Int): Array<TaskEntity?> {
+            return arrayOfNulls(size)
+        }
     }
 }
