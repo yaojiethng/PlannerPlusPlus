@@ -20,6 +20,7 @@ class TaskAdapter(var recycler: RecyclerView) : RecyclerView.Adapter<TaskAdapter
     internal var tasks = ArrayList<TaskEntity>()
         internal set(tasks) {
             field = tasks
+            notifyDataSetChanged()
         }
     internal lateinit var itemClickListener: OnItemClickListener
     internal lateinit var checkBoxListener: CheckBoxListener

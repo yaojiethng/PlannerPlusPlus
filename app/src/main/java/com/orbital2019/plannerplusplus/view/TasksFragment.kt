@@ -47,20 +47,20 @@ class TasksFragment : Fragment() {
 
         // bind RecyclerViews to variables
         incompleteTasksRecyclerView = layout.findViewById(R.id.incomplete_tasks_recycler_view)
-        completedTasksRecyclerView = layout.findViewById(R.id.completed_tasks_recycler_view)
+//        completedTasksRecyclerView = layout.findViewById(R.id.completed_tasks_recycler_view)
 
         // LinearLayoutManager ensures that items are displayed linearly
         incompleteTasksRecyclerView.layoutManager = LinearLayoutManager(activity)
-        completedTasksRecyclerView.layoutManager = LinearLayoutManager(activity)
+//        completedTasksRecyclerView.layoutManager = LinearLayoutManager(activity)
 
         // If incompleteTasksRecyclerView will never change in size, set this to optimize
-        // incompleteTasksRecyclerView.setHasFixedSize(true)
+        incompleteTasksRecyclerView.setHasFixedSize(true)
 
         val incompleteTasksAdapter = TaskAdapter(incompleteTasksRecyclerView)
         incompleteTasksRecyclerView.adapter = incompleteTasksAdapter
 
-        val completedTasksAdapter = TaskAdapter(completedTasksRecyclerView)
-        completedTasksRecyclerView.adapter = completedTasksAdapter
+//        val completedTasksAdapter = TaskAdapter(completedTasksRecyclerView)
+//        completedTasksRecyclerView.adapter = completedTasksAdapter
 
         // links this viewModel to this fragment, which means:
         //  this ViewModel will only updateTask when this Fragment is in the foreground, and
@@ -68,15 +68,18 @@ class TasksFragment : Fragment() {
         tasksViewModel.getIncompleteTasks().observe(
             this,
             Observer<List<TaskEntity>> {
-                Log.d("OBSERVER_incomTASKS", "Change on IncompleteTasks")
+                Log.d(
+                    "OBSERVER_incomTASKS",
+                    "Change on IncompleteTasks with " + incompleteTasksAdapter.tasks.size + "Tasks"
+                )
                 incompleteTasksAdapter.tasks = it as ArrayList<TaskEntity>
             })
-        tasksViewModel.getCompletedTasks().observe(
-            this,
-            Observer<List<TaskEntity>> {
-                Log.d("OBSERVER_comTASKS", "TaskViewModel onChanged")
-                completedTasksAdapter.tasks = it as ArrayList<TaskEntity>
-            })
+//        tasksViewModel.getCompletedTasks().observe(
+//            this,
+//            Observer<List<TaskEntity>> {
+//                Log.d("OBSERVER_comTASKS", "TaskViewModel onChanged")
+//                completedTasksAdapter.tasks = it as ArrayList<TaskEntity>
+//            })
 
 
         // ItemTouchHelper makes RecyclerView swipe-able
