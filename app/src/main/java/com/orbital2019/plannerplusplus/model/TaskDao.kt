@@ -33,12 +33,18 @@ interface TaskDao {
     @Query("DELETE FROM task_table")
     fun deleteAllTasks()
 
-    @Query("SELECT * FROM task_table ORDER BY id DESC")
+    @Query("SELECT * FROM task_table ORDER BY complete ASC, id DESC")
     fun getAllTasks(): LiveData<List<TaskEntity>>
 
     @Query("SELECT * FROM task_table WHERE complete = 0 ORDER BY id DESC")
     fun getIncompleteTasks(): LiveData<List<TaskEntity>>
 
+    @Query("SELECT count(*) FROM task_table WHERE complete = 0")
+    fun countIncompleteTasks(): LiveData<Int>
+
     @Query("SELECT * FROM task_table WHERE complete = 1 ORDER BY id DESC")
     fun getCompletedTasks(): LiveData<List<TaskEntity>>
+
+    @Query("SELECT count(*) FROM task_table WHERE complete = 1")
+    fun countCompletedTasks(): LiveData<Int>
 }

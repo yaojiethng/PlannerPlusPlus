@@ -8,13 +8,15 @@ import androidx.lifecycle.LiveData
 import com.orbital2019.plannerplusplus.model.PlannerRepository
 import com.orbital2019.plannerplusplus.model.TaskEntity
 
-// avoids static Activity instance, allows passing of context without retaining a reference to an activity
+// Passing application as context avoids static Activity instance, allows passing of context without retaining a
+// reference to an activity. Useful as a ViewModel is supposed to outlast Activities.
 class TaskViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository: PlannerRepository =
         PlannerRepository(application)
-    private val incompleteTasks: LiveData<List<TaskEntity>> = repository.incompleteTasks
-    private val completedTasks: LiveData<List<TaskEntity>> = repository.completedTasks
+    private val allTasks: LiveData<List<TaskEntity>> = repository.allTasks
+    private val numIncompleteTasks: LiveData<Int> = repository.numIncompleteTasks
+    private val numCompletedTasks: LiveData<Int> = repository.numCompletedTasks
 
     fun insertTask(taskEntity: TaskEntity) {
         repository.insertTask(taskEntity)
@@ -43,11 +45,8 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
         repository.deleteAllTasks()
     }
 
-    fun getCompletedTasks(): LiveData<List<TaskEntity>> {
-        return completedTasks
+    fun getAllTasks(): LiveData<List<TaskEntity>> {
+        return allTasks
     }
 
-    fun getIncompleteTasks(): LiveData<List<TaskEntity>> {
-        return incompleteTasks
-    }
 }

@@ -18,9 +18,12 @@ internal class PlannerRepository(application: Application) : EventRepository, Ta
         AppDatabase.getInstance(application)
     }
     override var eventDao = database.eventDao()
-    override var taskDao: TaskDao = database.taskDao()
     internal var allEvents: LiveData<List<EventEntity>> = eventDao.getAllEvents()
-    internal var incompleteTasks: LiveData<List<TaskEntity>> = taskDao.getIncompleteTasks()
-    internal var completedTasks: LiveData<List<TaskEntity>> = taskDao.getCompletedTasks()
+
+    override var taskDao: TaskDao = database.taskDao()
+
+    internal var allTasks: LiveData<List<TaskEntity>> = taskDao.getAllTasks()
+    internal var numIncompleteTasks: LiveData<Int> = taskDao.countIncompleteTasks()
+    internal var numCompletedTasks: LiveData<Int> = taskDao.countCompletedTasks()
 }
 
