@@ -41,7 +41,7 @@ data class EventEntity(
 
 
     constructor(parcel: Parcel) : this(
-        id = parcel.readInt(),
+        id = parcel.readSerializable() as Int,
         title = parcel.readString()!!,
         eventStartTime = TiviTypeConverters.toOffsetDateTime(parcel.readString())!!,
         eventDuration = TiviTypeConverters.toOffsetDateTime(parcel.readString()),
@@ -62,7 +62,7 @@ data class EventEntity(
     ) : this(null, title, eventStartTime, eventDuration, details, repeated, followUp, tags)
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeValue(id)
+        parcel.writeSerializable(id)
         parcel.writeString(title)
         parcel.writeString(TiviTypeConverters.fromOffsetDateTime(eventStartTime))
         parcel.writeString(TiviTypeConverters.fromOffsetDateTime(eventDuration))

@@ -19,6 +19,7 @@ import com.orbital2019.plannerplusplus.R
 import com.orbital2019.plannerplusplus.model.entity.EventEntity
 import com.orbital2019.plannerplusplus.viewmodel.EventUpdater
 import org.threeten.bp.OffsetDateTime
+import org.threeten.bp.ZoneOffset
 
 const val EXTRA_SAVE_STATUS = "com.orbital2019.plannerplusplus.SAVE_STATUS"
 const val EXTRA_PARCEL_PLANNEREVENT = "com.orbital2019.plannerplusplus.PARCEL_PLANNEREVENT"
@@ -55,8 +56,6 @@ class AddEditEventActivity : AppCompatActivity() {
     }
 
     companion object {
-        // EventDataState class?
-
         fun newIntent(context: Context): Intent {
             return Intent(context, AddEditEventActivity::class.java)
         }
@@ -72,58 +71,68 @@ class AddEditEventActivity : AppCompatActivity() {
         if (intent.hasExtra(EXTRA_PARCEL_PLANNEREVENT)) {
             title = "Edit Note"
             val event: EventEntity = intent.getParcelableExtra(EXTRA_PARCEL_PLANNEREVENT)!!
-            eventId = event.id
-            editTextTitle.setText(event.title)
-            val dateTime = event.eventStartTime
-            editDate.updateDate(dateTime.dayOfMonth, dateTime.monthValue, dateTime.year)
-            // API support for deprecated methods in TimePicker
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                editTime.hour = dateTime.hour
-                editTime.minute = dateTime.minute
-            } else {
-                @Suppress("DEPRECATION")
-                editTime.currentHour = dateTime.hour
-                @Suppress("DEPRECATION")
-                editTime.currentMinute = dateTime.minute
-            }
-            switchRepeat.isChecked = event.repeated
-            switchFollowUp.isChecked = event.followUp
-            // todo: add in support for tags
-
+            bind(event)
         } else {
             title = "Add new Note"
         }
+    }
+
+    private fun bind(event: EventEntity) {
+        eventId = event.id
+        editTextTitle.setText(event.title)
+        val dateTime = event.eventStartTime
+        editDate.updateDate(dateTime.dayOfMonth, dateTime.monthValue, dateTime.year)
+        // API support for deprecated methods in TimePicker
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            editTime.hour = dateTime.hour
+            editTime.minute = dateTime.minute
+        } else {
+            @Suppress("DEPRECATION")
+            editTime.currentHour = dateTime.hour
+            @Suppress("DEPRECATION")
+            editTime.currentMinute = dateTime.minute
+        }
+        switchRepeat.isChecked = event.repeated
+        switchFollowUp.isChecked = event.followUp
+        // todo: add in support for tags
+        editTextDetails.setText(event.details)
+    }
+
+    private fun retrieve(): EventEntity {
+        val time = OffsetDateTime.of(
+            editDate.year,
+            editDate.month,
+            editDate.dayOfMonth,
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) editTime.hour else editTime.currentHour,
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) editTime.minute else editTime.currentMinute,
+            0,
+            0,
+            ZoneOffset.UTC
+        )
+        return EventEntity(
+            id = taskId,
+            title = editTextTitle.text.toString(),
+            eventStartTime = time,
+            eventDuration = time,
+            details = editTextDetails.text.toString(),
+            repeated = switchRepeat.isChecked,
+            followUp = switchFollowUp.isChecked,
+            tags = "" //todo: set up proper tag implementation
+        )
     }
 
     // todo: when go to next event save all entered data, when back put details back
     private fun saveEvent() {
 
         val title: String = editTextTitle.text.toString()
-        val details: String = editTextDetails.text.toString()
 
         // todo: decide on essential fields
         if (title.trim().isEmpty()) {
-            Toast.makeText(this, "Please insertEvent a title", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "NO TITLE!", Toast.LENGTH_SHORT).show()
             return
         }
 
-        val eventSave = EventEntity(
-            title,
-            // todo setup this.
-//            OffsetDateTime.of(
-//                editDate.year,
-//                editDate.month,
-//                editDate.dayOfMonth,
-//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) editTime.hour else editTime.currentHour,
-//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) editTime.minute else editTime.currentMinute
-//            ),
-            eventStartTime = OffsetDateTime.now()!!,
-            eventDuration = OffsetDateTime.now()!!,
-            details = details,
-            repeated = switchRepeat.isChecked,
-            followUp = switchFollowUp.isChecked,
-            tags = "" //todo: set up proper tag implementation
-        )
+        val eventSave = retrieve()
 
         // if event currently has no Id, it is a new event.
         if (eventId == null) {

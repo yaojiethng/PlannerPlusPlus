@@ -25,8 +25,11 @@
         </activity>
         <activity
                 android:name=".view.AddEditEventActivity"
+                android:label="AddEditEventActivity"
                 android:parentActivityName=".view.MainActivity"/>
-        <activity android:name=".view.AddEditTaskActivity"/>
+        <activity android:name=".view.AddEditTaskActivity"
+                  android:label="AddEditTaskActivity"
+                  android:parentActivityName=".view.MainActivity"/>
     </application>
 
 </manifest>

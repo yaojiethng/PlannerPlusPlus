@@ -188,11 +188,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
+        // todo debug wrong result code being passed
         if (requestCode == ADD_EVENT_REQUEST && resultCode == Activity.RESULT_OK) {
             Log.d("req code", requestCode.toString())
             Toast.makeText(this, data?.getStringExtra(EXTRA_SAVE_STATUS), Toast.LENGTH_SHORT).show()
-        } else if (/*requestCode == EDIT_EVENT_REQUEST && */resultCode == Activity.RESULT_OK) {
-            // todo debug requestCode not passed properly
+        } else if (requestCode == EDIT_EVENT_REQUEST && resultCode == Activity.RESULT_OK) {
             Log.d("req code", requestCode.toString())
             Toast.makeText(this, data?.getStringExtra(EXTRA_SAVE_STATUS), Toast.LENGTH_SHORT).show()
         } else {
