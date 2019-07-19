@@ -10,7 +10,9 @@ import android.os.Parcel
 import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.TypeConverter
 import org.threeten.bp.OffsetDateTime
+import org.threeten.bp.format.DateTimeFormatter
 
 // additional modifiers:
 // @Ignore to remove entries from the table
@@ -35,14 +37,14 @@ data class EventEntity(
     val repeated: Boolean = false,
     val followUp: Boolean = false,
     val tags: String = ""
-) : Parcelable, Taggable, Timable {
+) : Parcelable, Taggable {
 
 
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
         parcel.readString()!!,
-        Timable.TiviTypeConverters.toOffsetDateTime(parcel.readString()!!),
-        Timable.TiviTypeConverters.toOffsetDateTime(parcel.readString()!!),
+        TiviTypeConverters.toOffsetDateTime(parcel.readString()!!),
+        TiviTypeConverters.toOffsetDateTime(parcel.readString()!!),
         parcel.readString(),
         parcel.readByte() != 0.toByte(),
         parcel.readByte() != 0.toByte(),
@@ -61,8 +63,8 @@ data class EventEntity(
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(title)
-        parcel.writeString(Timable.TiviTypeConverters.fromOffsetDateTime(eventStartTime))
-        parcel.writeString(Timable.TiviTypeConverters.fromOffsetDateTime(eventDuration))
+        parcel.writeString(TiviTypeConverters.fromOffsetDateTime(eventStartTime))
+        parcel.writeString(TiviTypeConverters.fromOffsetDateTime(eventDuration))
         parcel.writeString(details)
         parcel.writeByte(if (repeated) 1 else 0)
         parcel.writeByte(if (followUp) 1 else 0)
@@ -81,6 +83,25 @@ data class EventEntity(
 
         override fun newArray(size: Int): Array<EventEntity?> {
             return arrayOfNulls(size)
+        }
+    }
+
+    // Type Converters from OffsetDateTime to String
+    object TiviTypeConverters {
+        private val formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME
+
+        @TypeConverter
+        @JvmStatic
+        fun toOffsetDateTime(value: String?): OffsetDateTime? {
+            return value?.let {
+                return formatter.parse(value, OffsetDateTime::from)
+            }
+        }
+
+        @TypeConverter
+        @JvmStatic
+        fun fromOffsetDateTime(date: OffsetDateTime?): String? {
+            return date?.format(formatter)
         }
     }
 

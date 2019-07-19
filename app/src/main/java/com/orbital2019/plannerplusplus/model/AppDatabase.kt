@@ -5,16 +5,18 @@ import android.os.AsyncTask
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.orbital2019.plannerplusplus.model.entity.EventEntity
 import com.orbital2019.plannerplusplus.model.entity.TaskEntity
-import org.threeten.bp.LocalDateTime
 
 @Database(
     entities = [EventEntity::class, TaskEntity::class],
     version = 5,
     exportSchema = false // todo: properly save schema
 )
+
+@TypeConverters(EventEntity.TiviTypeConverters::class)
 
 // class is called AppDatabase as this app should only have one instance of database for both events and tasks.
 abstract class AppDatabase : RoomDatabase() {
@@ -50,7 +52,7 @@ abstract class AppDatabase : RoomDatabase() {
             return INSTANCE!!
         }
 
-        // Generic name for CALLBACK
+        // CALLBACK that populates Db
         private val CALLBACK = object : RoomDatabase.Callback() {
             override fun onCreate(db: SupportSQLiteDatabase) {
                 super.onCreate(db)
@@ -69,27 +71,27 @@ abstract class AppDatabase : RoomDatabase() {
             }
 
             override fun doInBackground(vararg params: Void?): Void? {
-                eventDao.insert(
-                    EventEntity(
-                        "Test", LocalDateTime.now().toString(), null, true,
-                        followUp = true,
-                        tags = "Hi, Test"
-                    )
-                )
-                eventDao.insert(
-                    EventEntity(
-                        "Test2", LocalDateTime.now().toString(), null, true,
-                        followUp = false,
-                        tags = "Hi"
-                    )
-                )
-                eventDao.insert(
-                    EventEntity(
-                        "Test3", LocalDateTime.now().toString(), null, false,
-                        followUp = true,
-                        tags = "Test"
-                    )
-                )
+//                eventDao.insert(
+//                    EventEntity(
+//                        "Test", LocalDateTime.now().toString(), null, true,
+//                        followUp = true,
+//                        tags = "Hi, Test"
+//                    )
+//                )
+//                eventDao.insert(
+//                    EventEntity(
+//                        "Test2", LocalDateTime.now().toString(), null, true,
+//                        followUp = false,
+//                        tags = "Hi"
+//                    )
+//                )
+//                eventDao.insert(
+//                    EventEntity(
+//                        "Test3", LocalDateTime.now().toString(), null, false,
+//                        followUp = true,
+//                        tags = "Test"
+//                    )
+//                )
                 return null
             }
         }
