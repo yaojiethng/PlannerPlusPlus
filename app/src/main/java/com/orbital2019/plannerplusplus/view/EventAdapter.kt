@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.orbital2019.plannerplusplus.R
 import com.orbital2019.plannerplusplus.model.entity.EventEntity
+import org.threeten.bp.temporal.ChronoUnit
 
 class EventAdapter(var recycler: RecyclerView) : RecyclerView.Adapter<EventAdapter.EventHolder>() {
 
@@ -43,6 +44,8 @@ class EventAdapter(var recycler: RecyclerView) : RecyclerView.Adapter<EventAdapt
         val currentEventEntity: EventEntity = events[position]
         holder.textViewTitle.text = currentEventEntity.title
         holder.textViewDescription.text = currentEventEntity.details
+        holder.textViewDateTime.text = currentEventEntity.eventStartTime!!.truncatedTo(ChronoUnit.MINUTES).toString()
+
     }
 
     // this class holds the different views in our single view items
@@ -50,6 +53,7 @@ class EventAdapter(var recycler: RecyclerView) : RecyclerView.Adapter<EventAdapt
     inner class EventHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var textViewTitle: TextView = itemView.findViewById(R.id.text_view_event_title)
         var textViewDescription: TextView = itemView.findViewById(R.id.text_view_event_details)
+        var textViewDateTime: TextView = itemView.findViewById(R.id.text_view_event_datetime)
 
         init {
             // When card is called, pass the eventEntity in its position in the adapter to the listener

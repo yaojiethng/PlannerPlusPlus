@@ -28,4 +28,5 @@
     <string name="save_button_title">Save</string>
     <string name="favourite_button">Favourite button</string>
     <string name="completed_task_divider_header">Completed [%1$d]</string>
+    <string name="datetime_placeholder">Date@Time</string>
 </resources>
