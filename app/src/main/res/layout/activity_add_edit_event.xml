@@ -44,24 +44,6 @@
                 app:layout_constraintTop_toBottomOf="@id/edit_text_new_event_title"
                 app:layout_constraintEnd_toEndOf="@id/edit_text_new_event_title"
         />
-        <!-- todo: move timepicker and datepicker to separate individual dialogfragments -->
-        <DatePicker
-                android:id="@+id/date_picker_new_event"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:datePickerMode="calendar"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/date_dialog_button"
-                tools:ignore="UnusedAttribute"/>
-
-        <TimePicker
-                android:id="@+id/time_picker_new_event"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:timePickerMode="spinner"
-                app:layout_constraintStart_toStartOf="@+id/date_picker_new_event"
-                app:layout_constraintTop_toBottomOf="@+id/date_picker_new_event"
-                tools:ignore="UnusedAttribute"/>
 
         <!-- todo: add in repeat additional menu as a fragment with numberpicker and menu-->
         <androidx.appcompat.widget.SwitchCompat
@@ -71,7 +53,7 @@
                 android:text="Repeat"
                 android:layout_margin="16dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/time_picker_new_event"/>
+                app:layout_constraintTop_toBottomOf="@+id/date_dialog_button"/>
 
         <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/switch_followup_new_event"

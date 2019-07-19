@@ -1,10 +1,10 @@
 package com.orbital2019.plannerplusplus.view
 
 import android.app.Activity
+import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -28,7 +28,8 @@ const val EXTRA_SAVE_STATUS = "com.orbital2019.plannerplusplus.SAVE_STATUS"
 const val EXTRA_PARCEL_PLANNEREVENT = "com.orbital2019.plannerplusplus.PARCEL_PLANNEREVENT"
 
 // todo: de-clutter and modularize some of the methods in AddEditEventActivity, particularly the global constants (write bind and retreive methods)
-class AddEditEventActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetListener {
+class AddEditEventActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetListener,
+    DatePickerDialog.OnDateSetListener {
 
 
     private val eventUpdater: EventUpdater by lazy {
@@ -49,14 +50,6 @@ class AddEditEventActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetList
     private var time: LocalTime? = null
     private val editTimeButton: Button by lazy {
         findViewById<Button>(R.id.time_dialog_button)
-    }
-
-    // todo: editDate and editTime as Dialogs
-    private val editDate: DatePicker by lazy {
-        findViewById<DatePicker>(R.id.date_picker_new_event)
-    }
-    private val editTime: TimePicker by lazy {
-        findViewById<TimePicker>(R.id.time_picker_new_event)
     }
 
     private val switchRepeat: SwitchCompat by lazy {
@@ -83,8 +76,12 @@ class AddEditEventActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetList
         supportActionBar!!.setHomeAsUpIndicator(R.drawable.ic_close_black_24dp)
 
         // bind Buttons to DialogFragments
+        date_dialog_button.setOnClickListener {
+            val datePicker: DialogFragment = DatePickerFragment(date)
+            datePicker.show(supportFragmentManager, "Date_Picker")
+        }
         time_dialog_button.setOnClickListener {
-            var timePicker: DialogFragment = TimePickerFragment()
+            val timePicker: DialogFragment = TimePickerFragment(time)
             timePicker.show(supportFragmentManager, "Time_Picker")
         }
 
@@ -105,6 +102,11 @@ class AddEditEventActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetList
         editTimeButton.text = time!!.format(ISO_LOCAL_TIME)
     }
 
+    override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
+        date = LocalDate.of(year, month + 1, dayOfMonth)
+        editDateButton.text = date!!.format(ISO_LOCAL_DATE)
+    }
+
     private fun bind(event: EventEntity) {
         val dateTime = event.eventStartTime
 
@@ -117,18 +119,6 @@ class AddEditEventActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetList
         date = LocalDate.of(dateTime.year, dateTime.month, dateTime.dayOfMonth)
         date_dialog_button.text = date!!.format(ISO_LOCAL_DATE)
 
-        editDate.updateDate(dateTime.year, dateTime.monthValue - 1, dateTime.dayOfMonth)
-        // API support for deprecated methods in TimePicker
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            editTime.hour = dateTime.hour
-            editTime.minute = dateTime.minute
-        } else {
-            @Suppress("DEPRECATION")
-            editTime.currentHour = dateTime.hour
-            @Suppress("DEPRECATION")
-            editTime.currentMinute = dateTime.minute
-        }
-
         switchRepeat.isChecked = event.repeated
         switchFollowUp.isChecked = event.followUp
         // todo: add in support for tags
@@ -136,23 +126,16 @@ class AddEditEventActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetList
     }
 
     private fun retrieve(): EventEntity {
-        val time = OffsetDateTime.of(
-            editDate.year,
-            editDate.month + 1,
-            editDate.dayOfMonth,
-            @Suppress("DEPRECATION")
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) editTime.hour else editTime.currentHour,
-            @Suppress("DEPRECATION")
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) editTime.minute else editTime.currentMinute,
-            0,
-            0,
+        val startDateTime = OffsetDateTime.of(
+            date ?: LocalDate.now(),
+            time ?: LocalTime.now(),
             OffsetDateTime.now().offset
         )
         return EventEntity(
             id = eventId,
             title = editTextTitle.text.toString(),
-            eventStartTime = time,
-            eventDuration = time,
+            eventStartTime = startDateTime,
+            eventDuration = startDateTime,
             details = editTextDetails.text.toString(),
             repeated = switchRepeat.isChecked,
             followUp = switchFollowUp.isChecked,
