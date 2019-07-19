@@ -28,11 +28,8 @@ const val ADD_TASK_REQUEST = 3
 // edit task with existing data on the page
 const val EDIT_TASK_REQUEST = 4
 
-// todo: de-clutter and modularize some of the methods in MainActivity
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
     PopupMenu.OnMenuItemClickListener {
-
-
 
     // lateinit means variable is initialized later
     private val drawerLayout: DrawerLayout by lazy {

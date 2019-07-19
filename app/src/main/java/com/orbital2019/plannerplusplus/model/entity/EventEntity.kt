@@ -1,7 +1,5 @@
 /**
  * Entity representing one Event on the calendar.
- * todo: https://www.sqlite.org/foreignkeys.html
- * todo: https://medium.com/androiddevelopers/room-time-2b4cf9672b98
  * todo: https://medium.com/androiddevelopers/understanding-migrations-with-room-f01e04b07929
  */
 package com.orbital2019.plannerplusplus.model.entity

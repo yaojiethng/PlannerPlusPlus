@@ -27,7 +27,6 @@ import org.threeten.bp.format.DateTimeFormatter.ISO_LOCAL_TIME
 const val EXTRA_SAVE_STATUS = "com.orbital2019.plannerplusplus.SAVE_STATUS"
 const val EXTRA_PARCEL_PLANNEREVENT = "com.orbital2019.plannerplusplus.PARCEL_PLANNEREVENT"
 
-// todo: de-clutter and modularize some of the methods in AddEditEventActivity, particularly the global constants (write bind and retreive methods)
 class AddEditEventActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetListener,
     DatePickerDialog.OnDateSetListener {
 

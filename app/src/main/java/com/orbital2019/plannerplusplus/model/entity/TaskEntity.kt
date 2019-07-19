@@ -6,6 +6,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 // todo: decide on database parameters
+// todo: add subtasks based on https://www.sqlite.org/foreignkeys.html
 // additional modifiers:
 // @Ignore to remove entries from the table
 // @ColumnInfo(name = "") to set custom column names
