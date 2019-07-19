@@ -27,4 +27,6 @@ interface EventDao {
     // can use object type LiveData<List<EventEntity>> to get an observable object
     @Query("SELECT * FROM event_table ORDER BY id DESC")
     fun getAllEvents(): LiveData<List<EventEntity>>
+
+    // to sort by datetime: "SELECT * FROM users ORDER BY datetime(joined_date)"
 }

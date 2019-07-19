@@ -10,10 +10,15 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.orbital2019.plannerplusplus.model.entity.EventEntity
 import com.orbital2019.plannerplusplus.model.entity.TaskEntity
 
+
+// todo:
+//  1. properly save schema
+//  2. Add database migration support
+
 @Database(
     entities = [EventEntity::class, TaskEntity::class],
-    version = 5,
-    exportSchema = false // todo: properly save schema
+    version = 6,
+    exportSchema = false
 )
 
 @TypeConverters(EventEntity.TiviTypeConverters::class)
@@ -45,14 +50,13 @@ abstract class AppDatabase : RoomDatabase() {
                         // when version number is incremented start with an empty database
                         .fallbackToDestructiveMigration()
                         // populates database with samples when it is first created
-                        .addCallback(CALLBACK)
                         .build()
                 }
             }
             return INSTANCE!!
         }
 
-        // CALLBACK that populates Db
+        // CALLBACK that populates Db when called with addCallBack
         private val CALLBACK = object : RoomDatabase.Callback() {
             override fun onCreate(db: SupportSQLiteDatabase) {
                 super.onCreate(db)
