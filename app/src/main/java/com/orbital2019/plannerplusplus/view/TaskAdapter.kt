@@ -18,8 +18,8 @@ import com.orbital2019.plannerplusplus.view.recyclerview.BaseViewHolder
 
 class TaskAdapter(var recycler: RecyclerView) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
-    private val TYPE_HEADER: Int = 0
-    private val TYPE_ITEM: Int = 1
+//    private val TYPE_HEADER: Int = 0
+//    private val TYPE_ITEM: Int = 1
 
     // to prevent any null checks, init the list first
     internal var tasks = ArrayList<TaskEntity>()
@@ -95,7 +95,7 @@ class TaskAdapter(var recycler: RecyclerView) : RecyclerView.Adapter<TaskAdapter
         override fun bind(item: TaskEntity) {
             textViewTitle.text = item.title
             textViewDescription.text = item.details
-            checkBox.isChecked = item.complete
+            checkBox.isChecked = item.isComplete
         }
     }
 

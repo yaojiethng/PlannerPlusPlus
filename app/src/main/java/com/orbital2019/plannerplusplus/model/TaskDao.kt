@@ -18,10 +18,10 @@ interface TaskDao {
     @Update
     fun update(taskEntity: TaskEntity)
 
-    @Query("UPDATE task_table SET complete = 1 WHERE id = :id")
+    @Query("UPDATE task_table SET isComplete = 1 WHERE id = :id")
     fun setComplete(id: Int)
 
-    @Query("UPDATE task_table SET complete = 0 WHERE id = :id")
+    @Query("UPDATE task_table SET isComplete = 0 WHERE id = :id")
     fun setIncomplete(id: Int)
 
     @Delete
@@ -34,18 +34,18 @@ interface TaskDao {
     @Query("DELETE FROM task_table")
     fun deleteAllTasks()
 
-    @Query("SELECT * FROM task_table ORDER BY complete ASC, id DESC")
+    @Query("SELECT * FROM task_table ORDER BY isComplete ASC, id DESC")
     fun getAllTasks(): LiveData<List<TaskEntity>>
 
-    @Query("SELECT * FROM task_table WHERE complete = 0 ORDER BY id DESC")
+    @Query("SELECT * FROM task_table WHERE isComplete = 0 ORDER BY id DESC")
     fun getIncompleteTasks(): LiveData<List<TaskEntity>>
 
-    @Query("SELECT count(*) FROM task_table WHERE complete = 0")
+    @Query("SELECT count(*) FROM task_table WHERE isComplete = 0")
     fun countIncompleteTasks(): LiveData<Int>
 
-    @Query("SELECT * FROM task_table WHERE complete = 1 ORDER BY id DESC")
+    @Query("SELECT * FROM task_table WHERE isComplete = 1 ORDER BY id DESC")
     fun getCompletedTasks(): LiveData<List<TaskEntity>>
 
-    @Query("SELECT count(*) FROM task_table WHERE complete = 1")
+    @Query("SELECT count(*) FROM task_table WHERE isComplete = 1")
     fun countCompletedTasks(): LiveData<Int>
 }

@@ -38,55 +38,60 @@ class AddEditTaskActivity : AppCompatActivity() {
     private val editTextDetails: EditText by lazy {
         findViewById<EditText>(R.id.edit_text_details)
     }
+    private var isComplete: Boolean? = null
 
     companion object {
-        // TaskDataState class?
-
         fun newIntent(context: Context): Intent {
             return Intent(context, AddEditTaskActivity::class.java)
         }
     }
 
-    @Override
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_edit_task)
 
         supportActionBar!!.setHomeAsUpIndicator(R.drawable.ic_close_black_24dp)
 
-        // intent has a PlannerTask Parcel, which means it is an edit task
+        // if intent contains a PlannerTask Parcel, it is an edit task
         if (intent.hasExtra(EXTRA_PARCEL_PLANNERTASK)) {
             title = "Edit Task"
             val task: TaskEntity = intent.getParcelableExtra(EXTRA_PARCEL_PLANNERTASK)!!
-            taskId = task.id
-            editTextTitle.setText(task.title)
-            switchNumberTasks.isChecked = task.autoNumber
-            // todo: add in support for tags
+            bind(task)
 
         } else {
             title = "Add new Task"
         }
     }
 
+    private fun bind(task: TaskEntity) {
+        taskId = task.id
+        editTextTitle.setText(task.title)
+        editTextDetails.setText(task.details)
+        switchNumberTasks.isChecked = task.autoNumber
+        isComplete = task.isComplete
+    }
+
+    private fun retrieve(): TaskEntity {
+        return TaskEntity(
+            taskId,
+            editTextTitle.text.toString(),
+            editTextDetails.text.toString(),
+            switchNumberTasks.isChecked,
+            tags = "", // todo: set up proper tag interaction
+            isComplete = isComplete ?: false
+        )
+    }
+
     // todo: when go to next task save all entered data, when back put details back
     private fun saveTask() {
 
-        val title: String = editTextTitle.text.toString()
-        val details: String = editTextDetails.text.toString()
-
         // todo: decide on essential fields
-        if (title.trim().isEmpty()) {
+        if (editTextTitle.text.isEmpty()) {
             Toast.makeText(this, "Please insertEvent a title", Toast.LENGTH_SHORT).show()
             return
         }
 
-        val taskSave = TaskEntity(
-            title,
-            details,
-            switchNumberTasks.isChecked,
-            tags = "", // todo: set up proper tag interaction
-            complete = false
-        )
+        val taskSave = retrieve()
 
         // if task currently has no Id, it is a new task.
         if (taskId == null) {

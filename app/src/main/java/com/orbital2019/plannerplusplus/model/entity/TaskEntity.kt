@@ -12,45 +12,41 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "task_table")
 data class TaskEntity(
+    @PrimaryKey(autoGenerate = true)
+    var id: Int? = null,
     var title: String = "",
     var details: String? = "",
     var autoNumber: Boolean = false,
     var tags: String = "",
-    var complete: Boolean = false
+    var isComplete: Boolean = false
 ) : Parcelable, Taggable {
 
-    @PrimaryKey(autoGenerate = true)
-    var id: Int? = null
+    // Secondary Constructor for use with Parcel
+    constructor(parcel: Parcel) : this(
+        id = parcel.readSerializable() as Int,
+        title = parcel.readString()!!,
+        details = parcel.readString(),
+        autoNumber = parcel.readByte() != 0.toByte(),
+        tags = parcel.readString()!!,
+        isComplete = parcel.readByte() != 0.toByte()
+    )
 
     // Secondary Constructor for use with new Tasks
     constructor(
-        id: Int,
         title: String = "",
         details: String? = "",
         autoNumber: Boolean = false,
         tags: String = "",
         complete: Boolean = false
-    ) : this(title, details, autoNumber, tags, complete) {
-        this.id = id
-    }
-
-    // Secondary Constructor for use with Parcel
-    constructor(parcel: Parcel) : this(
-        parcel.readSerializable() as Int,
-        parcel.readString()!!,
-        parcel.readString(),
-        parcel.readByte() != 0.toByte(),
-        parcel.readString()!!,
-        parcel.readByte() != 0.toByte()
-    )
+    ) : this(null, title, details, autoNumber, tags, complete)
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeSerializable(id)
         parcel.writeString(title)
         parcel.writeString(details)
         parcel.writeByte(if (autoNumber) 1 else 0)
         parcel.writeString(tags)
-        parcel.writeByte(if (complete) 1 else 0)
-        parcel.writeValue(id)
+        parcel.writeByte(if (isComplete) 1 else 0)
     }
 
     override fun describeContents(): Int {

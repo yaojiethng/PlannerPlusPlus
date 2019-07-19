@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.orbital2019.plannerplusplus.R
 import com.orbital2019.plannerplusplus.model.entity.EventEntity
-import org.threeten.bp.temporal.ChronoUnit
+import org.threeten.bp.format.DateTimeFormatter
 
 class EventAdapter(var recycler: RecyclerView) : RecyclerView.Adapter<EventAdapter.EventHolder>() {
 
@@ -44,7 +44,7 @@ class EventAdapter(var recycler: RecyclerView) : RecyclerView.Adapter<EventAdapt
         val currentEventEntity: EventEntity = events[position]
         holder.textViewTitle.text = currentEventEntity.title
         holder.textViewDescription.text = currentEventEntity.details
-        holder.textViewDateTime.text = currentEventEntity.eventStartTime!!.truncatedTo(ChronoUnit.MINUTES).toString()
+        holder.textViewDateTime.text = currentEventEntity.eventStartTime!!.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
 
     }
 

@@ -30,7 +30,7 @@ data class EventEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int? = null,
     val title: String = "",
-    val eventStartTime: OffsetDateTime? = null,
+    val eventStartTime: OffsetDateTime = OffsetDateTime.now(),
     val eventDuration: OffsetDateTime? = eventStartTime,
     //todo: implement duration as an end time, within the same day as start time
     val details: String? = "",
@@ -41,14 +41,14 @@ data class EventEntity(
 
 
     constructor(parcel: Parcel) : this(
-        parcel.readInt(),
-        parcel.readString()!!,
-        TiviTypeConverters.toOffsetDateTime(parcel.readString()!!),
-        TiviTypeConverters.toOffsetDateTime(parcel.readString()!!),
-        parcel.readString(),
-        parcel.readByte() != 0.toByte(),
-        parcel.readByte() != 0.toByte(),
-        parcel.readString()!!
+        id = parcel.readInt(),
+        title = parcel.readString()!!,
+        eventStartTime = TiviTypeConverters.toOffsetDateTime(parcel.readString())!!,
+        eventDuration = TiviTypeConverters.toOffsetDateTime(parcel.readString()),
+        details = parcel.readString(),
+        repeated = parcel.readByte() != 0.toByte(),
+        followUp = parcel.readByte() != 0.toByte(),
+        tags = parcel.readString()!!
     )
 
     constructor(
@@ -62,6 +62,7 @@ data class EventEntity(
     ) : this(null, title, eventStartTime, eventDuration, details, repeated, followUp, tags)
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeValue(id)
         parcel.writeString(title)
         parcel.writeString(TiviTypeConverters.fromOffsetDateTime(eventStartTime))
         parcel.writeString(TiviTypeConverters.fromOffsetDateTime(eventDuration))
@@ -69,7 +70,6 @@ data class EventEntity(
         parcel.writeByte(if (repeated) 1 else 0)
         parcel.writeByte(if (followUp) 1 else 0)
         parcel.writeString(tags)
-        parcel.writeValue(id)
     }
 
     override fun describeContents(): Int {

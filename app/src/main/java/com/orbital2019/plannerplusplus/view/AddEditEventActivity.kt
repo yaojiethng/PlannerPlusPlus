@@ -16,7 +16,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import androidx.lifecycle.ViewModelProviders
 import com.orbital2019.plannerplusplus.R
-import com.orbital2019.plannerplusplus.helper.DateTimeData
 import com.orbital2019.plannerplusplus.model.entity.EventEntity
 import com.orbital2019.plannerplusplus.viewmodel.EventUpdater
 import org.threeten.bp.OffsetDateTime
@@ -75,8 +74,8 @@ class AddEditEventActivity : AppCompatActivity() {
             val event: EventEntity = intent.getParcelableExtra(EXTRA_PARCEL_PLANNEREVENT)!!
             eventId = event.id
             editTextTitle.setText(event.title)
-            val dateTime = DateTimeData(event.eventStartTime!!.toLocalDateTime())
-            editDate.updateDate(dateTime.dayOfMonth, dateTime.month, dateTime.year)
+            val dateTime = event.eventStartTime
+            editDate.updateDate(dateTime.dayOfMonth, dateTime.monthValue, dateTime.year)
             // API support for deprecated methods in TimePicker
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 editTime.hour = dateTime.hour
@@ -118,8 +117,8 @@ class AddEditEventActivity : AppCompatActivity() {
 //                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) editTime.hour else editTime.currentHour,
 //                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) editTime.minute else editTime.currentMinute
 //            ),
-            eventStartTime = OffsetDateTime.now(),
-            eventDuration = OffsetDateTime.now(),
+            eventStartTime = OffsetDateTime.now()!!,
+            eventDuration = OffsetDateTime.now()!!,
             details = details,
             repeated = switchRepeat.isChecked,
             followUp = switchFollowUp.isChecked,

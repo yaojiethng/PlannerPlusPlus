@@ -85,6 +85,7 @@ class EventsFragment : Fragment() {
 
         adapter.listener = object : EventAdapter.OnItemClickListener {
             override fun onItemClick(event: EventEntity) {
+                Log.d("EVENTSFRAGMENT", "item clicked.")
                 // AddEditEventActivity::class.java is not used, but it is passed back when ActivityForResult terminates
                 val intent = Intent(activity, AddEditEventActivity::class.java)
                 intent.putExtra(EXTRA_PARCEL_PLANNEREVENT, event)
