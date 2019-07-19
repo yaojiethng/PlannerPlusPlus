@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.EditText
@@ -18,7 +17,6 @@ import com.orbital2019.plannerplusplus.viewmodel.TaskUpdater
 
 const val EXTRA_PARCEL_PLANNERTASK = "com.orbital2019.plannerplusplus.PARCEL_PLANNERTASK"
 
-// todo: de-clutter and modularize some of the methods in AddEditTaskActivity, particularly the global constants
 class AddEditTaskActivity : AppCompatActivity() {
 
 
@@ -111,9 +109,7 @@ class AddEditTaskActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-
         menuInflater.inflate(R.menu.add_task_menu, menu)
-        // true shows the menu and false hides it
         return true
     }
 
@@ -121,7 +117,6 @@ class AddEditTaskActivity : AppCompatActivity() {
 
         return when (item!!.itemId) {
             R.id.save_task -> {
-                Log.i("Save clicked", "SAVE CLICKED IN ADD_EDIT_TASK")
                 saveTask()
                 true
             }

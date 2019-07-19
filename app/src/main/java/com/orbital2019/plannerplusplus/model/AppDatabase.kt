@@ -14,6 +14,7 @@ import com.orbital2019.plannerplusplus.model.entity.TaskEntity
 // todo:
 //  1. properly save schema
 //  2. Add database migration support
+//  3. Add proper callback support and tests
 
 @Database(
     entities = [EventEntity::class, TaskEntity::class],
@@ -62,7 +63,6 @@ abstract class AppDatabase : RoomDatabase() {
                 super.onCreate(db)
                 PopulateDbAsyncTask(INSTANCE!!)
                     .execute()
-                //db.execSQL("CREATE TRIGGER ...")
             }
         }
 
@@ -75,27 +75,6 @@ abstract class AppDatabase : RoomDatabase() {
             }
 
             override fun doInBackground(vararg params: Void?): Void? {
-//                eventDao.insert(
-//                    EventEntity(
-//                        "Test", LocalDateTime.now().toString(), null, true,
-//                        followUp = true,
-//                        tags = "Hi, Test"
-//                    )
-//                )
-//                eventDao.insert(
-//                    EventEntity(
-//                        "Test2", LocalDateTime.now().toString(), null, true,
-//                        followUp = false,
-//                        tags = "Hi"
-//                    )
-//                )
-//                eventDao.insert(
-//                    EventEntity(
-//                        "Test3", LocalDateTime.now().toString(), null, false,
-//                        followUp = true,
-//                        tags = "Test"
-//                    )
-//                )
                 return null
             }
         }
