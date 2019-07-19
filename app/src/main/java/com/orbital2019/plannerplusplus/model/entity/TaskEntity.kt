@@ -13,7 +13,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "task_table")
 data class TaskEntity(
     @PrimaryKey(autoGenerate = true)
-    var id: Int? = null,
+    var id: Long? = null,
     var title: String = "",
     var details: String? = "",
     var autoNumber: Boolean = false,
@@ -23,7 +23,7 @@ data class TaskEntity(
 
     // Secondary Constructor for use with Parcel
     constructor(parcel: Parcel) : this(
-        id = parcel.readSerializable() as Int,
+        id = parcel.readSerializable() as Long,
         title = parcel.readString()!!,
         details = parcel.readString(),
         autoNumber = parcel.readByte() != 0.toByte(),

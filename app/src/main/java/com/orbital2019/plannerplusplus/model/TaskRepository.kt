@@ -39,7 +39,7 @@ interface TaskRepository {
     }
 
     fun setTaskComplete(taskEntity: TaskEntity) {
-        val id: Int = taskEntity.id!!
+        val id: Long = taskEntity.id!!
         object : DaoAsyncProcessor<Unit>(null) {
             override fun doAsync() {
                 taskDao.setComplete(id)
@@ -48,7 +48,7 @@ interface TaskRepository {
     }
 
     fun setTaskIncomplete(taskEntity: TaskEntity) {
-        val id: Int = taskEntity.id!!
+        val id: Long = taskEntity.id!!
         object : DaoAsyncProcessor<Unit>(null) {
             override fun doAsync() {
                 taskDao.setIncomplete(id)

@@ -44,7 +44,7 @@ class EventAdapter(var recycler: RecyclerView) : RecyclerView.Adapter<EventAdapt
         val currentEventEntity: EventEntity = events[position]
         holder.textViewTitle.text = currentEventEntity.title
         holder.textViewDescription.text = currentEventEntity.details
-        holder.textViewDateTime.text = currentEventEntity.eventStartTime!!.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+        holder.textViewDateTime.text = currentEventEntity.eventStartTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
 
     }
 

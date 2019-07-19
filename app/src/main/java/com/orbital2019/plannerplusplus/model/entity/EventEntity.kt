@@ -28,23 +28,24 @@ import org.threeten.bp.format.DateTimeFormatter
 @Entity(tableName = "event_table")
 data class EventEntity(
     @PrimaryKey(autoGenerate = true)
-    val id: Int? = null,
-    val title: String = "",
-    val eventStartTime: OffsetDateTime = OffsetDateTime.now(),
-    val eventDuration: OffsetDateTime? = eventStartTime,
+    var id: Long? = null,
+    var title: String = "",
+    var eventStartTime: OffsetDateTime = OffsetDateTime.now(),
+    var eventDuration: OffsetDateTime? = eventStartTime,
     //todo: implement duration as an end time, within the same day as start time
-    val details: String? = "",
-    val repeated: Boolean = false,
-    val followUp: Boolean = false,
-    val tags: String = ""
+    var details: String? = "",
+    var repeated: Boolean = false,
+    var followUp: Boolean = false,
+    var tags: String = ""
 ) : Parcelable, Taggable {
 
 
+
     constructor(parcel: Parcel) : this(
-        id = parcel.readSerializable() as Int,
+        id = parcel.readSerializable() as Long,
         title = parcel.readString()!!,
         eventStartTime = TiviTypeConverters.toOffsetDateTime(parcel.readString())!!,
-        eventDuration = TiviTypeConverters.toOffsetDateTime(parcel.readString()),
+        eventDuration = TiviTypeConverters.toOffsetDateTime(parcel.readString())!!,
         details = parcel.readString(),
         repeated = parcel.readByte() != 0.toByte(),
         followUp = parcel.readByte() != 0.toByte(),

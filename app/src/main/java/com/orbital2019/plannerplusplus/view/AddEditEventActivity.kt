@@ -19,7 +19,6 @@ import com.orbital2019.plannerplusplus.R
 import com.orbital2019.plannerplusplus.model.entity.EventEntity
 import com.orbital2019.plannerplusplus.viewmodel.EventUpdater
 import org.threeten.bp.OffsetDateTime
-import org.threeten.bp.ZoneOffset
 
 const val EXTRA_SAVE_STATUS = "com.orbital2019.plannerplusplus.SAVE_STATUS"
 const val EXTRA_PARCEL_PLANNEREVENT = "com.orbital2019.plannerplusplus.PARCEL_PLANNEREVENT"
@@ -33,7 +32,7 @@ class AddEditEventActivity : AppCompatActivity() {
     }
 
     // Id is null by default
-    private var eventId: Int? = null
+    private var eventId: Long? = null
     private val editTextTitle: EditText by lazy {
         findViewById<EditText>(R.id.edit_text_new_event_title)
     }
@@ -81,7 +80,7 @@ class AddEditEventActivity : AppCompatActivity() {
         eventId = event.id
         editTextTitle.setText(event.title)
         val dateTime = event.eventStartTime
-        editDate.updateDate(dateTime.dayOfMonth, dateTime.monthValue, dateTime.year)
+        editDate.updateDate(dateTime.dayOfMonth, dateTime.monthValue - 1, dateTime.year)
         // API support for deprecated methods in TimePicker
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             editTime.hour = dateTime.hour
@@ -101,16 +100,18 @@ class AddEditEventActivity : AppCompatActivity() {
     private fun retrieve(): EventEntity {
         val time = OffsetDateTime.of(
             editDate.year,
-            editDate.month,
+            editDate.month + 1,
             editDate.dayOfMonth,
+            @Suppress("DEPRECATION")
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) editTime.hour else editTime.currentHour,
+            @Suppress("DEPRECATION")
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) editTime.minute else editTime.currentMinute,
             0,
             0,
-            ZoneOffset.UTC
+            OffsetDateTime.now().offset
         )
         return EventEntity(
-            id = taskId,
+            id = eventId,
             title = editTextTitle.text.toString(),
             eventStartTime = time,
             eventDuration = time,
@@ -136,7 +137,7 @@ class AddEditEventActivity : AppCompatActivity() {
 
         // if event currently has no Id, it is a new event.
         if (eventId == null) {
-            Log.d("Save clicked", "SAVE_I")
+            Log.d("Save clicked", "EVENT INSERTED WITH ID $eventId")
             eventUpdater.insertEvent(eventSave)
             // current implementation uses an intent to pass back the result of saveEvent
             setResult(
@@ -145,7 +146,7 @@ class AddEditEventActivity : AppCompatActivity() {
             finish()
         } else {
             eventUpdater.updateEvent(eventSave)
-            Log.d("Save clicked", "SAVE_D")
+            Log.d("Save clicked", "EVENT UPDATED WITH ID $eventId")
             setResult(
                 Activity.RESULT_OK, Intent().putExtra(EXTRA_SAVE_STATUS, "SUCCESSFULLY UPDATED")
             )

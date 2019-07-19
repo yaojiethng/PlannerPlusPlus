@@ -19,10 +19,10 @@ interface TaskDao {
     fun update(taskEntity: TaskEntity)
 
     @Query("UPDATE task_table SET isComplete = 1 WHERE id = :id")
-    fun setComplete(id: Int)
+    fun setComplete(id: Long)
 
     @Query("UPDATE task_table SET isComplete = 0 WHERE id = :id")
-    fun setIncomplete(id: Int)
+    fun setIncomplete(id: Long)
 
     @Delete
     fun delete(taskEntity: TaskEntity)

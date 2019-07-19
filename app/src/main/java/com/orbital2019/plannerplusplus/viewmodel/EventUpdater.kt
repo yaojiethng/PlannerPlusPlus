@@ -19,8 +19,4 @@ class EventUpdater(application: Application) : AndroidViewModel(application) {
     fun updateEvent(event: EventEntity) {
         repository.updateEvent(event)
     }
-
-    fun deleteEvent(eventEntity: EventEntity) {
-        repository.deleteEvent(eventEntity)
-    }
 }
