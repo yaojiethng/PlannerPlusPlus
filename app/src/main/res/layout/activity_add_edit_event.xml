@@ -48,20 +48,22 @@
         <!-- todo: add in repeat additional menu as a fragment with numberpicker and menu-->
         <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/switch_repeat_new_event"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Repeat"
+                android:textAlignment="viewStart"
                 android:layout_margin="16dp"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/date_dialog_button"/>
 
         <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/switch_followup_new_event"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Require Follow-up"
-                app:layout_constraintStart_toStartOf="parent"
+                android:textAlignment="viewStart"
                 android:layout_margin="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/switch_repeat_new_event"/>
 
         <!-- todo: change to text box?-->
