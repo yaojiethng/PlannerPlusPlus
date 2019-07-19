@@ -80,7 +80,7 @@ class AddEditEventActivity : AppCompatActivity() {
         eventId = event.id
         editTextTitle.setText(event.title)
         val dateTime = event.eventStartTime
-        editDate.updateDate(dateTime.dayOfMonth, dateTime.monthValue - 1, dateTime.year)
+        editDate.updateDate(dateTime.year, dateTime.monthValue - 1, dateTime.dayOfMonth)
         // API support for deprecated methods in TimePicker
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             editTime.hour = dateTime.hour
