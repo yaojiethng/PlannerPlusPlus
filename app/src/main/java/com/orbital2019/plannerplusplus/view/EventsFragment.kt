@@ -49,13 +49,11 @@ class EventsFragment : Fragment() {
         val adapter = EventAdapter(recyclerView)
         recyclerView.adapter = adapter
 
-        Log.d("FUN_CALL", "onCreateView called for class EventsFragment")
-
         // links this viewModel to this fragment, which means:
         //  this ViewModel will only updateEvent when this Fragment is in the foreground, and
         //  when this Fragment is closed, so will the ViewModel.
         eventsViewModel.getAllEvents().observe(
-            this,
+            viewLifecycleOwner,
             Observer<List<EventEntity>> {
                 Log.d("ONCHANGED", "EventViewModel onChanged")
                 adapter.events = it as ArrayList<EventEntity>

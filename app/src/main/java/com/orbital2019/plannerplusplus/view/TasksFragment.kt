@@ -38,6 +38,11 @@ class TasksFragment : Fragment() {
         }
     }
 
+    /**
+     * onCreateView is called when the view for this fragment is created.
+     * In this method, we bind the layout to the view of this fragment, and bind the Adapter to its RecyclerView.
+     * LiveData gets assigned a observer which updates the adapter when LiveData is changed.
+     */
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         // set layout associated with this class
@@ -54,11 +59,11 @@ class TasksFragment : Fragment() {
         val tasksAdapter = TaskAdapter(tasksRecyclerView)
         tasksRecyclerView.adapter = tasksAdapter
 
-        // links this viewModel to this fragment, which means:
-        //  this ViewModel will only updateTask when this Fragment is in the foreground, and
-        //  when this Fragment is closed, so will the ViewModel.
+        // Links tasksViewModel to the view of TasksFragment, which means:
+        // this ViewModel will only updateTask when this Fragment is in the foreground.
+        // viewLifeCycleOwner is the owner, which closes the observer when the view is destroyed.
         tasksViewModel.getAllTasks().observe(
-            this,
+            viewLifecycleOwner,
             Observer<List<TaskEntity>> {
                 // overriding onChanged for LiveData<List<TaskEntity>>> Observer
                 Log.d(
