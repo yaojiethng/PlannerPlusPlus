@@ -1,5 +1,6 @@
 package com.orbital2019.plannerplusplus.view.ui
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
@@ -16,6 +17,8 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProviders
 import com.orbital2019.plannerplusplus.R
 import com.orbital2019.plannerplusplus.model.entity.EventEntity
+import com.orbital2019.plannerplusplus.model.entity.TaskEntity
+import com.orbital2019.plannerplusplus.view.ui.selecttask.SelectTaskFragment
 import com.orbital2019.plannerplusplus.viewmodel.EventUpdater
 import kotlinx.android.synthetic.main.activity_add_edit_event.*
 import org.threeten.bp.LocalDate
@@ -61,6 +64,9 @@ class AddEditEventActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetList
     private val editTextDetails: EditText by lazy {
         findViewById<EditText>(R.id.edit_text_details)
     }
+    private val addTaskButton: Button by lazy {
+        findViewById<Button>(R.id.add_task_button)
+    }
 
     companion object {
         fun newIntent(context: Context): Intent {
@@ -68,13 +74,19 @@ class AddEditEventActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetList
         }
     }
 
+    /**
+     * Called when the activity is first created.
+     * This is where you should do all of your normal static set up: create views, bind data to lists, etc.
+     * This method also provides you with a Bundle containing the activity's previously frozen state, if there was one.
+     */
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_edit_event)
 
         supportActionBar!!.setHomeAsUpIndicator(R.drawable.ic_close_black_24dp)
 
-        // bind Buttons to DialogFragments
+        // bind Buttons to OnClickListeners (which open DialogFragments)
         date_dialog_button.setOnClickListener {
             val datePicker: DialogFragment = DatePickerFragment(date)
             datePicker.show(supportFragmentManager, "Date_Picker")
@@ -82,6 +94,14 @@ class AddEditEventActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetList
         time_dialog_button.setOnClickListener {
             val timePicker: DialogFragment = TimePickerFragment(time)
             timePicker.show(supportFragmentManager, "Time_Picker")
+        }
+        addTaskButton.setOnClickListener {
+            // when addTaskButton is clicked, open Select Task dialog
+            SelectTaskFragment(object : SelectTaskFragment.TaskSelectedListener {
+                override fun onTaskSelected(task: TaskEntity) {
+                    // todo add this task to listAdapter
+                }
+            }).show(supportFragmentManager, "select_task")
         }
 
         // intent has a PlannerEvent Parcel, which means it is an edit event
@@ -94,6 +114,8 @@ class AddEditEventActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetList
             editTimeButton.text = LocalTime.now().format(ISO_LOCAL_TIME)
             editDateButton.text = LocalDate.now().format(ISO_LOCAL_DATE)
         }
+
+        findViewById<TextView>(R.id.add_linked_task_title).text = "Add Required Task"
     }
 
     override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
