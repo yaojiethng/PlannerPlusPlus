@@ -31,7 +31,7 @@ import com.orbital2019.plannerplusplus.view.ui.selecttask.SelectTaskFragment
  */
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
-    PopupMenu.OnMenuItemClickListener, SelectTaskFragment.TaskSelectedListener {
+    PopupMenu.OnMenuItemClickListener {
 
     // lateinit means variable is initialized later
     private val drawerLayout: DrawerLayout by lazy {
@@ -41,7 +41,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         findViewById<FloatingActionButton>(R.id.fab)
     }
     private lateinit var fragmentInMain: Fragment
-    private var selectedTask: TaskEntity? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidThreeTen.init(this)
@@ -174,9 +173,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 startActivityForResult(newTaskIntent, ADD_TASK_REQUEST)
             }
             R.id.copy_existing_task -> {
-                // todo setTargetFragment
-                SelectTaskFragment().show(supportFragmentManager, "select_task")
-                toast("copy_existing_task")
+                SelectTaskFragment(object : SelectTaskFragment.TaskSelectedListener {
+                    // if multiple selectors need to be created?
+                    override fun onTaskSelected(task: TaskEntity) {
+                        val copyEventIntent =
+                            AddEditTaskActivity.newIntent(this@MainActivity)
+                        copyEventIntent.putExtra(EXTRA_PARCEL_PLANNERTASK, task.copyTask())
+                        startActivityForResult(copyEventIntent, COPY_TASK_REQUEST)
+                    }
+                }).show(supportFragmentManager, "select_task")
             }
             R.id.new_linked_task -> {
                 Toast.makeText(this, "new linked task", Toast.LENGTH_SHORT).show()
@@ -189,23 +194,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return true
     }
 
-    override fun onTaskSelected(task: TaskEntity) {
-        selectedTask = task
-        val copyEventIntent =
-            AddEditTaskActivity.newIntent(this)
-        copyEventIntent.putExtra(EXTRA_PARCEL_PLANNERTASK, getSelectedTask().copyTask())
-        startActivityForResult(copyEventIntent, COPY_TASK_REQUEST)
-    }
 
-    override fun getSelectedTask(): TaskEntity {
-        if (selectedTask != null) {
-            val returnTask = selectedTask
-            selectedTask = null
-            return returnTask!!
-        } else {
-            throw Exception("No Task Selected!")
-        }
-    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
