@@ -24,7 +24,6 @@ import com.orbital2019.plannerplusplus.constants.COPY_TASK_REQUEST
 import com.orbital2019.plannerplusplus.constants.EDIT_EVENT_REQUEST
 import com.orbital2019.plannerplusplus.model.entity.TaskEntity
 import com.orbital2019.plannerplusplus.view.ui.selecttask.SelectTaskFragment
-import com.orbital2019.plannerplusplus.viewmodel.TaskSelectedListener
 
 /**
  * todo:
@@ -32,7 +31,7 @@ import com.orbital2019.plannerplusplus.viewmodel.TaskSelectedListener
  */
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
-    PopupMenu.OnMenuItemClickListener, TaskSelectedListener {
+    PopupMenu.OnMenuItemClickListener, SelectTaskFragment.TaskSelectedListener {
 
     // lateinit means variable is initialized later
     private val drawerLayout: DrawerLayout by lazy {
@@ -175,7 +174,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 startActivityForResult(newTaskIntent, ADD_TASK_REQUEST)
             }
             R.id.copy_existing_task -> {
-                changeActiveFragment(SelectTaskFragment())
+                // todo setTargetFragment
+                SelectTaskFragment().show(supportFragmentManager, "select_task")
                 toast("copy_existing_task")
             }
             R.id.new_linked_task -> {
@@ -191,7 +191,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onTaskSelected(task: TaskEntity) {
         selectedTask = task
-//        supportFragmentManager.popBackStack()
         val copyEventIntent =
             AddEditTaskActivity.newIntent(this)
         copyEventIntent.putExtra(EXTRA_PARCEL_PLANNERTASK, getSelectedTask().copyTask())

@@ -6,18 +6,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
+import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.orbital2019.plannerplusplus.R
 import com.orbital2019.plannerplusplus.model.entity.TaskEntity
 import com.orbital2019.plannerplusplus.view.SelTaskAdapter
-import com.orbital2019.plannerplusplus.viewmodel.TaskSelectedListener
 import com.orbital2019.plannerplusplus.viewmodel.TaskViewModel
 
-class SelectTaskFragment : Fragment() {
+
+class SelectTaskFragment : DialogFragment() {
 
     companion object {
         fun newInstance() = SelectTaskFragment()
@@ -25,14 +24,26 @@ class SelectTaskFragment : Fragment() {
 
     private lateinit var viewModel: TaskViewModel
     private lateinit var selectTasksRecycler: RecyclerView
-    private lateinit var taskSelectedListener: TaskSelectedListener
 
+    // Container Activity must implement this interface
+    var taskSelectedListener: TaskSelectedListener? = null
+
+    // todo read up on this
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStyle(STYLE_NORMAL, theme)
+    }
+
+    /**
+     * Ensure that the host activity implements TaskSelectedListener interface,
+     * instantiate an instance of OnArticleSelectedListener by casting the Activity that is passed into onAttach().
+     * If the activity hasn't implemented the interface, then the fragment throws a ClassCastException.
+     */
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is TaskSelectedListener) {
-            taskSelectedListener = context
-        } else {
-            throw Exception("Context is not a TaskSelectedListener")
+        taskSelectedListener = context as? TaskSelectedListener
+        if (taskSelectedListener == null) {
+            throw ClassCastException("$context must implement TaskSelectedListener")
         }
     }
 
@@ -42,10 +53,11 @@ class SelectTaskFragment : Fragment() {
     ): View {
         Toast.makeText(context, "Select Task Fragment Created", Toast.LENGTH_SHORT).show()
         // set layout associated with this class
-        val layout: View = inflater.inflate(R.layout.select_task_fragment, container, false)
+        val layout: View =
+            inflater.inflate(com.orbital2019.plannerplusplus.R.layout.select_task_fragment, container, false)
 
         // bind RecyclerViews to variables
-        selectTasksRecycler = layout.findViewById(R.id.select_task_recycler_view)
+        selectTasksRecycler = layout.findViewById(com.orbital2019.plannerplusplus.R.id.select_task_recycler_view)
         // LinearLayoutManager ensures that items are displayed linearly
         selectTasksRecycler.layoutManager = LinearLayoutManager(activity)
 
@@ -86,10 +98,35 @@ class SelectTaskFragment : Fragment() {
              */
             override fun onItemClick(task: TaskEntity) {
                 // calls corresponding method on Activity that passes the corresponding task item
-                return taskSelectedListener.onTaskSelected(task)
+                taskSelectedListener!!.onTaskSelected(task)
+                dismiss()
             }
         }
 
+    }
+
+    override fun onStart() {
+        super.onStart()
+        val dialog = dialog
+        if (dialog != null) {
+            val width = ViewGroup.LayoutParams.MATCH_PARENT
+            val height = ViewGroup.LayoutParams.MATCH_PARENT
+            dialog.window?.setLayout(width, height)
+        }
+    }
+
+    /**
+     * Defining a callback interface inside SelectTaskFragment.
+     * Any activity creating a SelectTaskFragment has to implement this interface.
+     */
+    interface TaskSelectedListener {
+
+        /**
+         * When onTaskSelected is called, close the calling fragment and return the correct Fragment
+         */
+        fun onTaskSelected(task: TaskEntity)
+
+        fun getSelectedTask(): TaskEntity
     }
 
 }
