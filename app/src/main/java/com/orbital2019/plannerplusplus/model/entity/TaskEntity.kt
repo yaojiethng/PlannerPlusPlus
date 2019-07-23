@@ -24,7 +24,7 @@ data class TaskEntity(
 
     // Secondary Constructor for use with Parcel
     constructor(parcel: Parcel) : this(
-        id = parcel.readSerializable() as Long,
+        id = parcel.readSerializable() as Long?,
         title = parcel.readString()!!,
         details = parcel.readString(),
         autoNumber = parcel.readByte() != 0.toByte(),
@@ -35,7 +35,7 @@ data class TaskEntity(
     // Secondary Constructor for use with new Tasks
     constructor(
         title: String = "",
-        details: String? = "",
+        details: String?,
         autoNumber: Boolean = false,
         tags: String = "",
         complete: Boolean = false
@@ -62,5 +62,11 @@ data class TaskEntity(
         override fun newArray(size: Int): Array<TaskEntity?> {
             return arrayOfNulls(size)
         }
+    }
+
+    fun copyTask(): TaskEntity {
+        return TaskEntity(
+            title, details, autoNumber, tags, isComplete
+        )
     }
 }

@@ -1,4 +1,4 @@
-package com.orbital2019.plannerplusplus.view
+package com.orbital2019.plannerplusplus.view.ui
 
 import android.content.Intent
 import android.os.Bundle
@@ -15,7 +15,9 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.orbital2019.plannerplusplus.R
+import com.orbital2019.plannerplusplus.constants.EDIT_EVENT_REQUEST
 import com.orbital2019.plannerplusplus.model.entity.EventEntity
+import com.orbital2019.plannerplusplus.view.EventAdapter
 import com.orbital2019.plannerplusplus.viewmodel.EventViewModel
 
 // todo: link fab and options menu to fragment?

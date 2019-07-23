@@ -4,7 +4,7 @@
           package="com.orbital2019.plannerplusplus">
 
     <application
-            android:name=".view.PlannerPlusPlus"
+            android:name=".PlannerPlusPlus"
             android:allowBackup="true"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
@@ -13,7 +13,7 @@
             android:theme="@style/AppTheme"
             tools:ignore="GoogleAppIndexingWarning">
         <activity
-                android:name=".view.MainActivity"
+                android:name=".view.ui.MainActivity"
                 android:label="@string/title_activity_main"
                 android:launchMode="singleTop"
                 android:theme="@style/AppTheme.NoActionBar">
@@ -24,12 +24,13 @@
             </intent-filter>
         </activity>
         <activity
-                android:name=".view.AddEditEventActivity"
+                android:name=".view.ui.AddEditEventActivity"
                 android:label="AddEditEventActivity"
-                android:parentActivityName=".view.MainActivity"/>
-        <activity android:name=".view.AddEditTaskActivity"
-                  android:label="AddEditTaskActivity"
-                  android:parentActivityName=".view.MainActivity"/>
+                android:parentActivityName=".view.ui.MainActivity"/>
+        <activity
+                android:name=".view.ui.AddEditTaskActivity"
+                android:label="AddEditTaskActivity"
+                android:parentActivityName=".view.ui.MainActivity"/>
     </application>
 
 </manifest>

@@ -1,4 +1,4 @@
-package com.orbital2019.plannerplusplus.view
+package com.orbital2019.plannerplusplus.view.ui
 
 import android.content.Intent
 import android.os.Bundle
@@ -15,16 +15,31 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.orbital2019.plannerplusplus.R
+import com.orbital2019.plannerplusplus.constants.EDIT_EVENT_REQUEST
 import com.orbital2019.plannerplusplus.model.entity.TaskEntity
+import com.orbital2019.plannerplusplus.view.TaskAdapter
 import com.orbital2019.plannerplusplus.viewmodel.TaskViewModel
 
-
-// todo: link fab and options menu to fragment?
+/**
+ * todo: link fab and options menu to fragment?
+ * TasksFragment is the fragment opened in MainActivity, containing one RecyclerView listing all the current created
+ * Tasks. Contains a FAB menu, SearchBar, and all onClickListeners
+ */
 class TasksFragment : Fragment() {
 
+    /**
+     * ViewModel interfacing between Model and View for all Task methods
+     */
     private val tasksViewModel: TaskViewModel by lazy {
         ViewModelProviders.of(this).get(TaskViewModel::class.java)
     }
+    /**
+     * Adapter which updates the sole RecyclerView in TasksFragment
+     */
+    private lateinit var tasksAdapter: TaskAdapter
+    /**
+     * View object representing the sole RecyclerView
+     */
     private lateinit var tasksRecyclerView: RecyclerView
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -56,8 +71,33 @@ class TasksFragment : Fragment() {
         // If tasksRecyclerView will never change in size, set this to optimize
         tasksRecyclerView.setHasFixedSize(true)
 
-        val tasksAdapter = TaskAdapter(tasksRecyclerView)
+        tasksAdapter = TaskAdapter(tasksRecyclerView)
         tasksRecyclerView.adapter = tasksAdapter
+
+        // Adapters' listeners are instantiated here:
+        tasksAdapter.itemClickListener = object : TaskAdapter.OnItemClickListener {
+            override fun onItemClick(task: TaskEntity) {
+                // AddEditTaskActivity::class.java is not used, but it is passed back when ActivityForResult terminates
+                val intent = Intent(activity, AddEditTaskActivity::class.java)
+                intent.putExtra(EXTRA_PARCEL_PLANNERTASK, task)
+                startActivityForResult(intent, EDIT_EVENT_REQUEST)
+            }
+        }
+        tasksAdapter.checkBoxListener = object : TaskAdapter.CheckBoxListener {
+            override fun onItemClick(task: TaskEntity, isChecked: Boolean) {
+                if (isChecked) {
+                    tasksViewModel.setTaskComplete(task)
+                } else {
+                    tasksViewModel.setTaskIncomplete(task)
+                }
+            }
+        }
+
+        return layout
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
 
         // Links tasksViewModel to the view of TasksFragment, which means:
         // this ViewModel will only updateTask when this Fragment is in the foreground.
@@ -95,26 +135,5 @@ class TasksFragment : Fragment() {
                 Toast.makeText(activity, "Task Deleted", Toast.LENGTH_SHORT).show()
             }
         }).attachToRecyclerView(tasksRecyclerView)
-
-        // Adapters' listeners are instantiated here:
-        tasksAdapter.itemClickListener = object : TaskAdapter.OnItemClickListener {
-            override fun onItemClick(task: TaskEntity) {
-                // AddEditTaskActivity::class.java is not used, but it is passed back when ActivityForResult terminates
-                val intent = Intent(activity, AddEditTaskActivity::class.java)
-                intent.putExtra(EXTRA_PARCEL_PLANNERTASK, task)
-                startActivityForResult(intent, EDIT_EVENT_REQUEST)
-            }
-        }
-        tasksAdapter.checkBoxListener = object : TaskAdapter.CheckBoxListener {
-            override fun onItemClick(task: TaskEntity, isChecked: Boolean) {
-                if (isChecked) {
-                    tasksViewModel.setTaskComplete(task)
-                } else {
-                    tasksViewModel.setTaskIncomplete(task)
-                }
-            }
-        }
-
-        return layout
     }
 }

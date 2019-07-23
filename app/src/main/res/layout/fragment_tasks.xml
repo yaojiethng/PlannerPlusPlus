@@ -6,7 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/tasks_fragment"
-        tools:context=".view.EventsFragment">
+        tools:context=".view.ui.EventsFragment">
     <!-- CoordinatorLayout provides support for automatically retracting app bar as well as support for FAB -->
 
     <LinearLayout android:layout_width="match_parent"

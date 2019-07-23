@@ -37,7 +37,7 @@ abstract class AppDatabase : RoomDatabase() {
 
         // If you try running the above code with the created database above,
         // your app will crash as the operation performed is on the main thread.
-        // By default, Room keeps a check of that and doesn’t allow operations on the
+        // By default, Room keeps a check of that and does not allow operations on the
         // main thread as it can makes your UI laggy.
         fun getInstance(context: Context): AppDatabase {
             if (INSTANCE == null) {

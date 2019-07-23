@@ -1,4 +1,4 @@
-package com.orbital2019.plannerplusplus.view
+package com.orbital2019.plannerplusplus.view.ui
 
 import android.app.Activity
 import android.content.Intent
@@ -18,18 +18,21 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.orbital2019.plannerplusplus.R
+import com.orbital2019.plannerplusplus.constants.ADD_EVENT_REQUEST
+import com.orbital2019.plannerplusplus.constants.ADD_TASK_REQUEST
+import com.orbital2019.plannerplusplus.constants.COPY_TASK_REQUEST
+import com.orbital2019.plannerplusplus.constants.EDIT_EVENT_REQUEST
+import com.orbital2019.plannerplusplus.model.entity.TaskEntity
+import com.orbital2019.plannerplusplus.view.ui.selecttask.SelectTaskFragment
+import com.orbital2019.plannerplusplus.viewmodel.TaskSelectedListener
 
-// add new event from a clean page
-const val ADD_EVENT_REQUEST = 1
-// edit event with existing data on the page
-const val EDIT_EVENT_REQUEST = 2
-// add new task from a clean page
-const val ADD_TASK_REQUEST = 3
-// edit task with existing data on the page
-const val EDIT_TASK_REQUEST = 4
+/**
+ * todo:
+ *  1. refactor all program logic to go through viewModel (viewModel methods return intent)
+ */
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
-    PopupMenu.OnMenuItemClickListener {
+    PopupMenu.OnMenuItemClickListener, TaskSelectedListener {
 
     // lateinit means variable is initialized later
     private val drawerLayout: DrawerLayout by lazy {
@@ -39,6 +42,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         findViewById<FloatingActionButton>(R.id.fab)
     }
     private lateinit var fragmentInMain: Fragment
+    private var selectedTask: TaskEntity? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidThreeTen.init(this)
@@ -152,11 +156,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         //todo make proper item options
         when (p0?.itemId) {
             R.id.new_event -> {
-                val newEventIntent = AddEditEventActivity.newIntent(this)
+                val newEventIntent =
+                    AddEditEventActivity.newIntent(this)
                 startActivityForResult(newEventIntent, ADD_EVENT_REQUEST)
             }
             R.id.copy_existing_event -> {
-                Toast.makeText(this, "copy existing event", Toast.LENGTH_SHORT).show()
+                toast("copy existing event")
             }
             R.id.new_linked_event -> {
                 Toast.makeText(this, "new linked event", Toast.LENGTH_SHORT).show()
@@ -165,11 +170,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 Toast.makeText(this, "link existing event", Toast.LENGTH_SHORT).show()
             }
             R.id.new_task -> {
-                val newTaskIntent = AddEditTaskActivity.newIntent(this)
+                val newTaskIntent =
+                    AddEditTaskActivity.newIntent(this)
                 startActivityForResult(newTaskIntent, ADD_TASK_REQUEST)
             }
             R.id.copy_existing_task -> {
-                Toast.makeText(this, "existing task", Toast.LENGTH_SHORT).show()
+                changeActiveFragment(SelectTaskFragment())
+                toast("copy_existing_task")
             }
             R.id.new_linked_task -> {
                 Toast.makeText(this, "new linked task", Toast.LENGTH_SHORT).show()
@@ -182,19 +189,54 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return true
     }
 
+    override fun onTaskSelected(task: TaskEntity) {
+        selectedTask = task
+//        supportFragmentManager.popBackStack()
+        val copyEventIntent =
+            AddEditTaskActivity.newIntent(this)
+        copyEventIntent.putExtra(EXTRA_PARCEL_PLANNERTASK, getSelectedTask().copyTask())
+        startActivityForResult(copyEventIntent, COPY_TASK_REQUEST)
+    }
+
+    override fun getSelectedTask(): TaskEntity {
+        if (selectedTask != null) {
+            val returnTask = selectedTask
+            selectedTask = null
+            return returnTask!!
+        } else {
+            throw Exception("No Task Selected!")
+        }
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         // todo debug wrong requestCode being passed
-        if (requestCode == ADD_EVENT_REQUEST && resultCode == Activity.RESULT_OK) {
-            Log.d("req code", requestCode.toString())
-            Toast.makeText(this, data?.getStringExtra(EXTRA_SAVE_STATUS), Toast.LENGTH_SHORT).show()
-        } else if (requestCode == EDIT_EVENT_REQUEST && resultCode == Activity.RESULT_OK) {
-            Log.d("req code", requestCode.toString())
-            Toast.makeText(this, data?.getStringExtra(EXTRA_SAVE_STATUS), Toast.LENGTH_SHORT).show()
-        } else {
-            Toast.makeText(this, "not saved", Toast.LENGTH_SHORT).show()
+        when (requestCode) {
+            ADD_EVENT_REQUEST -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    Log.d("req code", requestCode.toString())
+                    Toast.makeText(this, data?.getStringExtra(EXTRA_SAVE_STATUS), Toast.LENGTH_SHORT).show()
+                }
+            }
+            EDIT_EVENT_REQUEST -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    Log.d("req code", requestCode.toString())
+                    Toast.makeText(this, data?.getStringExtra(EXTRA_SAVE_STATUS), Toast.LENGTH_SHORT).show()
+                }
+            }
+            COPY_TASK_REQUEST -> {
+                Toast.makeText(this, data?.getStringExtra(EXTRA_SAVE_STATUS), Toast.LENGTH_SHORT).show()
+            }
+            else -> {
+                Toast.makeText(this, "not saved", Toast.LENGTH_SHORT).show()
+            }
         }
     }
+
+    fun toast(string: String) {
+        return Toast.makeText(this, string, Toast.LENGTH_SHORT).show()
+    }
+
 
 }

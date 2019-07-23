@@ -7,7 +7,7 @@
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".view.MainActivity"
+        tools:context=".view.ui.MainActivity"
         android:fitsSystemWindows="true"
         tools:openDrawer="start">
         <!-- fitsSystemWindows: nav drawer draws under status bar at the top of the screen

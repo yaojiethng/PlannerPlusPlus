@@ -11,20 +11,20 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:padding="16dp"
-            tools:context=".view.AddEditTaskActivity">
+            tools:context=".view.ui.AddEditTaskActivity">
 
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="16dp"
-            tools:context=".view.AddEditTaskActivity">
+            tools:context=".view.ui.AddEditTaskActivity">
 
         <EditText
                 android:id="@+id/edit_text_new_task_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Title"
+                android:hint="@string/title_overwrite_placeholder"
                 android:inputType="text"/>
 
         <!-- todo: add SubTask fragment -->
@@ -33,7 +33,7 @@
                 android:id="@+id/edit_text_details"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Details"
+                android:hint="@string/details_overwrite_placeholder"
                 android:inputType="textMultiLine"/>
 
         <!-- todo: impl for automatic numbering -->

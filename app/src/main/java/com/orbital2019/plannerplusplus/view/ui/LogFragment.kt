@@ -1,7 +1,6 @@
-package com.orbital2019.plannerplusplus.view
+package com.orbital2019.plannerplusplus.view.ui
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
