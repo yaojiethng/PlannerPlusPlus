@@ -61,7 +61,7 @@ class SelTaskAdapter(var recycler: RecyclerView) : RecyclerView.Adapter<SelTaskA
      * TaskViewHolder manages and assigns individual view components contained in select_task_item.xml
      * Click logic is handled when instantiating the ViewHolder which allows for more explicit control
      * (Click listeners are explicitly set up in the init phase)
-     * @param itemView: element item of TaskViewHolder (in this case task_item)
+     * @param itemView: element item of TaskViewHolder (in this case listitem_task)
      */
     inner class TaskViewHolder(itemView: View) : BaseViewHolder<TaskEntity>(itemView) {
         // view components in select_task_item

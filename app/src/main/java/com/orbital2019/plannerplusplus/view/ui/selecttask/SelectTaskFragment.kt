@@ -31,9 +31,11 @@ class SelectTaskFragment(var listener: TaskSelectedListener) : DialogFragment() 
     // Container Activity must implement this interface
     // var listener: TaskSelectedListener? = null
 
+    // todo https://guides.codepath.com/android/using-dialogfragment
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStyle(STYLE_NORMAL, theme)
+        // todo set toolBar with filter https://stackoverflow.com/questions/11425020/actionbar-in-a-dialogfragment/38917527#38917527
     }
 
     /**
@@ -83,7 +85,6 @@ class SelectTaskFragment(var listener: TaskSelectedListener) : DialogFragment() 
         val selTasksAdapter = SelTaskAdapter(selectTasksRecycler)
         selectTasksRecycler.adapter = selTasksAdapter
 
-        // LiveData can only be unwrapped by an observer
         viewModel.getAllTasks().observe(
             viewLifecycleOwner,
             Observer<List<TaskEntity>> {

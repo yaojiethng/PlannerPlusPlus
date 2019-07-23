@@ -28,6 +28,7 @@ import com.orbital2019.plannerplusplus.view.ui.selecttask.SelectTaskFragment
 /**
  * todo:
  *  1. refactor all program logic to go through viewModel (viewModel methods return intent)
+ *  2. add custom menu items to each fragment
  */
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
@@ -70,7 +71,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             // by default, this fragment will be the Events fragment list.
             changeActiveFragment(EventsFragment())
             navView.setCheckedItem(R.id.nav_events)
-            setEventsFabMenu()
+            setFabMenu(R.menu.events_fab_menu)
         }
     }
 
@@ -105,11 +106,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         when (item.itemId) {
             R.id.nav_events -> {
                 changeActiveFragment(EventsFragment())
-                setEventsFabMenu()
+                setFabMenu(R.menu.events_fab_menu)
             }
             R.id.nav_tasks -> {
                 changeActiveFragment(TasksFragment())
-                setTasksFabMenu()
+                setFabMenu(R.menu.tasks_fab_menu)
             }
             R.id.nav_log -> {
                 changeActiveFragment(LogFragment())
@@ -126,22 +127,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         fragmentInMain = fragment
     }
 
-    private fun setEventsFabMenu() {
+    private fun setFabMenu(menuId: Int) {
         fab.show()
-        fab.setOnClickListener { view ->
-            val popup = PopupMenu(this, view)
+        fab.setOnClickListener {
+            val popup = PopupMenu(this, it)
             popup.setOnMenuItemClickListener(this)
-            popup.inflate(R.menu.events_fab_menu)
-            popup.show()
-        }
-    }
-
-    private fun setTasksFabMenu() {
-        fab.show()
-        fab.setOnClickListener { view ->
-            val popup = PopupMenu(this, view)
-            popup.setOnMenuItemClickListener(this)
-            popup.inflate(R.menu.tasks_fab_menu)
+            popup.inflate(menuId)
             popup.show()
         }
     }
@@ -174,7 +165,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             R.id.copy_existing_task -> {
                 SelectTaskFragment(object : SelectTaskFragment.TaskSelectedListener {
-                    // if multiple selectors need to be created?
                     override fun onTaskSelected(task: TaskEntity) {
                         val copyEventIntent =
                             AddEditTaskActivity.newIntent(this@MainActivity)

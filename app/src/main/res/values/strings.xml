@@ -29,4 +29,6 @@
     <string name="favourite_button">Favourite button</string>
     <string name="completed_task_divider_header">Completed [%1$d]</string>
     <string name="datetime_placeholder">Date@Time</string>
+    <string name="add_task_as_requirement">add_task_as_requirement</string>
+    <string name="add_task_button">Add Task</string>
 </resources>

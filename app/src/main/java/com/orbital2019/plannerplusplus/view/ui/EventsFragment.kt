@@ -21,6 +21,9 @@ import com.orbital2019.plannerplusplus.view.EventAdapter
 import com.orbital2019.plannerplusplus.viewmodel.EventViewModel
 
 // todo: link fab and options menu to fragment?
+// Your fragments can contribute menu items to the activity's Options Menu (and, consequently, the app bar) by
+// implementing onCreateOptionsMenu().
+// In order for this method to receive calls, however, you must call setHasOptionsMenu() during onCreate()
 class EventsFragment : Fragment() {
 
     private val eventsViewModel: EventViewModel by lazy {

@@ -39,7 +39,7 @@ class TaskAdapter(var recycler: RecyclerView) : RecyclerView.Adapter<TaskAdapter
      */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
         val itemView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.task_item, parent, false)
+            .inflate(R.layout.listitem_task, parent, false)
         return TaskViewHolder(itemView)
     }
 
@@ -62,10 +62,10 @@ class TaskAdapter(var recycler: RecyclerView) : RecyclerView.Adapter<TaskAdapter
 
     /**
      * TaskViewHolder is an extension of ViewHolder, which holds and recycles the element items in RecyclerView.
-     * TaskViewHolder manages and assigns individual view components contained in task_item.xml
+     * TaskViewHolder manages and assigns individual view components contained in listitem_tasktask.xml
      * Click logic is handled when instantiating the ViewHolder which allows for more explicit control
      * (Click listeners are explicitly set up in the init phase)
-     * @param itemView: element item of TaskViewHolder (in this case task_item)
+     * @param itemView: element item of TaskViewHolder (in this case listitem_task)
      */
     // todo: updateTask with new variables once critical parameters are decided
     inner class TaskViewHolder(itemView: View) : BaseViewHolder<TaskEntity>(itemView) {

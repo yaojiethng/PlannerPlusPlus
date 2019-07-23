@@ -28,7 +28,7 @@ class EventAdapter(var recycler: RecyclerView) : RecyclerView.Adapter<EventAdapt
     // @return EventHolder: decides the layout for the different items in the RecyclerView
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventHolder {
         val itemView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.event_item, parent, false)
+            .inflate(R.layout.listitem_event, parent, false)
         return EventHolder(itemView)
     }
 
