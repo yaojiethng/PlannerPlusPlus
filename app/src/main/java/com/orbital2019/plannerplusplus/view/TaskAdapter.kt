@@ -34,7 +34,8 @@ class TaskAdapter(var recycler: RecyclerView) : RecyclerView.Adapter<TaskAdapter
         return tasks[position]
     }
 
-    /** @param parent: the ViewGroup that is passed, which is the RecyclerView
+    /**
+     * @param parent: the ViewGroup that is passed, which is the RecyclerView
      * @return TaskViewHolder: decides the layout for the different items in the RecyclerView
      */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {

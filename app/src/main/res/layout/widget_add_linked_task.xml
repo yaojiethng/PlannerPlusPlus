@@ -14,14 +14,13 @@
             android:text="@string/title_overwrite_placeholder"
             android:id="@+id/add_linked_task_title"/>
 
-    <ListView android:id="@android:id/list"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:background="@android:color/white"
-              tools:listitem="@layout/listitem_link_task"
-              android:drawSelectorOnTop="false"
+    <androidx.recyclerview.widget.RecyclerView android:layout_width="match_parent"
+                                               android:layout_height="wrap_content"
+                                               tools:listitem="@layout/listitem_link_task"
+                                               android:id="@+id/link_task_recyclerview"
+                                               android:layout_marginStart="32dp"
+                                               android:layout_marginEnd="16dp"
     />
-
     <Button
             android:id="@+id/add_task_button"
             android:text="@string/add_task_button"

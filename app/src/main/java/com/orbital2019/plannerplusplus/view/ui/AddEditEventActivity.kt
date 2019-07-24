@@ -15,6 +15,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.orbital2019.plannerplusplus.R
 import com.orbital2019.plannerplusplus.model.entity.EventEntity
 import com.orbital2019.plannerplusplus.model.entity.TaskEntity
@@ -24,7 +26,6 @@ import com.orbital2019.plannerplusplus.view.ui.selecttime.LinkTaskAdapter
 import com.orbital2019.plannerplusplus.view.ui.selecttime.TimePickerFragment
 import com.orbital2019.plannerplusplus.viewmodel.EventUpdater
 import kotlinx.android.synthetic.main.activity_add_edit_event.*
-import kotlinx.android.synthetic.main.widget_add_linked_task.*
 import org.threeten.bp.LocalDate
 import org.threeten.bp.LocalTime
 import org.threeten.bp.OffsetDateTime
@@ -36,7 +37,6 @@ const val EXTRA_PARCEL_PLANNEREVENT = "com.orbital2019.plannerplusplus.PARCEL_PL
 
 class AddEditEventActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetListener,
     DatePickerDialog.OnDateSetListener {
-
 
     private val eventUpdater: EventUpdater by lazy {
         ViewModelProviders.of(this).get(EventUpdater::class.java)
@@ -71,6 +71,9 @@ class AddEditEventActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetList
     private val addTaskButton: Button by lazy {
         findViewById<Button>(R.id.add_task_button)
     }
+    private val recyclerView: RecyclerView by lazy {
+        findViewById<RecyclerView>(R.id.link_task_recyclerview)
+    }
 
     companion object {
         fun newIntent(context: Context): Intent {
@@ -90,6 +93,10 @@ class AddEditEventActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetList
 
         supportActionBar!!.setHomeAsUpIndicator(R.drawable.ic_close_black_24dp)
 
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        val adapter = LinkTaskAdapter(recyclerView)
+        recyclerView.adapter = adapter
+
         // bind Buttons to OnClickListeners (which open DialogFragments)
         date_dialog_button.setOnClickListener {
             val datePicker: DialogFragment = DatePickerFragment(date)
@@ -100,15 +107,11 @@ class AddEditEventActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetList
             timePicker.show(supportFragmentManager, "Time_Picker")
         }
 
-        // setting up widget
-        val listAdapter = LinkTaskAdapter(this)
-        list.adapter = listAdapter
-
         addTaskButton.setOnClickListener {
             // when addTaskButton is clicked, open Select Task dialog
             SelectTaskFragment(object : SelectTaskFragment.TaskSelectedListener {
                 override fun onTaskSelected(task: TaskEntity) {
-                    listAdapter.add(task)
+                    adapter.addItem(task)
                 }
             }).show(supportFragmentManager, "select_task")
         }
@@ -126,6 +129,7 @@ class AddEditEventActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetList
 
         findViewById<TextView>(R.id.add_linked_task_title).text = "Add Required Task"
     }
+
 
     override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
         time = LocalTime.of(hourOfDay, minute)
