@@ -35,7 +35,7 @@ class SelTaskAdapter(var recycler: RecyclerView) : RecyclerView.Adapter<SelTaskA
      */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
         val itemView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.select_task_item, parent, false)
+            .inflate(R.layout.listitem_select_task, parent, false)
         return TaskViewHolder(itemView)
     }
 
@@ -58,13 +58,13 @@ class SelTaskAdapter(var recycler: RecyclerView) : RecyclerView.Adapter<SelTaskA
 
     /**
      * TaskViewHolder is an extension of ViewHolder, which holds and recycles the element items in RecyclerView.
-     * TaskViewHolder manages and assigns individual view components contained in select_task_item.xml
+     * TaskViewHolder manages and assigns individual view components contained in listitem_select_task.xml.xml
      * Click logic is handled when instantiating the ViewHolder which allows for more explicit control
      * (Click listeners are explicitly set up in the init phase)
      * @param itemView: element item of TaskViewHolder (in this case listitem_task)
      */
     inner class TaskViewHolder(itemView: View) : BaseViewHolder<TaskEntity>(itemView) {
-        // view components in select_task_item
+        // view components in listitem_select_task
         var textViewTitle: TextView = itemView.findViewById(R.id.text_view_task_title)
 
         init {

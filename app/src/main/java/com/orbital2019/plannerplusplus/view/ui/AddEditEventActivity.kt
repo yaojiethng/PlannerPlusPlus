@@ -18,9 +18,13 @@ import androidx.lifecycle.ViewModelProviders
 import com.orbital2019.plannerplusplus.R
 import com.orbital2019.plannerplusplus.model.entity.EventEntity
 import com.orbital2019.plannerplusplus.model.entity.TaskEntity
+import com.orbital2019.plannerplusplus.view.ui.selectdate.DatePickerFragment
 import com.orbital2019.plannerplusplus.view.ui.selecttask.SelectTaskFragment
+import com.orbital2019.plannerplusplus.view.ui.selecttime.LinkTaskAdapter
+import com.orbital2019.plannerplusplus.view.ui.selecttime.TimePickerFragment
 import com.orbital2019.plannerplusplus.viewmodel.EventUpdater
 import kotlinx.android.synthetic.main.activity_add_edit_event.*
+import kotlinx.android.synthetic.main.widget_add_linked_task.*
 import org.threeten.bp.LocalDate
 import org.threeten.bp.LocalTime
 import org.threeten.bp.OffsetDateTime
@@ -95,11 +99,16 @@ class AddEditEventActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetList
             val timePicker: DialogFragment = TimePickerFragment(time)
             timePicker.show(supportFragmentManager, "Time_Picker")
         }
+
+        // setting up widget
+        val listAdapter = LinkTaskAdapter(this)
+        list.adapter = listAdapter
+
         addTaskButton.setOnClickListener {
             // when addTaskButton is clicked, open Select Task dialog
             SelectTaskFragment(object : SelectTaskFragment.TaskSelectedListener {
                 override fun onTaskSelected(task: TaskEntity) {
-                    // todo add this task to listAdapter
+                    listAdapter.add(task)
                 }
             }).show(supportFragmentManager, "select_task")
         }

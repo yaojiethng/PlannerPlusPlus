@@ -1,4 +1,4 @@
-package com.orbital2019.plannerplusplus.view.ui
+package com.orbital2019.plannerplusplus.view.ui.selectdate
 
 import android.app.DatePickerDialog
 import android.app.Dialog

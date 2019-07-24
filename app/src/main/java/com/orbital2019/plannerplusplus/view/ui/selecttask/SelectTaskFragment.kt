@@ -58,7 +58,7 @@ class SelectTaskFragment(var listener: TaskSelectedListener) : DialogFragment() 
         Toast.makeText(context, "Select Task Fragment Created", Toast.LENGTH_SHORT).show()
         // set layout associated with this class
         val layout: View =
-            inflater.inflate(R.layout.select_task_fragment, container, false)
+            inflater.inflate(R.layout.fragment_select_task, container, false)
 
         // bind RecyclerViews to variables
         selectTasksRecycler = layout.findViewById(R.id.select_task_recycler_view)
