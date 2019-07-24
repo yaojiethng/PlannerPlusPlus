@@ -177,7 +177,6 @@ class AddEditEventActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetList
         )
     }
 
-    // todo: when go to next event save all entered data, when back put details back
     private fun saveEvent() {
 
         val title: String = editTextTitle.text.toString()

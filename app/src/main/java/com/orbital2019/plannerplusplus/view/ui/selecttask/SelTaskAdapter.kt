@@ -1,7 +1,7 @@
 /**
  * Adapters provide a binding from an app-specific data set to views that are displayed within a RecyclerView.
  */
-package com.orbital2019.plannerplusplus.view
+package com.orbital2019.plannerplusplus.view.ui.selecttask
 
 import android.view.LayoutInflater
 import android.view.View
