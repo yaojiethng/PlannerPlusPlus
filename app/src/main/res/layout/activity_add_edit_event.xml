@@ -13,7 +13,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:padding="16dp">
 
         <EditText
                 android:id="@+id/edit_text_new_event_title"
@@ -22,8 +23,6 @@
                 android:hint="@string/title_overwrite_placeholder"
                 android:inputType="text"
                 android:layout_marginTop="16dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"/>
 
@@ -73,11 +72,10 @@
                 android:hint="@string/details_overwrite_placeholder"
                 android:inputType="textMultiLine"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_margin="16dp"
                 app:layout_constraintTop_toBottomOf="@+id/switch_followup_new_event"
         />
 
-        <include layout="@layout/widget_add_linked_task"
+        <include layout="@layout/component_add_linked_task"
                  android:layout_width="match_parent"
                  android:layout_height="match_parent"
                  android:layout_marginTop="16dp"

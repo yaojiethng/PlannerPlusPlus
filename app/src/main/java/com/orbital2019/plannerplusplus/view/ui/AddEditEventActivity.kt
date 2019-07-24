@@ -93,9 +93,11 @@ class AddEditEventActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetList
 
         supportActionBar!!.setHomeAsUpIndicator(R.drawable.ic_close_black_24dp)
 
+        // Initializing recyclerView
         recyclerView.layoutManager = LinearLayoutManager(this)
         val adapter = LinkTaskAdapter(recyclerView)
         recyclerView.adapter = adapter
+        findViewById<TextView>(R.id.add_linked_task_title).text = "Add Required Task"
 
         // bind Buttons to OnClickListeners (which open DialogFragments)
         date_dialog_button.setOnClickListener {
@@ -107,6 +109,7 @@ class AddEditEventActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetList
             timePicker.show(supportFragmentManager, "Time_Picker")
         }
 
+        // Adding onClickListener for addTaskButton
         addTaskButton.setOnClickListener {
             // when addTaskButton is clicked, open Select Task dialog
             SelectTaskFragment(object : SelectTaskFragment.TaskSelectedListener {
@@ -127,7 +130,7 @@ class AddEditEventActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetList
             editDateButton.text = LocalDate.now().format(ISO_LOCAL_DATE)
         }
 
-        findViewById<TextView>(R.id.add_linked_task_title).text = "Add Required Task"
+
     }
 
 

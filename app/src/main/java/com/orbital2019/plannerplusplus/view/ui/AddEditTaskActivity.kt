@@ -1,5 +1,6 @@
 package com.orbital2019.plannerplusplus.view.ui
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -7,13 +8,19 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.orbital2019.plannerplusplus.R
 import com.orbital2019.plannerplusplus.model.entity.TaskEntity
+import com.orbital2019.plannerplusplus.view.ui.selecttask.SelectTaskFragment
+import com.orbital2019.plannerplusplus.view.ui.selecttime.LinkTaskAdapter
 import com.orbital2019.plannerplusplus.viewmodel.TaskUpdater
 
 const val EXTRA_PARCEL_PLANNERTASK = "com.orbital2019.plannerplusplus.PARCEL_PLANNERTASK"
@@ -33,11 +40,17 @@ class AddEditTaskActivity : AppCompatActivity() {
     private val switchNumberTasks: SwitchCompat by lazy {
         findViewById<SwitchCompat>(R.id.switch_number_tasks)
     }
-    // todo: add in tags, SubTask as a fragment
+    // todo: add in tags as a fragment
     private val editTextDetails: EditText by lazy {
         findViewById<EditText>(R.id.edit_text_details)
     }
     private var isComplete: Boolean? = null
+    private val addTaskButton: Button by lazy {
+        findViewById<Button>(R.id.add_task_button)
+    }
+    private val recyclerView: RecyclerView by lazy {
+        findViewById<RecyclerView>(R.id.link_task_recyclerview)
+    }
 
     companion object {
         fun newIntent(context: Context): Intent {
@@ -45,11 +58,28 @@ class AddEditTaskActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_edit_task)
 
         supportActionBar!!.setHomeAsUpIndicator(R.drawable.ic_close_black_24dp)
+
+        // Initializing recyclerView
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        val adapter = LinkTaskAdapter(recyclerView)
+        recyclerView.adapter = adapter
+        findViewById<TextView>(R.id.add_linked_task_title).text = "Add Sub-task"
+
+        // Adding onClickListener for addTaskButton
+        addTaskButton.setOnClickListener {
+            // when addTaskButton is clicked, open Select Task dialog
+            SelectTaskFragment(object : SelectTaskFragment.TaskSelectedListener {
+                override fun onTaskSelected(task: TaskEntity) {
+                    adapter.addItem(task)
+                }
+            }).show(supportFragmentManager, "select_task")
+        }
 
         // if intent contains a PlannerTask Parcel, it is an edit task
         if (intent.hasExtra(EXTRA_PARCEL_PLANNERTASK)) {
@@ -81,10 +111,8 @@ class AddEditTaskActivity : AppCompatActivity() {
         )
     }
 
-    // todo: when go to next task save all entered data, when back put details back
     private fun saveTask() {
 
-        // todo: decide on essential fields
         if (editTextTitle.text.isEmpty()) {
             Toast.makeText(this, "Please insertEvent a title", Toast.LENGTH_SHORT).show()
             return
