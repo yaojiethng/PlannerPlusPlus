@@ -7,7 +7,7 @@ import com.orbital2019.plannerplusplus.view.rendereradapter.ItemModel
 
 class SubtaskUiModel(
     val id: Long?,
-    val title: String?,
+    val title: String,
     val isComplete: Boolean,
     val subtask: SubtaskEntity?
 ) : ItemModel {

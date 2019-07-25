@@ -5,7 +5,10 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import com.orbital2019.plannerplusplus.model.DaoAsyncProcessor
 import com.orbital2019.plannerplusplus.model.PlannerRepository
+import com.orbital2019.plannerplusplus.model.entity.SubtaskEntity
+import com.orbital2019.plannerplusplus.model.entity.TaskAndSubtask
 import com.orbital2019.plannerplusplus.model.entity.TaskEntity
 import com.orbital2019.plannerplusplus.view.rendereradapter.ItemModel
 import com.orbital2019.plannerplusplus.view.ui.displaytasks.TaskUiModel
@@ -20,7 +23,20 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
     private val numCompletedTasks: LiveData<Int> = repository.numCompletedTasks
 
     fun insertTask(taskEntity: TaskEntity) {
-        repository.insertTask(taskEntity)
+        repository.insertTask(taskEntity, null)
+    }
+
+    fun insertTaskAndSubtask(taskAndSubtask: TaskAndSubtask) {
+        repository.insertTask(taskAndSubtask.task, object : DaoAsyncProcessor.DaoProcessCallback<Long> {
+            override fun onResult(result: Long) {
+                insertSubtask(*taskAndSubtask.getSubtasks(result))
+            }
+
+        })
+    }
+
+    fun insertSubtask(vararg subtasks: SubtaskEntity) {
+        repository.insertSubTask(*subtasks)
     }
 
     fun updateTask(taskEntity: TaskEntity) {

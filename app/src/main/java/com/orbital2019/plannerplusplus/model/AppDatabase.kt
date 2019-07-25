@@ -8,6 +8,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.orbital2019.plannerplusplus.model.entity.EventEntity
+import com.orbital2019.plannerplusplus.model.entity.SubtaskEntity
 import com.orbital2019.plannerplusplus.model.entity.TaskEntity
 
 
@@ -17,8 +18,8 @@ import com.orbital2019.plannerplusplus.model.entity.TaskEntity
 //  3. Add proper callback support and tests
 
 @Database(
-    entities = [EventEntity::class, TaskEntity::class],
-    version = 10,
+    entities = [EventEntity::class, TaskEntity::class, SubtaskEntity::class],
+    version = 11,
     exportSchema = false
 )
 

@@ -6,6 +6,7 @@ package com.orbital2019.plannerplusplus.model
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.orbital2019.plannerplusplus.model.entity.SubtaskEntity
 import com.orbital2019.plannerplusplus.model.entity.TaskEntity
 
 @Dao
@@ -13,7 +14,10 @@ interface TaskDao {
 
     // highlight any of the tags and press ctrl-b for advanced tagging options
     @Insert
-    fun insert(taskEntity: TaskEntity)
+    fun insert(taskEntity: TaskEntity): Long
+
+    @Insert
+    fun insert(vararg subtaskEntities: SubtaskEntity)
 
     @Update
     fun update(taskEntity: TaskEntity)

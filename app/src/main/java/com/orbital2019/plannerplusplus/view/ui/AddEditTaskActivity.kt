@@ -18,6 +18,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.orbital2019.plannerplusplus.R
+import com.orbital2019.plannerplusplus.model.entity.TaskAndSubtask
 import com.orbital2019.plannerplusplus.model.entity.TaskEntity
 import com.orbital2019.plannerplusplus.view.rendereradapter.ItemModel
 import com.orbital2019.plannerplusplus.view.rendereradapter.RendererRecyclerViewAdapter
@@ -51,9 +52,7 @@ class AddEditTaskActivity : AppCompatActivity() {
     private val addTaskButton: Button by lazy {
         findViewById<Button>(R.id.add_task_button)
     }
-    private val recyclerView: RecyclerView by lazy {
-        findViewById<RecyclerView>(R.id.link_task_recyclerview)
-    }
+    private lateinit var adapter: RendererRecyclerViewAdapter
 
     companion object {
         fun newIntent(context: Context): Intent {
@@ -69,8 +68,9 @@ class AddEditTaskActivity : AppCompatActivity() {
         supportActionBar!!.setHomeAsUpIndicator(R.drawable.ic_close_black_24dp)
 
         // Initializing recyclerView
+        val recyclerView = findViewById<RecyclerView>(R.id.link_task_recyclerview)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        val adapter = RendererRecyclerViewAdapter()
+        adapter = RendererRecyclerViewAdapter()
         recyclerView.adapter = adapter
         findViewById<TextView>(R.id.add_linked_task_title).text = "Add Sub-task"
 
@@ -89,9 +89,9 @@ class AddEditTaskActivity : AppCompatActivity() {
         addTaskButton.setOnClickListener {
             // todo when addTaskButton is clicked, open Add Subtask dialog
             toast("SUBTASKS ADDED")
-            adapter.mItems.add(SubtaskUiModel(1, "Test Task 1", false, null))
-            adapter.mItems.add(SubtaskUiModel(2, "Test Task 2", false, null))
-            adapter.mItems.add(SubtaskUiModel(3, "Test Task 3", true, null))
+            adapter.mItems.add(SubtaskUiModel(null, "Test Task 1", false, null))
+            adapter.mItems.add(SubtaskUiModel(null, "Test Task 2", false, null))
+            adapter.mItems.add(SubtaskUiModel(null, "Test Task 3", true, null))
             adapter.notifyDataSetChanged()
         }
 
@@ -114,21 +114,35 @@ class AddEditTaskActivity : AppCompatActivity() {
         isComplete = task.isComplete
     }
 
-    private fun retrieve(): TaskEntity {
-        return TaskEntity(
-            taskId,
-            editTextTitle.text.toString(),
-            editTextDetails.text.toString(),
-            switchNumberTasks.isChecked,
-            tags = "", // todo: set up proper tag interaction
-            isComplete = isComplete ?: false
+    private fun retrieve(): TaskAndSubtask {
+
+        val subtasks: Array<SubtaskUiModel> = adapter.getItems()
+            .mapNotNull {
+                if (it is SubtaskUiModel) {
+                    it
+                } else {
+                    null
+                }
+            }.toTypedArray()
+
+        return TaskAndSubtask(
+            TaskEntity(
+                taskId,
+                editTextTitle.text.toString(),
+                editTextDetails.text.toString(),
+                switchNumberTasks.isChecked,
+                tags = "", // todo: set up proper tag interaction
+                isComplete = isComplete ?: false
+            ),
+            *subtasks
         )
     }
 
     private fun saveTask() {
 
+        // check essential fields filled
         if (editTextTitle.text.isEmpty()) {
-            Toast.makeText(this, "Please insertEvent a title", Toast.LENGTH_SHORT).show()
+            toast("Please insertEvent a title")
             return
         }
 
@@ -136,7 +150,7 @@ class AddEditTaskActivity : AppCompatActivity() {
 
         // if task currently has no Id, it is a new task.
         if (taskId == null) {
-            viewModel.insertTask(taskSave)
+            viewModel.insertTask(taskSave.task)
             Log.d("Save clicked", "EVENT INSERTED WITH ID $taskId")
             // current implementation uses an intent to pass back the result of saveTask
             setResult(
@@ -144,7 +158,7 @@ class AddEditTaskActivity : AppCompatActivity() {
             )
             finish()
         } else {
-            viewModel.updateTask(taskSave)
+            viewModel.updateTask(taskSave.task)
             Log.d("Save clicked", "EVENT INSERTED WITH ID $taskId")
             setResult(
                 Activity.RESULT_OK, Intent().putExtra(EXTRA_SAVE_STATUS, "SUCCESSFULLY UPDATED")

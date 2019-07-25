@@ -8,7 +8,6 @@ package com.orbital2019.plannerplusplus.view.rendereradapter
 import android.util.SparseArray
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import java.util.*
 
 
 /**
@@ -92,5 +91,11 @@ class RendererRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder
     override fun getItemViewType(position: Int): Int {
         val item = mItems[position]
         return item.getType()
+    }
+
+    fun getItems(): ArrayList<ItemModel> {
+        var items = ArrayList<ItemModel>()
+        items.addAll(mItems)
+        return items
     }
 }

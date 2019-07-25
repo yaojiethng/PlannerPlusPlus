@@ -1,14 +1,23 @@
 package com.orbital2019.plannerplusplus.model
 
+import com.orbital2019.plannerplusplus.model.entity.SubtaskEntity
 import com.orbital2019.plannerplusplus.model.entity.TaskEntity
 
 interface TaskRepository {
     var taskDao: TaskDao
 
-    fun insertTask(taskEntity: TaskEntity) {
+    fun insertTask(taskEntity: TaskEntity, callback: DaoAsyncProcessor.DaoProcessCallback<Long>?) {
+        object : DaoAsyncProcessor<Long>(callback) {
+            override fun doAsync(): Long {
+                return taskDao.insert(taskEntity)
+            }
+        }.start()
+    }
+
+    fun insertSubTask(vararg subtaskEntities: SubtaskEntity) {
         object : DaoAsyncProcessor<Unit>(null) {
             override fun doAsync() {
-                taskDao.insert(taskEntity)
+                taskDao.insert(*subtaskEntities)
             }
         }.start()
     }
