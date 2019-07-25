@@ -65,7 +65,7 @@ class SelTaskAdapter(var recycler: RecyclerView) : RecyclerView.Adapter<SelTaskA
      */
     inner class TaskViewHolder(itemView: View) : BaseViewHolder<TaskEntity>(itemView) {
         // view components in listitem_select_task
-        var textViewTitle: TextView = itemView.findViewById(R.id.text_view_task_title)
+        var textViewTitle: TextView = itemView.findViewById(R.id.checked_view_task_title)
 
         init {
             // When card is clicked, pass the taskEntity in its position in the adapter to the listener
@@ -90,4 +90,21 @@ class SelTaskAdapter(var recycler: RecyclerView) : RecyclerView.Adapter<SelTaskA
     interface OnItemClickListener {
         fun onItemClick(task: TaskEntity)
     }
+
+    // Container Activity must implement this interface
+    // var listener: TaskSelectedListener? = null
+
+
+    /**
+     * Ensure that the host activity implements TaskSelectedListener interface,
+     * instantiate an instance of OnArticleSelectedListener by casting the Activity that is passed into onAttach().
+     * If the activity hasn't implemented the interface, then the fragment throws a ClassCastException.
+     */
+//    override fun onAttach(context: Context) {
+//        super.onAttach(context)
+//        listener = taskSelectedListener as? TaskSelectedListener
+//        if (listener == null) {
+//            throw ClassCastException("$context must implement TaskSelectedListener")
+//        }
+//    }
 }

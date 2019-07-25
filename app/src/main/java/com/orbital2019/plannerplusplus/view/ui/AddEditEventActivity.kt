@@ -121,11 +121,11 @@ class AddEditEventActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetList
 
         // intent has a PlannerEvent Parcel, which means it is an edit event
         if (intent.hasExtra(EXTRA_PARCEL_PLANNEREVENT)) {
-            title = "Edit Note"
+            title = "Edit Event"
             val event: EventEntity = intent.getParcelableExtra(EXTRA_PARCEL_PLANNEREVENT)!!
             bind(event)
         } else {
-            title = "Add new Note"
+            title = "Add new Event"
             editTimeButton.text = LocalTime.now().format(ISO_LOCAL_TIME)
             editDateButton.text = LocalDate.now().format(ISO_LOCAL_DATE)
         }

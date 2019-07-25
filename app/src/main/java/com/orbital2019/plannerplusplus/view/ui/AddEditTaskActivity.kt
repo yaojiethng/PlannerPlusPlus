@@ -21,15 +21,15 @@ import com.orbital2019.plannerplusplus.R
 import com.orbital2019.plannerplusplus.model.entity.TaskEntity
 import com.orbital2019.plannerplusplus.view.ui.selecttask.SelectTaskFragment
 import com.orbital2019.plannerplusplus.view.ui.selecttime.LinkTaskAdapter
-import com.orbital2019.plannerplusplus.viewmodel.TaskUpdater
+import com.orbital2019.plannerplusplus.viewmodel.TaskViewModel
 
 const val EXTRA_PARCEL_PLANNERTASK = "com.orbital2019.plannerplusplus.PARCEL_PLANNERTASK"
 
 class AddEditTaskActivity : AppCompatActivity() {
 
 
-    private val taskUpdater: TaskUpdater by lazy {
-        ViewModelProviders.of(this).get(TaskUpdater::class.java)
+    private val viewModel: TaskViewModel by lazy {
+        ViewModelProviders.of(this).get(TaskViewModel::class.java)
     }
 
     // Id is null by default
@@ -122,7 +122,7 @@ class AddEditTaskActivity : AppCompatActivity() {
 
         // if task currently has no Id, it is a new task.
         if (taskId == null) {
-            taskUpdater.insertTask(taskSave)
+            viewModel.insertTask(taskSave)
             Log.d("Save clicked", "EVENT INSERTED WITH ID $taskId")
             // current implementation uses an intent to pass back the result of saveTask
             setResult(
@@ -130,7 +130,7 @@ class AddEditTaskActivity : AppCompatActivity() {
             )
             finish()
         } else {
-            taskUpdater.updateTask(taskSave)
+            viewModel.updateTask(taskSave)
             Log.d("Save clicked", "EVENT INSERTED WITH ID $taskId")
             setResult(
                 Activity.RESULT_OK, Intent().putExtra(EXTRA_SAVE_STATUS, "SUCCESSFULLY UPDATED")

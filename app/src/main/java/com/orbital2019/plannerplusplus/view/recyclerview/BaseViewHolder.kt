@@ -8,8 +8,9 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 
 /**
- * BaseViewHolder extends RecyclerView.ViewHolder, which describes and provides access to all the views
- * within each item row.
+ * BaseViewHolder is a parent class which extends RecyclerView.ViewHolder,
+ * ViewHolder holds references and binds view components within each item View.
+ * Generic type parameters are passed to allow reusing the same code with different inputs.
  * @param T  generic type parameter representing the item type bound in respective ViewHolder
  */
 abstract class BaseViewHolder<in T>(itemView: View) : RecyclerView.ViewHolder(itemView) {

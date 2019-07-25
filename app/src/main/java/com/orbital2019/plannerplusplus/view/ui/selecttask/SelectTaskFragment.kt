@@ -27,28 +27,12 @@ class SelectTaskFragment(var listener: TaskSelectedListener) : DialogFragment() 
     private lateinit var viewModel: TaskViewModel
     private lateinit var selectTasksRecycler: RecyclerView
 
-    // Container Activity must implement this interface
-    // var listener: TaskSelectedListener? = null
-
     // todo https://guides.codepath.com/android/using-dialogfragment
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStyle(STYLE_NORMAL, theme)
         // todo set toolBar with filter https://stackoverflow.com/questions/11425020/actionbar-in-a-dialogfragment/38917527#38917527
     }
-
-    /**
-     * Ensure that the host activity implements TaskSelectedListener interface,
-     * instantiate an instance of OnArticleSelectedListener by casting the Activity that is passed into onAttach().
-     * If the activity hasn't implemented the interface, then the fragment throws a ClassCastException.
-     */
-//    override fun onAttach(context: Context) {
-//        super.onAttach(context)
-//        listener = taskSelectedListener as? TaskSelectedListener
-//        if (listener == null) {
-//            throw ClassCastException("$context must implement TaskSelectedListener")
-//        }
-//    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -63,7 +47,6 @@ class SelectTaskFragment(var listener: TaskSelectedListener) : DialogFragment() 
         selectTasksRecycler = layout.findViewById(R.id.select_task_recycler_view)
         // LinearLayoutManager ensures that items are displayed linearly
         selectTasksRecycler.layoutManager = LinearLayoutManager(activity)
-
         // If tasksRecyclerView will never change in size, set this to optimize
         selectTasksRecycler.setHasFixedSize(true)
 
@@ -90,7 +73,6 @@ class SelectTaskFragment(var listener: TaskSelectedListener) : DialogFragment() 
                 // overriding onChanged for LiveData<List<TaskEntity>>> Observer
                 selTasksAdapter.tasks = it as ArrayList<TaskEntity>
             })
-
 
         // Adapters' listeners are instantiated here:
         selTasksAdapter.itemClickListener = object : SelTaskAdapter.OnItemClickListener {

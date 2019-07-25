@@ -41,7 +41,7 @@ class LinkTaskAdapter(var recycler: RecyclerView) :
 
 
     inner class LinkTaskHolder(itemView: View) : BaseViewHolder<TaskEntity>(itemView) {
-        private var textViewTitle: TextView = itemView.findViewById(R.id.text_view_task_title)
+        private var textViewTitle: TextView = itemView.findViewById(R.id.checked_view_task_title)
         private var deleteButton: ImageView = itemView.findViewById(R.id.delete_button)
 
         init {

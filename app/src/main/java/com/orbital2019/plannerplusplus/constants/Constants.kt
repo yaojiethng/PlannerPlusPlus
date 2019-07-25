@@ -15,3 +15,10 @@ const val EDIT_TASK_REQUEST = 4
 const val COPY_EVENT_REQUEST = 5
 // copy existing event
 const val COPY_TASK_REQUEST = 6
+
+
+/**
+ * ItemModel key constants
+ */
+const val TASK_ITEMMODEL = 1
+const val SUBTASK_ITEMMODEL = 2
