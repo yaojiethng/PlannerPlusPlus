@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.orbital2019.plannerplusplus.R
 import com.orbital2019.plannerplusplus.constants.EDIT_EVENT_REQUEST
-import com.orbital2019.plannerplusplus.constants.TASK_ITEMMODEL
 import com.orbital2019.plannerplusplus.model.entity.TaskEntity
 import com.orbital2019.plannerplusplus.view.rendereradapter.ItemModel
 import com.orbital2019.plannerplusplus.view.rendereradapter.RendererRecyclerViewAdapter
@@ -81,7 +80,6 @@ class TasksFragment : Fragment() {
         recyclerView.adapter = adapter
 
         val taskRenderer = TaskViewRenderer(
-            TASK_ITEMMODEL,
             activity!!,
             object : TaskViewRenderer.OnItemClickListener {
                 override fun onItemClick(model: TaskUiModel) {

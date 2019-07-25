@@ -215,6 +215,4 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     fun toast(string: String) {
         return Toast.makeText(this, string, Toast.LENGTH_SHORT).show()
     }
-
-
 }

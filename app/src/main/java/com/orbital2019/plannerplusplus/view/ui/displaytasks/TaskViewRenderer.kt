@@ -10,12 +10,11 @@ import com.orbital2019.plannerplusplus.view.rendereradapter.CompositeViewRendere
 
 
 class TaskViewRenderer(
-    viewType: Int,
     context: Context,
     private val itemClickListener: OnItemClickListener,
     private val checkBoxListener: CheckBoxListener
 ) :
-    CompositeViewRenderer<TaskUiModel, TaskViewHolder>(viewType, context) {
+    CompositeViewRenderer<TaskUiModel, TaskViewHolder>(context) {
 
     override val type: Int
         get() = TASK_ITEMMODEL

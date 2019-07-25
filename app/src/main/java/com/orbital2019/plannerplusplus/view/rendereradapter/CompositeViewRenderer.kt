@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
  * composite ViewRenderer must know about child renderers. ViewRenderer will have a list of child renderers
  */
 abstract class CompositeViewRenderer<in M : CompositeItemModel, VH : CompositeViewHolder>(
-    val viewType: Int,
     val context: Context
 ) :
     ViewRenderer<M, VH>() {
@@ -25,10 +24,9 @@ abstract class CompositeViewRenderer<in M : CompositeItemModel, VH : CompositeVi
     private lateinit var mAdapter: RendererRecyclerViewAdapter
 
     constructor(
-        viewType: Int,
         context: Context,
         vararg renderers: ViewRenderer<ItemModel, RecyclerView.ViewHolder>
-    ) : this(viewType, context) {
+    ) : this(context) {
         mRenderers.addAll(renderers)
     }
 

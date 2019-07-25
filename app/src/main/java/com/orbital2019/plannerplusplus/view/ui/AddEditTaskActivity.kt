@@ -19,8 +19,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.orbital2019.plannerplusplus.R
 import com.orbital2019.plannerplusplus.model.entity.TaskEntity
-import com.orbital2019.plannerplusplus.view.ui.selecttask.SelectTaskFragment
-import com.orbital2019.plannerplusplus.view.ui.selecttime.LinkTaskAdapter
+import com.orbital2019.plannerplusplus.view.rendereradapter.ItemModel
+import com.orbital2019.plannerplusplus.view.rendereradapter.RendererRecyclerViewAdapter
+import com.orbital2019.plannerplusplus.view.rendereradapter.ViewRenderer
+import com.orbital2019.plannerplusplus.view.ui.displaytasks.SubtaskUiModel
+import com.orbital2019.plannerplusplus.view.ui.selecttask.LinkTaskViewRenderer
 import com.orbital2019.plannerplusplus.viewmodel.TaskViewModel
 
 const val EXTRA_PARCEL_PLANNERTASK = "com.orbital2019.plannerplusplus.PARCEL_PLANNERTASK"
@@ -67,18 +70,29 @@ class AddEditTaskActivity : AppCompatActivity() {
 
         // Initializing recyclerView
         recyclerView.layoutManager = LinearLayoutManager(this)
-        val adapter = LinkTaskAdapter(recyclerView)
+        val adapter = RendererRecyclerViewAdapter()
         recyclerView.adapter = adapter
         findViewById<TextView>(R.id.add_linked_task_title).text = "Add Sub-task"
 
+        val subtaskRenderer = LinkTaskViewRenderer(
+            this,
+            object : LinkTaskViewRenderer.OnItemClickListener {
+                override fun onItemClick(position: Int) {
+                    adapter.mItems.removeAt(position)
+                    adapter.notifyItemRemoved(position)
+                }
+            }
+        )
+        adapter.registerRenderer(subtaskRenderer as ViewRenderer<ItemModel, RecyclerView.ViewHolder>)
+
         // Adding onClickListener for addTaskButton
         addTaskButton.setOnClickListener {
-            // when addTaskButton is clicked, open Select Task dialog
-            SelectTaskFragment(object : SelectTaskFragment.TaskSelectedListener {
-                override fun onTaskSelected(task: TaskEntity) {
-                    adapter.addItem(task)
-                }
-            }).show(supportFragmentManager, "select_task")
+            // todo when addTaskButton is clicked, open Add Subtask dialog
+            toast("SUBTASKS ADDED")
+            adapter.mItems.add(SubtaskUiModel(1, "Test Task 1", false, null))
+            adapter.mItems.add(SubtaskUiModel(2, "Test Task 2", false, null))
+            adapter.mItems.add(SubtaskUiModel(3, "Test Task 3", true, null))
+            adapter.notifyDataSetChanged()
         }
 
         // if intent contains a PlannerTask Parcel, it is an edit task
@@ -153,5 +167,9 @@ class AddEditTaskActivity : AppCompatActivity() {
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    fun toast(string: String) {
+        return Toast.makeText(this, string, Toast.LENGTH_SHORT).show()
     }
 }

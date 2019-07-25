@@ -1,4 +1,4 @@
-package com.orbital2019.plannerplusplus.view.ui.selecttime
+package com.orbital2019.plannerplusplus.view.ui
 
 import android.view.LayoutInflater
 import android.view.View
@@ -34,7 +34,7 @@ class LinkTaskAdapter(var recycler: RecyclerView) :
         return LinkTaskHolder(itemView)
     }
 
-    override fun onBindViewHolder(holder: LinkTaskAdapter.LinkTaskHolder, position: Int) {
+    override fun onBindViewHolder(holder: LinkTaskHolder, position: Int) {
         val task: TaskEntity = tasks[position]
         holder.bind(task)
     }

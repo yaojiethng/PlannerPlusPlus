@@ -22,7 +22,6 @@ import com.orbital2019.plannerplusplus.model.entity.EventEntity
 import com.orbital2019.plannerplusplus.model.entity.TaskEntity
 import com.orbital2019.plannerplusplus.view.ui.selectdate.DatePickerFragment
 import com.orbital2019.plannerplusplus.view.ui.selecttask.SelectTaskFragment
-import com.orbital2019.plannerplusplus.view.ui.selecttime.LinkTaskAdapter
 import com.orbital2019.plannerplusplus.view.ui.selecttime.TimePickerFragment
 import com.orbital2019.plannerplusplus.viewmodel.EventUpdater
 import kotlinx.android.synthetic.main.activity_add_edit_event.*
