@@ -30,5 +30,6 @@ internal class PlannerRepository(application: Application) : EventRepository, Ta
     internal var allTasks: LiveData<List<TaskEntity>> = taskDao.getAllTasks()
     internal var numIncompleteTasks: LiveData<Int> = taskDao.countIncompleteTasks()
     internal var numCompletedTasks: LiveData<Int> = taskDao.countCompletedTasks()
+
 }
 

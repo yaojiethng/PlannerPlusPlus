@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.orbital2019.plannerplusplus.R
 import com.orbital2019.plannerplusplus.model.entity.TaskEntity
-import com.orbital2019.plannerplusplus.view.recyclerview.BaseViewHolder
+import com.orbital2019.plannerplusplus.view.rendereradapter.BaseViewHolder
 
 class LinkTaskAdapter(var recycler: RecyclerView) :
     RecyclerView.Adapter<LinkTaskAdapter.LinkTaskHolder>() {

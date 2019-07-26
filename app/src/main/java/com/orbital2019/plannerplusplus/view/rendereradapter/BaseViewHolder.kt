@@ -2,7 +2,7 @@
  * BaseViewHolder is meant as a base class to be inherited for different ViewHolders nested in Tasks RecyclerView
  *
  */
-package com.orbital2019.plannerplusplus.view.recyclerview
+package com.orbital2019.plannerplusplus.view.rendereradapter
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView

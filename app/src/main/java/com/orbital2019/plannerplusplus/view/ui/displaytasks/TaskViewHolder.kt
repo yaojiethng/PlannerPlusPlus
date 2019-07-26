@@ -16,5 +16,5 @@ class TaskViewHolder(view: View) : CompositeViewHolder(view) {
     val textViewTitle: TextView = view.findViewById(R.id.checked_view_task_title)
     val textViewDescription: TextView = view.findViewById(R.id.text_view_task_details)
     val checkBox: CheckBox = view.findViewById(R.id.checkbox_task)
-
+    lateinit var subtaskResultListener: TaskViewRenderer.SubtaskListener
 }

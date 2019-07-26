@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.orbital2019.plannerplusplus.R
 import com.orbital2019.plannerplusplus.constants.TASK_ITEMMODEL
 import com.orbital2019.plannerplusplus.view.rendereradapter.CompositeViewRenderer
+import com.orbital2019.plannerplusplus.view.rendereradapter.ItemModel
+import com.orbital2019.plannerplusplus.view.rendereradapter.RendererRecyclerViewAdapter
 
 
 class TaskViewRenderer(
@@ -20,7 +22,7 @@ class TaskViewRenderer(
         get() = TASK_ITEMMODEL
 
     override fun bindView(model: TaskUiModel, holder: TaskViewHolder) {
-        holder.textViewTitle.text = model.title
+        holder.textViewTitle.text = String.format(model.title + "[%d]", model.subtasks.size)
         holder.textViewDescription.text = model.details
         holder.checkBox.isChecked = model.isComplete
 
@@ -40,6 +42,17 @@ class TaskViewRenderer(
                 checkBoxListener.onItemClick(model, holder.checkBox.isChecked)
             }
         }
+
+        model.subtaskListener = object : SubtaskListener {
+            override fun updateSubtask(models: ArrayList<ItemModel>) {
+                val adapter = holder.mRecyclerView?.adapter as RendererRecyclerViewAdapter
+                adapter.mItems.clear()
+                adapter.mItems.addAll(models)
+                adapter.notifyDataSetChanged()
+
+            }
+        }
+
     }
 
     override fun createCompositeViewHolder(parent: ViewGroup): TaskViewHolder {
@@ -59,5 +72,9 @@ class TaskViewRenderer(
 
     interface CheckBoxListener {
         fun onItemClick(model: TaskUiModel, isChecked: Boolean)
+    }
+
+    interface SubtaskListener {
+        fun updateSubtask(models: ArrayList<ItemModel>)
     }
 }

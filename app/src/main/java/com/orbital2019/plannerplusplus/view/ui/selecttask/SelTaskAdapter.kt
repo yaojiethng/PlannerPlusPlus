@@ -10,7 +10,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.orbital2019.plannerplusplus.R
 import com.orbital2019.plannerplusplus.model.entity.TaskEntity
-import com.orbital2019.plannerplusplus.view.recyclerview.BaseViewHolder
+import com.orbital2019.plannerplusplus.view.rendereradapter.BaseViewHolder
 
 /**
  * SelTaskAdapter binds data from the list of all TaskEntities (passed by TaskViewModel) to the RecyclerView containing

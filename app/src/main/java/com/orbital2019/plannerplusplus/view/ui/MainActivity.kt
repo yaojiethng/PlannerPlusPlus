@@ -14,6 +14,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import com.jakewharton.threetenabp.AndroidThreeTen
@@ -24,6 +25,7 @@ import com.orbital2019.plannerplusplus.constants.COPY_TASK_REQUEST
 import com.orbital2019.plannerplusplus.constants.EDIT_EVENT_REQUEST
 import com.orbital2019.plannerplusplus.model.entity.TaskEntity
 import com.orbital2019.plannerplusplus.view.ui.selecttask.SelectTaskFragment
+import com.orbital2019.plannerplusplus.viewmodel.TaskViewModel
 
 /**
  * todo:
@@ -177,7 +179,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 Toast.makeText(this, "new linked task", Toast.LENGTH_SHORT).show()
             }
             R.id.link_existing_task -> {
-                Toast.makeText(this, "link existing task", Toast.LENGTH_SHORT).show()
+                toast("CALLBACK_ADD_TASK_TO_DB")
+                ViewModelProviders.of(this).get(TaskViewModel::class.java).populate()
             }
             else -> return false
         }

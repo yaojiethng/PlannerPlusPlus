@@ -94,7 +94,7 @@ class RendererRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     fun getItems(): ArrayList<ItemModel> {
-        var items = ArrayList<ItemModel>()
+        val items = ArrayList<ItemModel>()
         items.addAll(mItems)
         return items
     }

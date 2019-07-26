@@ -15,7 +15,7 @@ class TaskUiModel(
     val details: String?,
     val isComplete: Boolean,
     val task: TaskEntity?,
-    vararg subtasks: ItemModel
+    vararg val subtasks: ItemModel
 ) : CompositeItemModel {
 
     constructor(task: TaskEntity) : this(
@@ -26,7 +26,13 @@ class TaskUiModel(
         task
     )
 
-    override val items = ArrayList<ItemModel>()
+    override var items = ArrayList<ItemModel>()
+        set(value) {
+            items.clear()
+            items.addAll(value)
+            subtaskListener?.updateSubtask(value)
+        }
+    var subtaskListener: TaskViewRenderer.SubtaskListener? = null
 
     init {
         items.addAll(subtasks)

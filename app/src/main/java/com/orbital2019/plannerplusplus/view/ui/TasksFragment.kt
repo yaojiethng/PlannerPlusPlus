@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -16,14 +17,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.orbital2019.plannerplusplus.R
 import com.orbital2019.plannerplusplus.constants.EDIT_EVENT_REQUEST
+import com.orbital2019.plannerplusplus.model.entity.SubtaskEntity
 import com.orbital2019.plannerplusplus.model.entity.TaskEntity
 import com.orbital2019.plannerplusplus.view.rendereradapter.ItemModel
 import com.orbital2019.plannerplusplus.view.rendereradapter.RendererRecyclerViewAdapter
 import com.orbital2019.plannerplusplus.view.rendereradapter.ViewRenderer
+import com.orbital2019.plannerplusplus.view.ui.displaytasks.SubtaskUiModel
+import com.orbital2019.plannerplusplus.view.ui.displaytasks.SubtaskViewRenderer
 import com.orbital2019.plannerplusplus.view.ui.displaytasks.TaskUiModel
 import com.orbital2019.plannerplusplus.view.ui.displaytasks.TaskViewRenderer
 import com.orbital2019.plannerplusplus.viewmodel.TaskViewModel
-import java.util.*
 
 /**
  * todo: link fab and options menu to fragment?
@@ -99,6 +102,7 @@ class TasksFragment : Fragment() {
                 }
             }
         )
+        taskRenderer.registerRenderer(SubtaskViewRenderer() as ViewRenderer<ItemModel, RecyclerView.ViewHolder>)
 
         // Register Renderers to Adapter
         adapter.registerRenderer(taskRenderer as ViewRenderer<ItemModel, RecyclerView.ViewHolder>)
@@ -114,18 +118,33 @@ class TasksFragment : Fragment() {
         // viewLifeCycleOwner is the owner, which closes the observer when the view is destroyed.
         tasksViewModel.getAllTasks().observe(
             viewLifecycleOwner,
-            Observer<List<TaskEntity>> { task ->
+            Observer<List<TaskEntity>> { tasks ->
                 // overriding onChanged for LiveData<List<TaskEntity>>> Observer
                 Log.d(
                     "OBSERVER_comTASKS",
                     "Change on CompleteTasks with " + adapter.mItems.size + "Tasks"
                 )
                 // changes adapter.tasks and calls set method
-                adapter.mItems = task.map {
-                    TaskUiModel(it) as ItemModel
+                adapter.mItems = tasks.map { task ->
+                    var taskUiModel = TaskUiModel(task)
+                    tasksViewModel.getSubTasks(task, object : TaskViewModel.SubtaskResultListener {
+                        override fun accept(result: LiveData<List<SubtaskEntity>>) {
+                            result.observe(
+                                viewLifecycleOwner,
+                                Observer<List<SubtaskEntity>> { subtasks ->
+                                    Log.d("SUBTASK_COUNT", "THIS TASK HAS " + subtasks.size + " SUBTASKS")
+                                    taskUiModel.subtaskListener?.updateSubtask(subtasks.map {
+                                        SubtaskUiModel(it) as ItemModel
+                                    } as ArrayList<ItemModel>)
+                                }
+                            )
+                        }
+                    })
+                    taskUiModel as ItemModel
                 } as ArrayList<ItemModel>
                 adapter.notifyDataSetChanged()
-            })
+            }
+        )
 
         // ItemTouchHelper makes RecyclerView swipe-able
         ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(

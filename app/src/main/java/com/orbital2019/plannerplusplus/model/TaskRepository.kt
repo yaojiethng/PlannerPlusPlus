@@ -1,5 +1,6 @@
 package com.orbital2019.plannerplusplus.model
 
+import androidx.lifecycle.LiveData
 import com.orbital2019.plannerplusplus.model.entity.SubtaskEntity
 import com.orbital2019.plannerplusplus.model.entity.TaskEntity
 
@@ -26,6 +27,17 @@ interface TaskRepository {
         object : DaoAsyncProcessor<Unit>(null) {
             override fun doAsync() {
                 taskDao.update(taskEntity)
+            }
+        }.start()
+    }
+
+    fun getSubtasks(
+        taskId: Long,
+        callback: DaoAsyncProcessor.DaoProcessCallback<LiveData<List<SubtaskEntity>>>
+    ) {
+        object : DaoAsyncProcessor<LiveData<List<SubtaskEntity>>>(callback) {
+            override fun doAsync(): LiveData<List<SubtaskEntity>> {
+                return taskDao.getSubtasks(taskId)
             }
         }.start()
     }

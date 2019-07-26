@@ -13,10 +13,10 @@ import com.orbital2019.plannerplusplus.model.entity.TaskEntity
 interface TaskDao {
 
     // highlight any of the tags and press ctrl-b for advanced tagging options
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(taskEntity: TaskEntity): Long
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(vararg subtaskEntities: SubtaskEntity)
 
     @Update
@@ -40,6 +40,9 @@ interface TaskDao {
 
     @Query("SELECT * FROM task_table ORDER BY isComplete ASC, id DESC")
     fun getAllTasks(): LiveData<List<TaskEntity>>
+
+    @Query("SELECT * FROM subtask_table WHERE parentId = :taskId ORDER BY id DESC")
+    fun getSubtasks(taskId: Long): LiveData<List<SubtaskEntity>>
 
     @Query("SELECT * FROM task_table WHERE isComplete = 0 ORDER BY id DESC")
     fun getIncompleteTasks(): LiveData<List<TaskEntity>>
