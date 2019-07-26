@@ -11,7 +11,8 @@ import com.orbital2019.plannerplusplus.view.rendereradapter.ViewRenderer
  * @param M the type of the cell rendered
  * @param VH the type of the ViewHolder
  */
-class SubtaskViewRenderer : ViewRenderer<SubtaskUiModel, SubtaskViewHolder>() {
+class SubtaskViewRenderer(private val checkBoxListener: CheckBoxListener) :
+    ViewRenderer<SubtaskUiModel, SubtaskViewHolder>() {
 
     override val type: Int
         get() {
@@ -19,8 +20,14 @@ class SubtaskViewRenderer : ViewRenderer<SubtaskUiModel, SubtaskViewHolder>() {
         }
 
     override fun bindView(model: SubtaskUiModel, holder: SubtaskViewHolder) {
-        holder.checkedTextView.text = model.title
-        holder.checkedTextView.isChecked = model.isComplete
+        val view = holder.checkedTextView
+        view.text = model.title
+        view.isChecked = model.isComplete
+
+        view.setOnClickListener {
+            // lambda expression called to override onClick method
+            checkBoxListener.onItemClick(model, view.isChecked)
+        }
     }
 
     override fun createViewHolder(parent: ViewGroup): SubtaskViewHolder {
@@ -28,5 +35,9 @@ class SubtaskViewRenderer : ViewRenderer<SubtaskUiModel, SubtaskViewHolder>() {
         return SubtaskViewHolder(
             inflater.inflate(R.layout.subitem_task, parent, false)
         )
+    }
+
+    interface CheckBoxListener {
+        fun onItemClick(model: SubtaskUiModel, isChecked: Boolean)
     }
 }

@@ -82,6 +82,12 @@ class TasksFragment : Fragment() {
         adapter = RendererRecyclerViewAdapter()
         recyclerView.adapter = adapter
 
+        return layout
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
         val taskRenderer = TaskViewRenderer(
             activity!!,
             object : TaskViewRenderer.OnItemClickListener {
@@ -100,18 +106,42 @@ class TasksFragment : Fragment() {
                         tasksViewModel.setTaskIncomplete(model.task!!)
                     }
                 }
+            },
+            object : TaskViewRenderer.ChildAdapterBinder {
+                override fun bindChildAdapter(id: Long, adapter: RendererRecyclerViewAdapter) {
+                    tasksViewModel.getSubTasksById(id, object : TaskViewModel.SubtaskResultListener {
+                        override fun accept(parentId: Long, result: LiveData<List<SubtaskEntity>>) {
+                            result.observe(
+                                viewLifecycleOwner,
+                                Observer<List<SubtaskEntity>> { subtasks ->
+                                    Log.d("SUBTASK_COUNT", "THIS TASK HAS " + subtasks.size + " SUBTASKS")
+                                    adapter.mItems.clear()
+                                    adapter.mItems.addAll(subtasks.map {
+                                        return@map SubtaskUiModel(it)
+                                    })
+                                    adapter.notifyDataSetChanged()
+                                }
+                            )
+                        }
+                    })
+                }
             }
         )
-        taskRenderer.registerRenderer(SubtaskViewRenderer() as ViewRenderer<ItemModel, RecyclerView.ViewHolder>)
+        taskRenderer.registerRenderer(
+            SubtaskViewRenderer(
+                object : SubtaskViewRenderer.CheckBoxListener {
+                    override fun onItemClick(model: SubtaskUiModel, isChecked: Boolean) {
+                        if (isChecked) {
+                            tasksViewModel.setSubtaskComplete(model.subtask!!)
+                        } else {
+                            tasksViewModel.setSubtaskIncomplete(model.subtask!!)
+                        }
+                    }
+                }) as ViewRenderer<ItemModel, RecyclerView.ViewHolder>
+        )
 
         // Register Renderers to Adapter
         adapter.registerRenderer(taskRenderer as ViewRenderer<ItemModel, RecyclerView.ViewHolder>)
-
-        return layout
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
 
         // Links tasksViewModel to the view of TasksFragment, which means:
         // this ViewModel will only updateTask when this Fragment is in the foreground.
@@ -120,28 +150,11 @@ class TasksFragment : Fragment() {
             viewLifecycleOwner,
             Observer<List<TaskEntity>> { tasks ->
                 // overriding onChanged for LiveData<List<TaskEntity>>> Observer
-                Log.d(
-                    "OBSERVER_comTASKS",
-                    "Change on CompleteTasks with " + adapter.mItems.size + "Tasks"
-                )
-                // changes adapter.tasks and calls set method
-                adapter.mItems = tasks.map { task ->
-                    var taskUiModel = TaskUiModel(task)
-                    tasksViewModel.getSubTasks(task, object : TaskViewModel.SubtaskResultListener {
-                        override fun accept(result: LiveData<List<SubtaskEntity>>) {
-                            result.observe(
-                                viewLifecycleOwner,
-                                Observer<List<SubtaskEntity>> { subtasks ->
-                                    Log.d("SUBTASK_COUNT", "THIS TASK HAS " + subtasks.size + " SUBTASKS")
-                                    taskUiModel.subtaskListener?.updateSubtask(subtasks.map {
-                                        SubtaskUiModel(it) as ItemModel
-                                    } as ArrayList<ItemModel>)
-                                }
-                            )
-                        }
-                    })
-                    taskUiModel as ItemModel
-                } as ArrayList<ItemModel>
+                // Bind Observed entity to mItems in Parent Adapter
+                adapter.mItems.clear()
+                adapter.mItems.addAll(tasks.map {
+                    return@map TaskUiModel(it)
+                })
                 adapter.notifyDataSetChanged()
             }
         )

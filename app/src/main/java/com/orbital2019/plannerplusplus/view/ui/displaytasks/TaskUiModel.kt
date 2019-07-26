@@ -6,7 +6,7 @@ import com.orbital2019.plannerplusplus.view.rendereradapter.CompositeItemModel
 import com.orbital2019.plannerplusplus.view.rendereradapter.ItemModel
 
 /**
- * ItemModel which represents a single TaskEntity.
+ * ItemModel which represents the view data retrieved from a single TaskEntity.
  * This model may or may not have subtasks. If it has subtasks, they will be displayed.
  */
 class TaskUiModel(
@@ -14,8 +14,7 @@ class TaskUiModel(
     val title: String?,
     val details: String?,
     val isComplete: Boolean,
-    val task: TaskEntity?,
-    vararg val subtasks: ItemModel
+    val task: TaskEntity?
 ) : CompositeItemModel {
 
     constructor(task: TaskEntity) : this(
@@ -26,17 +25,11 @@ class TaskUiModel(
         task
     )
 
+    /**
+     * Data retrieved also includes a list of Subtasks
+     * As items is passed by reference to the adapter, make sure that it is a val.
+     */
     override var items = ArrayList<ItemModel>()
-        set(value) {
-            items.clear()
-            items.addAll(value)
-            subtaskListener?.updateSubtask(value)
-        }
-    var subtaskListener: TaskViewRenderer.SubtaskListener? = null
-
-    init {
-        items.addAll(subtasks)
-    }
 
     override fun getType(): Int {
         return TASK_ITEMMODEL

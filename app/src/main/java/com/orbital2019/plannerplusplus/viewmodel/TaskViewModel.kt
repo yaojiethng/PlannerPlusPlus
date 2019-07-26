@@ -43,12 +43,12 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
         repository.updateTask(taskEntity)
     }
 
-    fun getSubTasks(taskEntity: TaskEntity, listener: SubtaskResultListener) {
+    fun getSubTasksById(parentId: Long, listener: SubtaskResultListener) {
         return repository.getSubtasks(
-            taskEntity.id!!,
+            parentId,
             object : DaoAsyncProcessor.DaoProcessCallback<LiveData<List<SubtaskEntity>>> {
                 override fun onResult(result: LiveData<List<SubtaskEntity>>) {
-                    listener.accept(result)
+                    listener.accept(parentId, result)
                 }
             })
     }
@@ -61,6 +61,14 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
     fun setTaskIncomplete(taskEntity: TaskEntity) {
         repository.setTaskIncomplete(taskEntity.id!!)
         Log.d("SETCOMPLETE", "TASK SET AS INCOMPLETE")
+    }
+
+    fun setSubtaskComplete(subtask: SubtaskEntity) {
+        repository.setSubtaskComplete(subtask.id!!)
+    }
+
+    fun setSubtaskIncomplete(subtask: SubtaskEntity) {
+        repository.setSubtaskIncomplete(subtask)
     }
 
 
@@ -98,6 +106,6 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     interface SubtaskResultListener {
-        fun accept(result: LiveData<List<SubtaskEntity>>)
+        fun accept(parentId: Long, result: LiveData<List<SubtaskEntity>>)
     }
 }

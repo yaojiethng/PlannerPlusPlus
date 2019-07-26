@@ -3,6 +3,7 @@ package com.orbital2019.plannerplusplus.model.entity
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.ForeignKey.CASCADE
+import androidx.room.Index
 import androidx.room.PrimaryKey
 
 /**
@@ -10,6 +11,7 @@ import androidx.room.PrimaryKey
  * set onDelete = CASCADE: if task will be deleted, also delete all of its subtasks.
  */
 @Entity(
+    indices = [Index("parentId")],
     tableName = "subtask_table",
     foreignKeys = [
         ForeignKey(

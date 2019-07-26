@@ -19,7 +19,7 @@ import com.orbital2019.plannerplusplus.model.entity.TaskEntity
 
 @Database(
     entities = [EventEntity::class, TaskEntity::class, SubtaskEntity::class],
-    version = 12,
+    version = 13,
     exportSchema = false
 )
 

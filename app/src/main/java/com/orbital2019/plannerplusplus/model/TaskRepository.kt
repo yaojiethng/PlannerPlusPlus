@@ -63,7 +63,15 @@ interface TaskRepository {
         object : DaoAsyncProcessor<Unit>(null) {
             override fun doAsync() {
                 taskDao.setComplete(id)
-                taskDao.setSubtaskComplete(parentId = id)
+                taskDao.setSubtaskCompleteByParent(parentId = id)
+            }
+        }.start()
+    }
+
+    fun setSubtaskComplete(id: Long) {
+        object : DaoAsyncProcessor<Unit>(null) {
+            override fun doAsync() {
+                taskDao.setSubtaskComplete(id)
             }
         }.start()
     }
@@ -72,6 +80,16 @@ interface TaskRepository {
         object : DaoAsyncProcessor<Unit>(null) {
             override fun doAsync() {
                 taskDao.setIncomplete(id)
+            }
+        }.start()
+    }
+
+    fun setSubtaskIncomplete(subtask: SubtaskEntity) {
+        object : DaoAsyncProcessor<Unit>(null) {
+            override fun doAsync() {
+                taskDao.setIncomplete(subtask.parentId)
+                taskDao.setSubtaskIncomplete(subtask.id!!)
+
             }
         }.start()
     }

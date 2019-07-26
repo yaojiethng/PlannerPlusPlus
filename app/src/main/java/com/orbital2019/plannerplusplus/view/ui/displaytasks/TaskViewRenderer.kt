@@ -7,14 +7,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.orbital2019.plannerplusplus.R
 import com.orbital2019.plannerplusplus.constants.TASK_ITEMMODEL
 import com.orbital2019.plannerplusplus.view.rendereradapter.CompositeViewRenderer
-import com.orbital2019.plannerplusplus.view.rendereradapter.ItemModel
 import com.orbital2019.plannerplusplus.view.rendereradapter.RendererRecyclerViewAdapter
 
 
 class TaskViewRenderer(
     context: Context,
     private val itemClickListener: OnItemClickListener,
-    private val checkBoxListener: CheckBoxListener
+    private val checkBoxListener: CheckBoxListener,
+    private val childAdapterBinder: ChildAdapterBinder
 ) :
     CompositeViewRenderer<TaskUiModel, TaskViewHolder>(context) {
 
@@ -22,9 +22,12 @@ class TaskViewRenderer(
         get() = TASK_ITEMMODEL
 
     override fun bindView(model: TaskUiModel, holder: TaskViewHolder) {
-        holder.textViewTitle.text = String.format(model.title + "[%d]", model.subtasks.size)
-        holder.textViewDescription.text = model.details
-        holder.checkBox.isChecked = model.isComplete
+
+        val adapter = holder.mRecyclerView?.adapter as RendererRecyclerViewAdapter
+
+        // Call interface which binds childAdapter to LiveData
+        childAdapterBinder.bindChildAdapter(model.id!!, adapter)
+        model.items = adapter.mItems
 
         // When card is clicked, pass the taskEntity in its position in the adapter to the listener
         holder.itemView.setOnClickListener {
@@ -43,15 +46,10 @@ class TaskViewRenderer(
             }
         }
 
-        model.subtaskListener = object : SubtaskListener {
-            override fun updateSubtask(models: ArrayList<ItemModel>) {
-                val adapter = holder.mRecyclerView?.adapter as RendererRecyclerViewAdapter
-                adapter.mItems.clear()
-                adapter.mItems.addAll(models)
-                adapter.notifyDataSetChanged()
-
-            }
-        }
+        // if number of Subtasks are to be tracked, use a LiveData<Int>, due to nature of Async updates
+        holder.textViewTitle.text = model.title
+        holder.textViewDescription.text = model.details
+        holder.checkBox.isChecked = model.isComplete
 
     }
 
@@ -74,7 +72,8 @@ class TaskViewRenderer(
         fun onItemClick(model: TaskUiModel, isChecked: Boolean)
     }
 
-    interface SubtaskListener {
-        fun updateSubtask(models: ArrayList<ItemModel>)
+    interface ChildAdapterBinder {
+        // link LiveData to mItems in adapter
+        fun bindChildAdapter(id: Long, adapter: RendererRecyclerViewAdapter)
     }
 }

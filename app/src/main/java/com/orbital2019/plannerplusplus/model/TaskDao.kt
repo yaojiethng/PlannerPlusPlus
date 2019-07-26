@@ -26,10 +26,16 @@ interface TaskDao {
     fun setComplete(id: Long)
 
     @Query("UPDATE subtask_table SET isComplete = 1 WHERE parentId = :parentId")
-    fun setSubtaskComplete(parentId: Long)
+    fun setSubtaskCompleteByParent(parentId: Long)
 
     @Query("UPDATE task_table SET isComplete = 0 WHERE id = :id")
     fun setIncomplete(id: Long)
+
+    @Query("UPDATE subtask_table SET isComplete = 0 WHERE id = :id")
+    fun setSubtaskComplete(id: Long)
+
+    @Query("UPDATE subtask_table SET isComplete = 0 WHERE id = :id")
+    fun setSubtaskIncomplete(id: Long)
 
     @Delete
     fun delete(taskEntity: TaskEntity)
