@@ -25,6 +25,9 @@ interface TaskDao {
     @Query("UPDATE task_table SET isComplete = 1 WHERE id = :id")
     fun setComplete(id: Long)
 
+    @Query("UPDATE subtask_table SET isComplete = 1 WHERE parentId = :parentId")
+    fun setSubtaskComplete(parentId: Long)
+
     @Query("UPDATE task_table SET isComplete = 0 WHERE id = :id")
     fun setIncomplete(id: Long)
 

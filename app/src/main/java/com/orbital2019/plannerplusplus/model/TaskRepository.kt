@@ -59,17 +59,16 @@ interface TaskRepository {
         }.start()
     }
 
-    fun setTaskComplete(taskEntity: TaskEntity) {
-        val id: Long = taskEntity.id!!
+    fun setTaskComplete(id: Long) {
         object : DaoAsyncProcessor<Unit>(null) {
             override fun doAsync() {
                 taskDao.setComplete(id)
+                taskDao.setSubtaskComplete(parentId = id)
             }
         }.start()
     }
 
-    fun setTaskIncomplete(taskEntity: TaskEntity) {
-        val id: Long = taskEntity.id!!
+    fun setTaskIncomplete(id: Long) {
         object : DaoAsyncProcessor<Unit>(null) {
             override fun doAsync() {
                 taskDao.setIncomplete(id)
