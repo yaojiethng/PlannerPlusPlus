@@ -132,9 +132,9 @@ class TasksFragment : Fragment() {
                 object : SubtaskViewRenderer.CheckBoxListener {
                     override fun onItemClick(model: SubtaskUiModel, isChecked: Boolean) {
                         if (isChecked) {
-                            tasksViewModel.setSubtaskComplete(model.subtask!!)
-                        } else {
                             tasksViewModel.setSubtaskIncomplete(model.subtask!!)
+                        } else {
+                            tasksViewModel.setSubtaskComplete(model.subtask!!)
                         }
                     }
                 }) as ViewRenderer<ItemModel, RecyclerView.ViewHolder>

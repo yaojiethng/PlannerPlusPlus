@@ -65,6 +65,7 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
 
     fun setSubtaskComplete(subtask: SubtaskEntity) {
         repository.setSubtaskComplete(subtask.id!!)
+        Log.d("SETCOMPLETE", "SUBTASK SET AS COMPLETE")
     }
 
     fun setSubtaskIncomplete(subtask: SubtaskEntity) {

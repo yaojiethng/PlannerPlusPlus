@@ -87,9 +87,8 @@ interface TaskRepository {
     fun setSubtaskIncomplete(subtask: SubtaskEntity) {
         object : DaoAsyncProcessor<Unit>(null) {
             override fun doAsync() {
-                taskDao.setIncomplete(subtask.parentId)
                 taskDao.setSubtaskIncomplete(subtask.id!!)
-
+                taskDao.setIncomplete(subtask.parentId!!)
             }
         }.start()
     }
