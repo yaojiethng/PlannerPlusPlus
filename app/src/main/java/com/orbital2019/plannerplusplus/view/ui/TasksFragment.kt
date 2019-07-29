@@ -1,5 +1,6 @@
 package com.orbital2019.plannerplusplus.view.ui
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -174,10 +175,22 @@ class TasksFragment : Fragment() {
             // When item is swiped, deleteTask item from list.
             // todo: add features such as different directions, SnackBar to undo
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                // position in adapter where the item is swiped
-                tasksViewModel.delete(adapter.mItems[viewHolder.adapterPosition])
-                // call activity to get the activity attribute
-                Toast.makeText(activity, "Task Deleted", Toast.LENGTH_SHORT).show()
+                AlertDialog.Builder(context)
+                    .setTitle("Delete Event")
+                    .setMessage("Do you really want delete this task?")
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setPositiveButton(
+                        android.R.string.yes
+                    ) { _, _ ->
+                        // position in adapter where the item is swiped
+                        tasksViewModel.delete(adapter.mItems[viewHolder.adapterPosition])
+                        // call activity to get the activity attribute
+                        Toast.makeText(activity, "Task Deleted", Toast.LENGTH_SHORT).show()
+                    }
+                    .setNegativeButton(android.R.string.no) { dialog, _ ->
+                        adapter.notifyItemChanged(viewHolder.adapterPosition)
+                        dialog.cancel()
+                    }
             }
         }).attachToRecyclerView(recyclerView)
     }

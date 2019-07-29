@@ -210,7 +210,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 Toast.makeText(this, data?.getStringExtra(EXTRA_SAVE_STATUS), Toast.LENGTH_SHORT).show()
             }
             else -> {
-                Toast.makeText(this, "not saved", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(this, "not saved", Toast.LENGTH_SHORT).show()
             }
         }
     }

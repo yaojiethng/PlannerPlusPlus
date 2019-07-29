@@ -59,6 +59,14 @@ interface TaskRepository {
         }.start()
     }
 
+    fun deleteSubtasksByParentId(parentId: Long) {
+        object : DaoAsyncProcessor<Unit>(null) {
+            override fun doAsync() {
+                taskDao.deleteSubtasksByParentId(parentId)
+            }
+        }.start()
+    }
+
     fun setTaskComplete(id: Long) {
         object : DaoAsyncProcessor<Unit>(null) {
             override fun doAsync() {

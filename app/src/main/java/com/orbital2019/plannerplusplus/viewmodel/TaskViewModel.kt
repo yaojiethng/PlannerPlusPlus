@@ -39,6 +39,14 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
         repository.insertSubTask(*subtasks)
     }
 
+    fun updateTaskandSubtask(taskAndSubtask: TaskAndSubtask) {
+        val task = taskAndSubtask.task
+        repository.updateTask(task)
+        // todo diffutil
+        repository.deleteSubtasksByParentId(task.id!!)
+        repository.insertSubTask(*taskAndSubtask.getSubtasks(task.id!!))
+    }
+
     fun updateTask(taskEntity: TaskEntity) {
         repository.updateTask(taskEntity)
     }

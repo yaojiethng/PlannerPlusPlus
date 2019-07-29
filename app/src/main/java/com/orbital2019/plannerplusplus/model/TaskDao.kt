@@ -40,6 +40,9 @@ interface TaskDao {
     @Delete
     fun delete(taskEntity: TaskEntity)
 
+    @Query("DELETE FROM subtask_table WHERE parentId = :parentId")
+    fun deleteSubtasksByParentId(parentId: Long)
+
     @Query("SELECT * FROM task_table WHERE id = :id")
     fun findById(id: Int): List<TaskEntity>
 

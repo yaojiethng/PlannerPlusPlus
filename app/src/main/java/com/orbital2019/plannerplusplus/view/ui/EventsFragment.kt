@@ -1,5 +1,6 @@
 package com.orbital2019.plannerplusplus.view.ui
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -14,11 +15,11 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.orbital2019.plannerplusplus.R
 import com.orbital2019.plannerplusplus.constants.EDIT_EVENT_REQUEST
 import com.orbital2019.plannerplusplus.model.entity.EventEntity
 import com.orbital2019.plannerplusplus.view.EventAdapter
 import com.orbital2019.plannerplusplus.viewmodel.EventViewModel
+
 
 // todo: link fab and options menu to fragment?
 // Your fragments can contribute menu items to the activity's Options Menu (and, consequently, the app bar) by
@@ -33,7 +34,7 @@ class EventsFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.delete_all -> {
+            com.orbital2019.plannerplusplus.R.id.delete_all -> {
                 eventsViewModel.deleteAllEvents()
                 Toast.makeText(activity, "All Notes Deleted", Toast.LENGTH_SHORT).show()
                 true
@@ -44,8 +45,8 @@ class EventsFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        val layout: View = inflater.inflate(R.layout.fragment_events, container, false)
-        recyclerView = layout.findViewById(R.id.events_recycler_view)
+        val layout: View = inflater.inflate(com.orbital2019.plannerplusplus.R.layout.fragment_events, container, false)
+        recyclerView = layout.findViewById(com.orbital2019.plannerplusplus.R.id.events_recycler_view)
         // LinearLayoutManager ensures that items are displayed linearly
         recyclerView.layoutManager = LinearLayoutManager(activity)
         // increases efficiency as our recyclerView will never change in size
@@ -79,10 +80,22 @@ class EventsFragment : Fragment() {
             // When item is swiped, deleteEvent item from list.
             // todo: add features such as different directions, SnackBar to undo
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                // position in adapter where the item is swiped
-                eventsViewModel.deleteEvent(adapter.eventAt(viewHolder.adapterPosition))
-                // call activity to get the activity attribute
-                Toast.makeText(activity, "Event Deleted", Toast.LENGTH_SHORT).show()
+                AlertDialog.Builder(context)
+                    .setTitle("Delete Event")
+                    .setMessage("Do you really want delete this task?")
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setPositiveButton(
+                        android.R.string.yes
+                    ) { _, _ ->
+                        // position in adapter where the item is swiped
+                        eventsViewModel.deleteEvent(adapter.eventAt(viewHolder.adapterPosition))
+                        // call activity to get the activity attribute
+                        Toast.makeText(activity, "Event Deleted", Toast.LENGTH_SHORT).show()
+                    }
+                    .setNegativeButton(android.R.string.no) { dialog, _ ->
+                        adapter.notifyItemChanged(viewHolder.adapterPosition)
+                        dialog.cancel()
+                    }.show()
             }
         }).attachToRecyclerView(recyclerView)
 
