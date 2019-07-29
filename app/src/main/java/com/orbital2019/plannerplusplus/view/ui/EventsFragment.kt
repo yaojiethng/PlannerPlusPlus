@@ -100,11 +100,7 @@ class EventsFragment : Fragment() {
                 object : SubtaskViewRenderer.CheckBoxListener {
                     override fun onItemClick(model: SubtaskUiModel, isChecked: Boolean) {
                         val tasksViewModel = ViewModelProviders.of(this@EventsFragment).get(TaskViewModel::class.java)
-                        if (isChecked) {
-                            tasksViewModel.setSubtaskIncomplete(model.subtask!!)
-                        } else {
-                            tasksViewModel.setSubtaskComplete(model.subtask!!)
-                        }
+                        // todo whatever will happen when clicked
                     }
                 }) as ViewRenderer<ItemModel, RecyclerView.ViewHolder>
         )

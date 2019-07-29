@@ -47,7 +47,7 @@ class TaskViewRenderer(
         }
 
         // if number of Subtasks are to be tracked, use a LiveData<Int>, due to nature of Async updates
-        holder.textViewTitle.text = model.title
+        holder.textViewTitle.text = String.format("%s%s", if (model.isComplete) "[COMPLETE] " else "", model.title)
         holder.textViewDescription.text = model.details
         holder.checkBox.isChecked = model.isComplete
 

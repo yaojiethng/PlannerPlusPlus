@@ -20,7 +20,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.orbital2019.plannerplusplus.R
 import com.orbital2019.plannerplusplus.model.entity.EventEntity
 import com.orbital2019.plannerplusplus.model.entity.TaskEntity
+import com.orbital2019.plannerplusplus.view.rendereradapter.ItemModel
+import com.orbital2019.plannerplusplus.view.rendereradapter.RendererRecyclerViewAdapter
+import com.orbital2019.plannerplusplus.view.rendereradapter.ViewRenderer
+import com.orbital2019.plannerplusplus.view.ui.displaytasks.SubtaskUiModel
 import com.orbital2019.plannerplusplus.view.ui.selectdate.DatePickerFragment
+import com.orbital2019.plannerplusplus.view.ui.selecttask.LinkTaskViewRenderer
 import com.orbital2019.plannerplusplus.view.ui.selecttask.SelectTaskFragment
 import com.orbital2019.plannerplusplus.view.ui.selecttime.TimePickerFragment
 import com.orbital2019.plannerplusplus.viewmodel.EventUpdater
@@ -94,7 +99,7 @@ class AddEditEventActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetList
 
         // Initializing recyclerView
         recyclerView.layoutManager = LinearLayoutManager(this)
-        val adapter = LinkTaskAdapter(recyclerView)
+        val adapter = RendererRecyclerViewAdapter()
         recyclerView.adapter = adapter
         findViewById<TextView>(R.id.add_linked_task_title).text = "Add Required Task"
 
@@ -108,12 +113,24 @@ class AddEditEventActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetList
             timePicker.show(supportFragmentManager, "Time_Picker")
         }
 
+        val taskRenderer = LinkTaskViewRenderer(
+            this,
+            object : LinkTaskViewRenderer.OnItemClickListener {
+                override fun onItemClick(position: Int) {
+                    adapter.mItems.removeAt(position)
+                    adapter.notifyItemRemoved(position)
+                }
+            }
+        )
+        adapter.registerRenderer(taskRenderer as ViewRenderer<ItemModel, RecyclerView.ViewHolder>)
+
         // Adding onClickListener for addTaskButton
         addTaskButton.setOnClickListener {
             // when addTaskButton is clicked, open Select Task dialog
             SelectTaskFragment(object : SelectTaskFragment.TaskSelectedListener {
                 override fun onTaskSelected(task: TaskEntity) {
-                    adapter.addItem(task)
+                    adapter.mItems.add(SubtaskUiModel(null, task.title, task.isComplete, null))
+                    adapter.notifyDataSetChanged()
                 }
             }).show(supportFragmentManager, "select_task")
         }

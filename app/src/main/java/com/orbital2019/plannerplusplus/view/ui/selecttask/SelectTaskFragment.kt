@@ -38,7 +38,6 @@ class SelectTaskFragment(var listener: TaskSelectedListener) : DialogFragment() 
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        Toast.makeText(context, "Select Task Fragment Created", Toast.LENGTH_SHORT).show()
         // set layout associated with this class
         val layout: View =
             inflater.inflate(R.layout.fragment_select_task, container, false)
@@ -81,7 +80,7 @@ class SelectTaskFragment(var listener: TaskSelectedListener) : DialogFragment() 
              * and passes the selected task item
              */
             override fun onItemClick(task: TaskEntity) {
-                //
+                Toast.makeText(activity, "TASK SELECTED", Toast.LENGTH_SHORT).show()
                 listener.onTaskSelected(task)
                 // dismisses the fragment after task is selected
                 dismiss()
