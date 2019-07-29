@@ -6,9 +6,10 @@ import com.orbital2019.plannerplusplus.R
 import com.orbital2019.plannerplusplus.view.rendereradapter.CompositeViewHolder
 
 class EventViewHolder(itemView: View) : CompositeViewHolder(itemView) {
+    var textViewStatus: TextView = itemView.findViewById(R.id.text_view_event_status)
     var textViewTitle: TextView = itemView.findViewById(R.id.text_view_event_title)
     var textViewDescription: TextView = itemView.findViewById(R.id.text_view_event_details)
-    var textViewDateTime: TextView = itemView.findViewById(R.id.text_view_event_datetime)
+    var textViewDateTime: TextView = itemView.findViewById(R.id.text_view_event_time)
 
     init {
         // binds child recyclerView

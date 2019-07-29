@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.orbital2019.plannerplusplus.R
 import com.orbital2019.plannerplusplus.constants.EDIT_EVENT_REQUEST
-import com.orbital2019.plannerplusplus.model.entity.EventEntity
+import com.orbital2019.plannerplusplus.model.entity.EventAndRelatedTasks
 import com.orbital2019.plannerplusplus.view.rendereradapter.ItemModel
 import com.orbital2019.plannerplusplus.view.rendereradapter.RendererRecyclerViewAdapter
 import com.orbital2019.plannerplusplus.view.rendereradapter.ViewRenderer
@@ -87,11 +87,6 @@ class EventsFragment : Fragment() {
                     intent.putExtra(EXTRA_PARCEL_PLANNEREVENT, model.event!!)
                     startActivityForResult(intent, EDIT_EVENT_REQUEST)
                 }
-            },
-            object : EventViewRenderer.ChildAdapterBinder {
-                override fun bindChildAdapter(id: Long, adapter: RendererRecyclerViewAdapter) {
-                    // todo bind associated tasks
-                }
             }
         )
 
@@ -113,12 +108,18 @@ class EventsFragment : Fragment() {
         //  when this Fragment is closed, so will the ViewModel.
         eventsViewModel.getAllEvents().observe(
             viewLifecycleOwner,
-            Observer<List<EventEntity>> { events ->
+            Observer<List<EventAndRelatedTasks>> { eventAndTasks ->
                 // overriding onChanged for LiveData<List<TaskEntity>>> Observer
                 // Bind Observed entity to mItems in Parent Adapter
                 adapter.mItems.clear()
-                adapter.mItems.addAll(events.map {
-                    return@map EventUiModel(it)
+                adapter.mItems.addAll(eventAndTasks.map {
+                    val eventModel = EventUiModel(it.event)
+                    val subtaskModels = mutableListOf<ItemModel>()
+                    subtaskModels.addAll(it.tasks.map { task ->
+                        SubtaskUiModel(null, task.title, task.isComplete, null) as ItemModel
+                    })
+                    eventModel.tasks.value = subtaskModels
+                    return@map eventModel
                 })
                 adapter.notifyDataSetChanged()
             }

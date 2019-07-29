@@ -28,6 +28,7 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun insertTaskAndSubtask(taskAndSubtask: TaskAndSubtask) {
+        // todo make a transaction
         repository.insertTask(taskAndSubtask.task, object : DaoAsyncProcessor.DaoProcessCallback<Long> {
             override fun onResult(result: Long) {
                 insertSubtask(*taskAndSubtask.getSubtasks(result))

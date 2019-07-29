@@ -1,5 +1,6 @@
 package com.orbital2019.plannerplusplus.view.ui.displayevents
 
+import androidx.lifecycle.MutableLiveData
 import com.orbital2019.plannerplusplus.constants.EVENT_ITEMMODEL
 import com.orbital2019.plannerplusplus.model.entity.EventEntity
 import com.orbital2019.plannerplusplus.view.rendereradapter.CompositeItemModel
@@ -14,7 +15,8 @@ class EventUiModel(
     val id: Long?,
     val title: String?,
     val details: String?,
-    val dateTime: OffsetDateTime,
+    val startDateTime: OffsetDateTime,
+    val endDateTime: OffsetDateTime,
     val event: EventEntity?
 ) : CompositeItemModel {
 
@@ -23,6 +25,7 @@ class EventUiModel(
         event.title,
         event.details,
         event.eventStartTime,
+        event.eventEndTime!!,
         event
     )
 
@@ -31,9 +34,9 @@ class EventUiModel(
      * As items is passed by reference to the adapter, make sure that it is a val.
      */
     override var items = ArrayList<ItemModel>()
+    var tasks: MutableLiveData<List<ItemModel>> = MutableLiveData()
 
     override fun getType(): Int {
         return EVENT_ITEMMODEL
     }
-
 }

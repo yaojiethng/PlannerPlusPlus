@@ -8,7 +8,7 @@ package com.orbital2019.plannerplusplus.model
 
 import android.app.Application
 import androidx.lifecycle.LiveData
-import com.orbital2019.plannerplusplus.model.entity.EventEntity
+import com.orbital2019.plannerplusplus.model.entity.EventAndRelatedTasks
 import com.orbital2019.plannerplusplus.model.entity.TaskEntity
 
 // TODO: check if this can be done using java's ExecutorService
@@ -23,7 +23,7 @@ internal class PlannerRepository(application: Application) : EventRepository, Ta
         AppDatabase.getInstance(application)
     }
     override var eventDao = database.eventDao()
-    internal var allEvents: LiveData<List<EventEntity>> = eventDao.getAllEvents()
+    internal var allEvents: LiveData<List<EventAndRelatedTasks>> = eventDao.getAllEvents()
 
     override var taskDao: TaskDao = database.taskDao()
 

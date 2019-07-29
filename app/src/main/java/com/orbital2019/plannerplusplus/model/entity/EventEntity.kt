@@ -29,7 +29,7 @@ data class EventEntity(
     var id: Long? = null,
     var title: String = "",
     var eventStartTime: OffsetDateTime = OffsetDateTime.now(),
-    var eventDuration: OffsetDateTime? = eventStartTime,
+    var eventEndTime: OffsetDateTime? = eventStartTime,
     //todo: implement duration as an end time, within the same day as start time
     var details: String? = "",
     var repeated: Boolean = false,
@@ -43,7 +43,7 @@ data class EventEntity(
         id = parcel.readSerializable() as Long,
         title = parcel.readString()!!,
         eventStartTime = TiviTypeConverters.toOffsetDateTime(parcel.readString())!!,
-        eventDuration = TiviTypeConverters.toOffsetDateTime(parcel.readString())!!,
+        eventEndTime = TiviTypeConverters.toOffsetDateTime(parcel.readString())!!,
         details = parcel.readString(),
         repeated = parcel.readByte() != 0.toByte(),
         followUp = parcel.readByte() != 0.toByte(),
@@ -64,7 +64,7 @@ data class EventEntity(
         parcel.writeSerializable(id)
         parcel.writeString(title)
         parcel.writeString(TiviTypeConverters.fromOffsetDateTime(eventStartTime))
-        parcel.writeString(TiviTypeConverters.fromOffsetDateTime(eventDuration))
+        parcel.writeString(TiviTypeConverters.fromOffsetDateTime(eventEndTime))
         parcel.writeString(details)
         parcel.writeByte(if (repeated) 1 else 0)
         parcel.writeByte(if (followUp) 1 else 0)

@@ -64,7 +64,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/switch_repeat_new_event"/>
 
-        <!-- todo: change to text box?-->
         <EditText
                 android:id="@+id/edit_text_details"
                 android:layout_width="match_parent"

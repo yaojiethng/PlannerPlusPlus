@@ -2,6 +2,7 @@ package com.orbital2019.plannerplusplus.model
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.orbital2019.plannerplusplus.model.entity.EventAndRelatedTasks
 import com.orbital2019.plannerplusplus.model.entity.EventEntity
 
 @Dao
@@ -24,9 +25,15 @@ interface EventDao {
     @Query("DELETE FROM event_table")
     fun deleteAllEvents()
 
-    // can use object type LiveData<List<EventEntity>> to get an observable object
-    @Query("SELECT * FROM event_table ORDER BY id DESC")
-    fun getAllEvents(): LiveData<List<EventEntity>>
+    /**
+     * Queries for list of all EventAndRelatedTasks, ordered by:
+     *      datetime(startTime), followed by datetime(endTime), followed by id.
+     * If the result of the query is a Pojo with Relation fields, these fields are queried separately.
+     * To receive consistent results between these queries, you probably want to run them in a single transaction.
+     * @return LiveData<List<EventAndRelatedTasks>> to get an Observable Relation Pojo linking Event with its related Tasks
+     */
+    @Transaction
+    @Query("SELECT * FROM event_table ORDER BY datetime(eventStartTime), datetime(eventEndTime), id DESC")
+    fun getAllEvents(): LiveData<List<EventAndRelatedTasks>>
 
-    // to sort by datetime: "SELECT * FROM users ORDER BY datetime(joined_date)"
 }

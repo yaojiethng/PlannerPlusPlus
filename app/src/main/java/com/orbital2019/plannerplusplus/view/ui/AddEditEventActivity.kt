@@ -28,7 +28,7 @@ import com.orbital2019.plannerplusplus.view.ui.selectdate.DatePickerFragment
 import com.orbital2019.plannerplusplus.view.ui.selecttask.LinkTaskViewRenderer
 import com.orbital2019.plannerplusplus.view.ui.selecttask.SelectTaskFragment
 import com.orbital2019.plannerplusplus.view.ui.selecttime.TimePickerFragment
-import com.orbital2019.plannerplusplus.viewmodel.EventUpdater
+import com.orbital2019.plannerplusplus.viewmodel.EventViewModel
 import kotlinx.android.synthetic.main.activity_add_edit_event.*
 import org.threeten.bp.LocalDate
 import org.threeten.bp.LocalTime
@@ -42,8 +42,8 @@ const val EXTRA_PARCEL_PLANNEREVENT = "com.orbital2019.plannerplusplus.PARCEL_PL
 class AddEditEventActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetListener,
     DatePickerDialog.OnDateSetListener {
 
-    private val eventUpdater: EventUpdater by lazy {
-        ViewModelProviders.of(this).get(EventUpdater::class.java)
+    private val viewModel: EventViewModel by lazy {
+        ViewModelProviders.of(this).get(EventViewModel::class.java)
     }
 
     // Id is null by default
@@ -188,7 +188,7 @@ class AddEditEventActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetList
             id = eventId,
             title = editTextTitle.text.toString(),
             eventStartTime = startDateTime,
-            eventDuration = startDateTime,
+            eventEndTime = startDateTime.plusMinutes(1),
             details = editTextDetails.text.toString(),
             repeated = switchRepeat.isChecked,
             followUp = switchFollowUp.isChecked,
@@ -211,14 +211,14 @@ class AddEditEventActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetList
         // if event currently has no Id, it is a new event.
         if (eventId == null) {
             Log.d("Save clicked", "EVENT INSERTED WITH ID $eventId")
-            eventUpdater.insertEvent(eventSave)
+            viewModel.insertEvent(eventSave)
             // current implementation uses an intent to pass back the result of saveEvent
             setResult(
                 Activity.RESULT_OK, Intent().putExtra(EXTRA_SAVE_STATUS, "SUCCESSFULLY SAVED")
             )
             finish()
         } else {
-            eventUpdater.updateEvent(eventSave)
+            viewModel.updateEvent(eventSave)
             Log.d("Save clicked", "EVENT UPDATED WITH ID $eventId")
             setResult(
                 Activity.RESULT_OK, Intent().putExtra(EXTRA_SAVE_STATUS, "SUCCESSFULLY UPDATED")
