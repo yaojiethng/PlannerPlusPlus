@@ -11,7 +11,6 @@ import com.orbital2019.plannerplusplus.model.entity.SubtaskEntity
 import com.orbital2019.plannerplusplus.model.entity.TaskAndSubtask
 import com.orbital2019.plannerplusplus.model.entity.TaskEntity
 import com.orbital2019.plannerplusplus.view.rendereradapter.ItemModel
-import com.orbital2019.plannerplusplus.view.ui.displaytasks.SubtaskUiModel
 import com.orbital2019.plannerplusplus.view.ui.displaytasks.TaskUiModel
 
 // Passing application as context avoids static Activity instance, allows passing of context without retaining a
@@ -105,14 +104,7 @@ class TaskViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun populate() {
-        insertTaskAndSubtask(
-            TaskAndSubtask(
-                TaskEntity("DB_POP1", "", false, "", false),
-                SubtaskUiModel(null, "SUBTASK1", false, null),
-                SubtaskUiModel(null, "SUBTASK2", false, null),
-                SubtaskUiModel(null, "SUBTASK3", false, null)
-            )
-        )
+        repository.populate()
     }
 
     interface SubtaskResultListener {

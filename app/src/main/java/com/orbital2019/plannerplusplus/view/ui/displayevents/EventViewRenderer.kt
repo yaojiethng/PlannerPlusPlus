@@ -39,9 +39,9 @@ class EventViewRenderer(
         val startTime = model.startDateTime
         val endTime = model.endDateTime
         holder.textViewStatus.text = when {
-            startTime.isBefore(timeNow) -> "[UPCOMING] "
+            startTime.isBefore(timeNow) -> "[COMPLETED] "
             endTime.isBefore(timeNow) -> "[ONGOING] "
-            else -> "[COMPLETED] "
+            else -> "[UPCOMING] "
         }
         holder.textViewTitle.text = model.title
         holder.textViewDescription.text = model.details

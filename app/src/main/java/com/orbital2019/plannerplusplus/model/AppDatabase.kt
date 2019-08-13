@@ -8,6 +8,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.orbital2019.plannerplusplus.model.entity.EventEntity
+import com.orbital2019.plannerplusplus.model.entity.EventTaskRequirement
 import com.orbital2019.plannerplusplus.model.entity.SubtaskEntity
 import com.orbital2019.plannerplusplus.model.entity.TaskEntity
 
@@ -18,8 +19,8 @@ import com.orbital2019.plannerplusplus.model.entity.TaskEntity
 //  3. Add proper callback support and tests
 
 @Database(
-    entities = [EventEntity::class, TaskEntity::class, SubtaskEntity::class],
-    version = 14,
+    entities = [EventEntity::class, TaskEntity::class, SubtaskEntity::class, EventTaskRequirement::class],
+    version = 17,
     exportSchema = false
 )
 
@@ -52,6 +53,7 @@ abstract class AppDatabase : RoomDatabase() {
                         // when version number is incremented start with an empty database
                         .fallbackToDestructiveMigration()
                         // populates database with samples when it is first created
+                        .addCallback(CALLBACK)
                         .build()
                 }
             }
@@ -75,9 +77,22 @@ abstract class AppDatabase : RoomDatabase() {
                 database.eventDao()
             }
 
+            val taskDao by lazy {
+                database.taskDao()
+            }
+
             override fun doInBackground(vararg params: Void?): Void? {
+                taskDao.insert(TaskEntity(1, "DB_POP1", "", false, "", false))
+                taskDao.insert(SubtaskEntity(null, "SUBTASK1", false, 1))
+                taskDao.insert(SubtaskEntity(null, "SUBTASK2", true, 1))
+                taskDao.insert(SubtaskEntity(null, "SUBTASK3", false, 1))
+
+                eventDao.insert(EventEntity(id = 1, title = "TEST_EVENT"))
+                eventDao.setEventRequirement(1, 1)
+
                 return null
             }
+
         }
     }
 

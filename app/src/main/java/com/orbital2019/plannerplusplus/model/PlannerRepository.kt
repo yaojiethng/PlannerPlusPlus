@@ -8,7 +8,8 @@ package com.orbital2019.plannerplusplus.model
 
 import android.app.Application
 import androidx.lifecycle.LiveData
-import com.orbital2019.plannerplusplus.model.entity.EventAndRelatedTasks
+import com.orbital2019.plannerplusplus.model.entity.EventEntity
+import com.orbital2019.plannerplusplus.model.entity.SubtaskEntity
 import com.orbital2019.plannerplusplus.model.entity.TaskEntity
 
 // TODO: check if this can be done using java's ExecutorService
@@ -23,7 +24,7 @@ internal class PlannerRepository(application: Application) : EventRepository, Ta
         AppDatabase.getInstance(application)
     }
     override var eventDao = database.eventDao()
-    internal var allEvents: LiveData<List<EventAndRelatedTasks>> = eventDao.getAllEvents()
+    internal var allEvents: LiveData<List<EventEntity>> = eventDao.getAllEvents()
 
     override var taskDao: TaskDao = database.taskDao()
 
@@ -31,5 +32,36 @@ internal class PlannerRepository(application: Application) : EventRepository, Ta
     internal var numIncompleteTasks: LiveData<Int> = taskDao.countIncompleteTasks()
     internal var numCompletedTasks: LiveData<Int> = taskDao.countCompletedTasks()
 
+
+    fun getRelatedTasksByEventId(
+        eventId: Long,
+        callback: DaoAsyncProcessor.DaoProcessCallback<LiveData<List<TaskEntity>>>
+    ) {
+        object : DaoAsyncProcessor<LiveData<List<TaskEntity>>>(callback) {
+            override fun doAsync(): LiveData<List<TaskEntity>> {
+                return eventDao.getRelatedTasksByEventId(eventId)
+            }
+        }.start()
+    }
+
+    fun populate() {
+        object : DaoAsyncProcessor<Unit>(null) {
+            override fun doAsync() {
+                taskDao.deleteAllTasks()
+                eventDao.deleteAllEvents()
+                eventDao.deleteAllRequirements()
+                taskDao.insert(TaskEntity(1, "DB_POP1", "", false, "", false))
+                taskDao.insert(SubtaskEntity(null, "SUBTASK1", false, 1))
+                taskDao.insert(SubtaskEntity(null, "SUBTASK2", true, 1))
+                taskDao.insert(SubtaskEntity(null, "SUBTASK3", false, 1))
+
+                eventDao.insert(EventEntity(id = 1, title = "TEST_EVENT"))
+                eventDao.insert(EventEntity(id = 2, title = "Test_2"))
+                eventDao.setEventRequirement(1, 1)
+                eventDao.setEventRequirement(2, 1)
+
+            }
+        }.start()
+    }
 }
 

@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -17,7 +18,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.orbital2019.plannerplusplus.R
 import com.orbital2019.plannerplusplus.constants.EDIT_EVENT_REQUEST
-import com.orbital2019.plannerplusplus.model.entity.EventAndRelatedTasks
+import com.orbital2019.plannerplusplus.model.entity.EventEntity
+import com.orbital2019.plannerplusplus.model.entity.TaskEntity
 import com.orbital2019.plannerplusplus.view.rendereradapter.ItemModel
 import com.orbital2019.plannerplusplus.view.rendereradapter.RendererRecyclerViewAdapter
 import com.orbital2019.plannerplusplus.view.rendereradapter.ViewRenderer
@@ -95,7 +97,7 @@ class EventsFragment : Fragment() {
                 object : SubtaskViewRenderer.CheckBoxListener {
                     override fun onItemClick(model: SubtaskUiModel, isChecked: Boolean) {
                         val tasksViewModel = ViewModelProviders.of(this@EventsFragment).get(TaskViewModel::class.java)
-                        // todo whatever will happen when clicked
+                        Toast.makeText(context, model.title, Toast.LENGTH_LONG).show()
                     }
                 }) as ViewRenderer<ItemModel, RecyclerView.ViewHolder>
         )
@@ -108,17 +110,26 @@ class EventsFragment : Fragment() {
         //  when this Fragment is closed, so will the ViewModel.
         eventsViewModel.getAllEvents().observe(
             viewLifecycleOwner,
-            Observer<List<EventAndRelatedTasks>> { eventAndTasks ->
+            Observer<List<EventEntity>> { events ->
                 // overriding onChanged for LiveData<List<TaskEntity>>> Observer
                 // Bind Observed entity to mItems in Parent Adapter
                 adapter.mItems.clear()
-                adapter.mItems.addAll(eventAndTasks.map {
-                    val eventModel = EventUiModel(it.event)
-                    val subtaskModels = mutableListOf<ItemModel>()
-                    subtaskModels.addAll(it.tasks.map { task ->
-                        SubtaskUiModel(null, task.title, task.isComplete, null) as ItemModel
-                    })
-                    eventModel.tasks.value = subtaskModels
+                adapter.mItems.addAll(events.map { event ->
+                    val eventModel = EventUiModel(event)
+                    eventsViewModel.getRelatedTasksByEventId(
+                        event.id
+                    ) { requiredTasks: LiveData<List<TaskEntity>> ->
+                        requiredTasks.observe(
+                            viewLifecycleOwner,
+                            Observer<List<TaskEntity>> { taskList ->
+                                val subtaskModels = mutableListOf<ItemModel>()
+                                subtaskModels.addAll(taskList.map {
+                                    SubtaskUiModel(null, it.title, it.isComplete, null) as ItemModel
+                                })
+                                eventModel.tasks.value = subtaskModels
+                            }
+                        )
+                    }
                     return@map eventModel
                 })
                 adapter.notifyDataSetChanged()

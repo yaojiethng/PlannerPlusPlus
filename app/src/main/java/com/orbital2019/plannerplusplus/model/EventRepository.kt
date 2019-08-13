@@ -37,11 +37,4 @@ interface EventRepository {
             }
         }.start()
     }
-
-//    fun getAllEvents(callback: DaoAsyncProcessor.DaoProcessCallback<LiveData<List<EventEntity>>>) {
-//        object : DaoAsyncProcessor<LiveData<List<EventEntity>>>(callback) {
-//            override fun doAsync(): LiveData<List<EventEntity>> {
-//                return eventDao.getAllEvents()
-//            }
-//        }.start()
 }
