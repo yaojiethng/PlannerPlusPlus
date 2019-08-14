@@ -11,7 +11,7 @@ interface EventDao {
 
     // highlight any of the tags and press ctrl-b for advanced tagging options
     @Insert
-    fun insert(eventEntity: EventEntity)
+    fun insert(eventEntity: EventEntity): Long
 
     @Update
     fun update(eventEntity: EventEntity)

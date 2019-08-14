@@ -5,10 +5,10 @@ import com.orbital2019.plannerplusplus.model.entity.EventEntity
 interface EventRepository {
     var eventDao: EventDao
 
-    fun insertEvent(eventEntity: EventEntity) {
-        object : DaoAsyncProcessor<Unit>(null) {
-            override fun doAsync() {
-                eventDao.insert(eventEntity)
+    fun insertEvent(eventEntity: EventEntity, callback: DaoAsyncProcessor.DaoProcessCallback<Long>?) {
+        object : DaoAsyncProcessor<Long>(callback) {
+            override fun doAsync(): Long {
+                return eventDao.insert(eventEntity)
             }
         }.start()
     }
@@ -34,6 +34,14 @@ interface EventRepository {
         object : DaoAsyncProcessor<Unit>(null) {
             override fun doAsync() {
                 eventDao.deleteAllEvents()
+            }
+        }.start()
+    }
+
+    fun setEventRequirement(eventId: Long, vararg taskIds: Long) {
+        object : DaoAsyncProcessor<Unit>(null) {
+            override fun doAsync() {
+                eventDao.setEventRequirement(eventId, *taskIds)
             }
         }.start()
     }

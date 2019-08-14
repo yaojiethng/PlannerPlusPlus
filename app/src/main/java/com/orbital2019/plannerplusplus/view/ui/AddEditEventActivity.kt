@@ -14,6 +14,7 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -78,6 +79,10 @@ class AddEditEventActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetList
     private val recyclerView: RecyclerView by lazy {
         findViewById<RecyclerView>(R.id.link_task_recyclerview)
     }
+    private val adapter: RendererRecyclerViewAdapter by lazy {
+        recyclerView.adapter as RendererRecyclerViewAdapter
+    }
+    private val taskRequirements = LinkedHashSet<Long>()
 
     companion object {
         fun newIntent(context: Context): Intent {
@@ -117,6 +122,8 @@ class AddEditEventActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetList
             this,
             object : LinkTaskViewRenderer.OnItemClickListener {
                 override fun onItemClick(position: Int) {
+                    val model = adapter.mItems[position] as SubtaskUiModel
+                    taskRequirements.remove(model.id)
                     adapter.mItems.removeAt(position)
                     adapter.notifyItemRemoved(position)
                 }
@@ -129,8 +136,11 @@ class AddEditEventActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetList
             // when addTaskButton is clicked, open Select Task dialog
             SelectTaskFragment(object : SelectTaskFragment.TaskSelectedListener {
                 override fun onTaskSelected(task: TaskEntity) {
-                    adapter.mItems.add(SubtaskUiModel(null, task.title, task.isComplete, null))
-                    adapter.notifyDataSetChanged()
+                    if (!taskRequirements.contains(task.id)) {
+                        adapter.mItems.add(SubtaskUiModel(task.id, task.title, task.isComplete, null))
+                        taskRequirements.add(task.id!!)
+                        adapter.notifyDataSetChanged()
+                    }
                 }
             }).show(supportFragmentManager, "select_task")
         }
@@ -140,6 +150,20 @@ class AddEditEventActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetList
             title = "Edit Event"
             val event: EventEntity = intent.getParcelableExtra(EXTRA_PARCEL_PLANNEREVENT)!!
             bind(event)
+            viewModel.getRelatedTasksByEventId(event.id!!) { tasks ->
+                tasks.observe(
+                    this,
+                    Observer<List<TaskEntity>> {
+                        taskRequirements.clear()
+                        for (task: TaskEntity in it) {
+                            adapter.mItems.add(SubtaskUiModel(task.id, task.title, task.isComplete, null))
+                            taskRequirements.add(task.id!!)
+                            adapter.notifyDataSetChanged()
+                        }
+                        adapter.notifyDataSetChanged()
+                    }
+                )
+            }
         } else {
             title = "Add new Event"
             editTimeButton.text = LocalTime.now().format(ISO_LOCAL_TIME)
@@ -211,14 +235,14 @@ class AddEditEventActivity : AppCompatActivity(), TimePickerDialog.OnTimeSetList
         // if event currently has no Id, it is a new event.
         if (eventId == null) {
             Log.d("Save clicked", "EVENT INSERTED WITH ID $eventId")
-            viewModel.insertEvent(eventSave)
+            viewModel.insertEvent(eventSave, *taskRequirements.toLongArray())
             // current implementation uses an intent to pass back the result of saveEvent
             setResult(
                 Activity.RESULT_OK, Intent().putExtra(EXTRA_SAVE_STATUS, "SUCCESSFULLY SAVED")
             )
             finish()
         } else {
-            viewModel.updateEvent(eventSave)
+            viewModel.updateEvent(eventSave, *taskRequirements.toLongArray())
             Log.d("Save clicked", "EVENT UPDATED WITH ID $eventId")
             setResult(
                 Activity.RESULT_OK, Intent().putExtra(EXTRA_SAVE_STATUS, "SUCCESSFULLY UPDATED")

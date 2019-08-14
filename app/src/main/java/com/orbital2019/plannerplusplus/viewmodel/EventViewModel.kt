@@ -18,12 +18,21 @@ class EventViewModel(application: Application) : AndroidViewModel(application) {
         PlannerRepository(application)
     private val allEvents: LiveData<List<EventEntity>> = repository.allEvents
 
-    fun insertEvent(eventEntity: EventEntity) {
-        repository.insertEvent(eventEntity)
+    fun insertEvent(eventEntity: EventEntity, vararg taskIds: Long) {
+        repository.insertEvent(eventEntity, object : DaoAsyncProcessor.DaoProcessCallback<Long> {
+            override fun onResult(result: Long) {
+                setEventRequirement(result, *taskIds)
+            }
+        })
     }
 
-    fun updateEvent(eventEntity: EventEntity) {
+    fun setEventRequirement(eventId: Long, vararg taskIds: Long) {
+        repository.setEventRequirement(eventId, *taskIds)
+    }
+
+    fun updateEvent(eventEntity: EventEntity, vararg taskIds: Long) {
         repository.updateEvent(eventEntity)
+        repository.setEventRequirement(eventEntity.id!!, *taskIds)
     }
 
     fun delete(model: ItemModel) {
